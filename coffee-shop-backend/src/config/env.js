@@ -7,7 +7,7 @@ module.exports = {
   API_URL: process.env.API_URL || `http://localhost:${process.env.PORT || 5000}`,
 
   // Database
-  DB_HOST: process.env.DB_HOST || 'localhost',
+  DB_HOST: process.env.DB_HOST || '127.0.0.1',
   DB_USER: process.env.DB_USER || 'root',
   DB_PASSWORD: process.env.DB_PASSWORD || '',
   DB_NAME: process.env.DB_NAME || 'coffeeshopmanagement',
@@ -20,7 +20,21 @@ module.exports = {
   JWT_REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN || '30d',
 
   // CORS
-  CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
+  CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:3000',
+  ALLOWED_ORIGINS: (() => {
+    const origins = new Set();
+    if (process.env.CLIENT_URL) {
+      origins.add(process.env.CLIENT_URL.trim());
+    }
+    origins.add('http://localhost:3000');
+    origins.add('http://localhost:5173');
+    origins.add('http://127.0.0.1:3000');
+    origins.add('http://127.0.0.1:5173');
+    if (process.env.ALLOWED_ORIGINS) {
+      process.env.ALLOWED_ORIGINS.split(',').forEach(o => origins.add(o.trim()));
+    }
+    return Array.from(origins);
+  })(),
 
   // PayOS
   PAYOS_CLIENT_ID: process.env.PAYOS_CLIENT_ID || '',

@@ -19,17 +19,40 @@ const pool = mysql.createPool({
 
 // Set timezone to +07:00 for every connection session
 pool.on('connection', (connection) => {
-  connection.query("SET time_zone = '+07:00'");
+  connection.query("SET time_zone = '+07:00'", (err) => {
+    if (err) {
+      console.error('Database connection timezone setup failed:');
+      console.error('Code:', err.code);
+      console.error('Errno:', err.errno);
+      console.error('SQL State:', err.sqlState);
+      console.error('Message:', err.message);
+    }
+  });
 });
 
 // Test connection
 const testConnection = async () => {
+  let connection;
+  let connectionError = null;
+
   try {
-    const connection = await pool.getConnection();
+    connection = await pool.getConnection();
+    await connection.query("SET time_zone = '+07:00'");
     console.log('Database connected successfully (timezone set to +07:00)');
-    connection.release();
   } catch (error) {
-    console.error('Database connection failed:', error.message);
+    connectionError = error;
+  } finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+
+  if (connectionError) {
+    console.error('Database connection failed:');
+    console.error('Code:', connectionError.code);
+    console.error('Errno:', connectionError.errno);
+    console.error('SQL State:', connectionError.sqlState);
+    console.error('Message:', connectionError.message);
     process.exit(1);
   }
 };

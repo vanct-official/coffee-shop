@@ -1,0 +1,31 @@
+services:
+  backend:
+    build:
+      context: ./coffee-shop-backend
+      dockerfile: Dockerfile
+    image: coffee-shop-backend:latest
+    container_name: coffee-shop-backend
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      DB_HOST: host.docker.internal
+      DB_PORT: 3306
+    env_file:
+      - ./coffee-shop-backend/.env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./coffee-shop-frontend
+      dockerfile: Dockerfile
+    image: coffee-shop-frontend:latest
+    container_name: coffee-shop-frontend
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    depends_on:
+      - backend
