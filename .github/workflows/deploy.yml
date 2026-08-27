@@ -1,0 +1,30 @@
+name: Deploy Coffee Shop
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Stop old containers
+        run: |
+          docker compose down || true
+
+      - name: Build Docker images
+        run: |
+          docker compose build
+
+      - name: Start containers
+        run: |
+          docker compose up -d
+
+      - name: Check containers
+        run: |
+          docker compose ps
