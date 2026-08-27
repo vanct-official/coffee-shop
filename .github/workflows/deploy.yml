@@ -28,3 +28,11 @@ jobs:
       - name: Check containers
         run: |
           docker compose ps
+      
+      - name: Prepare environment
+        run: |
+          cp /home/vanct/coffee-shop/coffee-shop-backend/.env \
+             "$GITHUB_WORKSPACE/coffee-shop-backend/.env"
+
+      - name: Deploy
+        run: docker compose up -d
