@@ -13,6 +13,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Prepare environment
+        run: |
+          cp /home/vanct/coffee-shop/coffee-shop-backend/.env \
+             "$GITHUB_WORKSPACE/coffee-shop-backend/.env"
+
       - name: Stop old containers
         run: |
           docker compose down || true
@@ -28,11 +33,3 @@ jobs:
       - name: Check containers
         run: |
           docker compose ps
-      
-      - name: Prepare environment
-        run: |
-          cp /home/vanct/coffee-shop/coffee-shop-backend/.env \
-             "$GITHUB_WORKSPACE/coffee-shop-backend/.env"
-
-      - name: Deploy
-        run: docker compose up -d
