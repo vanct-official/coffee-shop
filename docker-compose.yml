@@ -6,7 +6,7 @@ services:
     image: coffee-shop-backend:latest
     container_name: coffee-shop-backend
     ports:
-      - "5000:5000"
+      - "5001:5000"
     environment:
       NODE_ENV: production
       PORT: 5000
@@ -22,6 +22,10 @@ services:
     build:
       context: ./coffee-shop-frontend
       dockerfile: Dockerfile
+      args:
+        VITE_API_URL: https://apicoffeeshop.vanct.id.vn/api
+        VITE_SOCKET_URL: https://apicoffeeshop.vanct.id.vn
+        VITE_GOOGLE_CLIENT_ID: 558672106762-iuplg0cpu94l7i698q55tflfspg501s2.apps.googleusercontent.com
     image: coffee-shop-frontend:latest
     container_name: coffee-shop-frontend
     ports:

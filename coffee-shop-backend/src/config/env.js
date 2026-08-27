@@ -30,6 +30,7 @@ module.exports = {
     origins.add('http://localhost:5173');
     origins.add('http://127.0.0.1:3000');
     origins.add('http://127.0.0.1:5173');
+    origins.add('http://102.168.0.100:3000');
     if (process.env.ALLOWED_ORIGINS) {
       process.env.ALLOWED_ORIGINS.split(',').forEach(o => origins.add(o.trim()));
     }
