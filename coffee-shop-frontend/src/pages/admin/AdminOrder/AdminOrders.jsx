@@ -28,8 +28,11 @@ import {
   DialogDescription,
 } from "../../../components/ui/dialog";
 import PaginationControl from "../../../components/common/PaginationControl";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export default function AdminOrders() {
+  useDocumentTitle('Quản lý đơn hàng | Admin');
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("all");
@@ -278,18 +281,19 @@ export default function AdminOrders() {
   ];
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
-      <div className="space-y-4">
-        <div className="flex items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="flex items-center gap-3">
-              <h1 className="text-xl font-semibold">
-                Quản lý Đơn hàng
-              </h1>
-            </div>
-          </div>
-        </div>
+    <div className="space-y-6">
+      <AdminPageHeader
+        title="Quản lý Đơn hàng"
+        subtitle="Theo dõi, xác nhận và xử lý đơn hàng tại quán, mang đi và giao hàng"
+        icon={ShoppingBag}
+        badge={
+          <Badge variant="outline" className="text-xs bg-accent/10 border-accent/30 text-accent font-medium">
+            {totalItems} đơn hàng
+          </Badge>
+        }
+      />
 
+      <div className="space-y-4">
         <div className="rounded-xl border bg-card text-card-foreground p-3 sm:p-4 shadow-sm space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3">
             <div className="space-y-1">

@@ -23,8 +23,11 @@ import {
 import { toast } from "sonner";
 import areaService from "@/services/areaService";
 import AreaModal from "./AreaModal";
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export default function AdminAreas() {
+  useDocumentTitle('Quản lý khu vực | Admin');
   const [areas, setAreas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -95,19 +98,17 @@ export default function AdminAreas() {
 
   return (
     <div className="space-y-6">
-      {/* HEADER */}
-      <div className="flex justify-between items-center">
-        <div className="mb-6 flex items-center gap-3">
-          <MapPin className="w-6 h-6 text-primary" />
-          <h1 className="text-2xl font-semibold mb-1">Quản lý khu vực</h1>
-        </div>
-
-
-        <Button className="gap-2" onClick={handleAdd}>
-          <Plus className="w-4 h-4" />
-          Tạo mới
-        </Button>
-      </div>
+      <AdminPageHeader
+        title="Quản lý Khu vực"
+        subtitle="Danh sách các tầng và khu vực bố trí bàn trong quán"
+        icon={MapPin}
+        actions={
+          <Button className="gap-2 cursor-pointer shadow-xs" onClick={handleAdd}>
+            <Plus className="w-4 h-4" />
+            Tạo mới
+          </Button>
+        }
+      />
 
       {/* TABLE CARD */}
       <Card className="p-6 space-y-4">

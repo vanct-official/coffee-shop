@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useMemo, useState, Fragment } from "react";
 import { format, startOfDay, endOfDay, subDays, eachDayOfInterval } from "date-fns";
 import { vi } from "date-fns/locale";
-import {
-  Calendar as CalendarIcon,
+import { Calendar as CalendarIcon,
   Printer,
   Loader2,
   Minus,
@@ -15,8 +14,7 @@ import {
   FileText,
   Layers
 } from "lucide-react";
-import {
-  BarChart,
+import { BarChart,
   Bar,
   XAxis,
   YAxis,
@@ -30,19 +28,19 @@ import PaginationControl from "../../../components/common/PaginationControl";
 import { Badge } from "../../../components/ui/badge";
 import { Button } from "../../../components/ui/button";
 import { Calendar } from "../../../components/ui/calendar";
-import {
-  Popover,
+import { Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Select,
+import { Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import adminDBService from "../../../services/adminDBService";
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 const EMPTY_TOTALS = { qty: 0, itemsPrice: 0, discount: 0, revenue: 0 };
 const moneyFormatter = new Intl.NumberFormat("vi-VN");
@@ -65,6 +63,7 @@ const parseReportRows = (payload) => {
 };
 
 const AdminEndOfDayReport = () => {
+  useDocumentTitle('Báo cáo cuối ngày | Admin');
   const [dateRange, setDateRange] = useState({
     from: subDays(new Date(), 7),
     to: new Date(),
@@ -376,58 +375,58 @@ const AdminEndOfDayReport = () => {
   return (
     <div className="report-shell space-y-6 p-6 min-h-screen bg-background print:bg-card text-card-foreground print:p-0">
       {/* Header - Hidden on print */}
-      <div className="report-card flex items-center justify-between gap-4 rounded-2xl border bg-card text-card-foreground p-5 shadow-sm print:hidden">
-        <div className="space-y-1">
-          <div className="inline-flex items-center rounded-full border border-sky-200 bg-sky-50 dark:bg-sky-900/30 px-3 py-1 text-xs font-medium text-sky-700 dark:text-sky-200">
-            Báo cáo cuối ngày
-          </div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Báo cáo tổng kết</h1>
-          <p className="text-sm text-muted-foreground">Chỉ bao gồm các đơn hàng đã thanh toán</p>
-        </div>
-        <div className="flex flex-wrap items-center justify-end gap-3">
-          <Button variant="outline" onClick={handlePrint} className="transition-transform duration-200 hover:-translate-y-0.5">
-            <Printer className="mr-2 h-4 w-4" />
-            In báo cáo
-          </Button>
+      <div className="print:hidden">
+        <AdminPageHeader
+          title="Báo cáo Tổng kết Cuối ngày"
+          subtitle="Tổng kết doanh thu, số đơn đã thanh toán và chi tiết doanh số bán hàng"
+          icon={FileText}
+          actions={
+            <div className="flex flex-wrap items-center justify-end gap-3">
+              <Button variant="outline" onClick={handlePrint} className="transition-transform duration-200 hover:-translate-y-0.5 cursor-pointer">
+                <Printer className="mr-2 h-4 w-4" />
+                In báo cáo
+              </Button>
 
-          <Select value={filterType} onValueChange={handleFilterChange} disabled={loading}>
-            <SelectTrigger className="w-[180px] transition-shadow duration-200 focus:shadow-md">
-              <SelectValue placeholder="Chọn thời gian" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="today">Hôm nay</SelectItem>
-              <SelectItem value="yesterday">Hôm qua</SelectItem>
-              <SelectItem value="7days">7 ngày qua</SelectItem>
-              <SelectItem value="30days">30 ngày qua</SelectItem>
-              <SelectItem value="thisMonth">Tháng này</SelectItem>
-              <SelectItem value="custom">Tùy chọn</SelectItem>
-            </SelectContent>
-          </Select>
+              <Select value={filterType} onValueChange={handleFilterChange} disabled={loading}>
+                <SelectTrigger className="w-[180px] transition-shadow duration-200 focus:shadow-md cursor-pointer">
+                  <SelectValue placeholder="Chọn thời gian" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="today">Hôm nay</SelectItem>
+                  <SelectItem value="yesterday">Hôm qua</SelectItem>
+                  <SelectItem value="7days">7 ngày qua</SelectItem>
+                  <SelectItem value="30days">30 ngày qua</SelectItem>
+                  <SelectItem value="thisMonth">Tháng này</SelectItem>
+                  <SelectItem value="custom">Tùy chọn</SelectItem>
+                </SelectContent>
+              </Select>
 
-          {filterType === "custom" && (
-            <div className="flex items-center gap-2">
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" className="w-[240px] justify-start text-left font-normal transition-shadow duration-200 focus:shadow-md">
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    <span>{rangeLabel}</span>
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="end">
-                  <Calendar
-                    initialFocus
-                    mode="range"
-                    defaultMonth={dateRange.from}
-                    selected={dateRange}
-                    onSelect={(value) => setDateRange(value ?? { from: undefined, to: undefined })}
-                    numberOfMonths={2}
-                    locale={vi}
-                  />
-                </PopoverContent>
-              </Popover>
+              {filterType === "custom" && (
+                <div className="flex items-center gap-2">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" className="w-[240px] justify-start text-left font-normal transition-shadow duration-200 focus:shadow-md">
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        <span>{rangeLabel}</span>
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="end">
+                      <Calendar
+                        initialFocus
+                        mode="range"
+                        defaultMonth={dateRange.from}
+                        selected={dateRange}
+                        onSelect={(value) => setDateRange(value ?? { from: undefined, to: undefined })}
+                        numberOfMonths={2}
+                        locale={vi}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          }
+        />
       </div>
 
       {/* Print Header */}

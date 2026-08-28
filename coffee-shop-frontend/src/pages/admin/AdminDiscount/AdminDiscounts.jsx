@@ -5,6 +5,7 @@ import {
   Trash2,
   Edit,
   Plus,
+  Tag
 } from "lucide-react";
 import discountService from "@/services/discountService";
 import { Button } from "@/components/ui/button";
@@ -31,8 +32,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export default function AdminDiscounts() {
+  useDocumentTitle('Quản lý khuyến mãi | Admin');
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -185,28 +189,24 @@ export default function AdminDiscounts() {
   const discountToDelete = data.find((item) => item.id === deleteId);
 
   return (
-    <div className="p-6">
-      {/* HEADER */}
-      <div className="mb-6">
-        <div className="flex justify-between items-start mb-6 gap-4">
-          <div className="flex items-center gap-3">
-            <div>
-              <h2 className="text-xl font-semibold">
-                Quản lý mã giảm giá
-              </h2>
-            </div>
-          </div>
-
+    <div className="space-y-6">
+      <AdminPageHeader
+        title="Quản lý Khuyến mãi"
+        subtitle="Cấu hình voucher giảm giá, mã khuyến mãi và điều kiện áp dụng"
+        icon={Tag}
+        actions={
           <Button onClick={() => {
             setSelectedDiscountId(null);
             setIsModalOpen(true);
-          }}>
+          }} className="cursor-pointer shadow-xs">
             <Plus className="w-4 h-4 mr-2" />
-            Thêm Mới
+            Thêm mới
           </Button>
-        </div>
+        }
+      />
 
-        {/* FILTER */}
+      {/* FILTER */}
+      <div className="mb-6 space-y-4">
         <div className="flex flex-col md:flex-row gap-3">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />

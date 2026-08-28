@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import bannerService from "@/services/bannerService";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, ImagePlus } from "lucide-react";
 import { validateBannerForm } from "@/utils/bannerValidation";
 
 import BannerFilters from "./components/BannerFilters";
@@ -20,8 +20,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export default function AdminBanner() {
+  useDocumentTitle('Quản lý banner | Admin');
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -297,19 +300,18 @@ export default function AdminBanner() {
   }
 
   return (
-    <div className="p-4 sm:p-6">
-      <div className="mb-4 sm:mb-6 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div>
-            <h2 className="text-xl font-semibold">Quản lý quảng cáo</h2>
-          </div>
-        </div>
-
-        <Button className="gap-2 w-full sm:w-auto" onClick={handleCreate}>
-          <Plus className="w-4 h-4 mr-2" /> 
-          Tạo mới
-        </Button>
-      </div>
+    <div className="space-y-6">
+      <AdminPageHeader
+        title="Quản lý Quảng cáo"
+        subtitle="Quản lý các banner slider hình ảnh hiển thị trên website"
+        icon={ImagePlus}
+        actions={
+          <Button className="gap-2 w-full sm:w-auto cursor-pointer shadow-xs" onClick={handleCreate}>
+            <Plus className="w-4 h-4 mr-2" /> 
+            Tạo mới
+          </Button>
+        }
+      />
 
       <Card className="p-4 sm:p-6 space-y-4">
         <BannerFilters

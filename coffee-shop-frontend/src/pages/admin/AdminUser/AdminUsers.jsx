@@ -15,8 +15,11 @@ import PaginationControl from '../../../components/common/PaginationControl';
 import { toast } from 'sonner';
 import FaceRegistrationDialog from '@/components/admin/FaceRegistrationDialog';
 import { Camera, CheckCircle2 } from 'lucide-react';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export default function AdminUsers() {
+  useDocumentTitle('Quản lý người dùng | Admin');
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -347,16 +350,23 @@ export default function AdminUsers() {
   }
 
   return (
-    <div className="p-4 sm:p-6">
-      <div className="mb-4 sm:mb-6 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <h1 className="text-xl font-semibold">Quản lý người dùng</h1>
-        </div>
-        <Button onClick={() => setIsCreateOpen(true)} className="w-full sm:w-auto hover:bg-amber-600 text-white">
-          <Plus className="h-4 w-4 mr-2" />
-          Thêm nhân viên
-        </Button>
-      </div>
+    <div className="space-y-6">
+      <AdminPageHeader
+        title="Quản lý Người dùng"
+        subtitle="Quản lý tài khoản khách hàng, nhân viên phục vụ, pha chế và phân quyền hệ thống"
+        icon={Users}
+        badge={
+          <Badge variant="outline" className="text-xs bg-accent/10 border-accent/30 text-accent font-medium">
+            {users.length} tài khoản
+          </Badge>
+        }
+        actions={
+          <Button onClick={() => setIsCreateOpen(true)} className="w-full sm:w-auto cursor-pointer shadow-xs">
+            <Plus className="h-4 w-4 mr-2" />
+            Thêm nhân viên
+          </Button>
+        }
+      />
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

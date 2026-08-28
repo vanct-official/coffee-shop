@@ -420,366 +420,349 @@ export function UserProfile() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-background flex flex-col relative overflow-hidden">
-      {/* Nền Gradient Tinh Tế */}
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-[40rem] h-[40rem] rounded-full bg-amber-400/5 blur-[120px]" />
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-[35rem] h-[35rem] rounded-full bg-orange-400/5 blur-[100px]" />
-      </div>
+    <div className="min-h-screen flex flex-col bg-background">
+      <div className="flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 md:py-16 mb-8">
 
-      {isLoading ? (
-        <div className="flex-1 flex items-center justify-center relative z-10 min-h-[400px]">
-          <div className="flex flex-col items-center animate-pulse">
-            <Loader2 className="w-10 h-10 animate-spin text-amber-500 mb-4" />
-            <p className="text-muted-foreground">Đang tải hồ sơ của bạn...</p>
+        {isLoading ? (
+          <div className="flex items-center justify-center py-40">
+            <div className="flex flex-col items-center gap-3">
+              <Loader2 className="w-8 h-8 animate-spin text-accent" />
+              <p className="text-sm text-muted-foreground">Đang tải hồ sơ của bạn...</p>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className="flex-1 flex items-start justify-center p-4 sm:p-6 lg:p-8 relative z-10 w-full animate-in fade-in duration-500">
-          <div className="w-full max-w-5xl">
-            <div className="grid gap-6 lg:grid-cols-12 px-2 sm:px-4 pt-4 pb-12">
-
-              {/* Cột 1: Thông tin cá nhân */}
-              <div className="lg:col-span-8 flex flex-col gap-6">
-                <Card className="rounded-[24px] border-white/50 dark:border-gray-800/80 bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl shadow-lg border relative overflow-hidden animate-in slide-in-from-bottom-4 duration-700">
-                  <div className="absolute top-0 right-0 p-6 z-10">
-                    {!isEditing ? (
-                      <Button variant="outline" size="sm" onClick={() => {
-                        setProfileFieldErrors({});
-                        setIsEditing(true);
-                      }} className="rounded-xl border-amber-200 text-amber-700 bg-amber-50/50 hover:bg-amber-100 hover:text-amber-800 dark:border-amber-900/40 dark:bg-amber-900/20 dark:text-amber-400 dark:hover:bg-amber-900/40">
-                        <Edit2 className="w-4 h-4 mr-2" />
-                        Chỉnh sửa
-                      </Button>
-                    ) : (
-                      <div className="flex gap-2">
-                        <Button variant="ghost" size="sm" onClick={() => {
-                          setProfileFieldErrors({});
-                          setIsEditing(false);
-                        }} disabled={isSaving} className="rounded-xl hover:bg-gray-100">
-                          Hủy
-                        </Button>
-                        <Button size="sm" onClick={handleSave} disabled={isSaving} className="rounded-xl bg-amber-600 hover:bg-amber-700 text-white shadow-md">
-                          <Save className="w-4 h-4 mr-2" />
-                          {isSaving ? 'Đang lưu...' : 'Lưu'}
-                        </Button>
-                      </div>
-                    )}
+        ) : (
+          <>
+            {/* ── Hero ── */}
+            <div className="relative rounded-3xl overflow-hidden bg-card border border-border/60 p-8 md:p-12 mb-8">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-accent/10 via-transparent to-transparent pointer-events-none" />
+              <div className="relative flex flex-col sm:flex-row items-center sm:items-end gap-6">
+                {/* Avatar */}
+                <div className="relative shrink-0">
+                  <Avatar className="w-24 h-24 sm:w-28 sm:h-28 border-4 border-background shadow-xl rounded-full">
+                    <AvatarFallback className="text-3xl font-bold bg-accent/10 text-accent">
+                      {displayName.split(' ').filter(Boolean).map((n) => n[0]).join('') || 'U'}
+                    </AvatarFallback>
+                  </Avatar>
+                  {isCustomer && (
+                    <div className="absolute bottom-1 right-1 w-7 h-7 bg-accent rounded-full border-2 border-background flex items-center justify-center text-accent-foreground shadow-sm" title="Khách hàng">
+                      <Star className="w-3.5 h-3.5 fill-current" />
+                    </div>
+                  )}
+                </div>
+                {/* Name + role */}
+                <div className="text-center sm:text-left flex-1">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-bold uppercase tracking-widest mb-3 border border-accent/20">
+                    <User className="w-3 h-3" />
+                    {roleLabel}
                   </div>
-
-                  <CardHeader className="pt-6 sm:pt-6 pb-2 relative z-0">
-                    <div className="flex flex-col sm:flex-row items-center sm:items-end gap-5">
-                      <div className="relative">
-                        <Avatar className="w-24 h-24 sm:w-28 sm:h-28 border-4 border-white dark:border-gray-900 shadow-xl rounded-full">
-                          <AvatarFallback className="text-3xl bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300 font-bold">
-                            {displayName
-                              .split(' ')
-                              .filter(Boolean)
-                              .map((n) => n[0])
-                              .join('') || 'U'}
-                          </AvatarFallback>
-                        </Avatar>
-                        {isCustomer && (
-                          <div className="absolute bottom-1 right-1 w-7 h-7 bg-amber-500 rounded-full border-2 border-white dark:border-gray-900 flex items-center justify-center text-white shadow-sm" title="Khách hàng">
-                            <Star className="w-3.5 h-3.5 fill-current" />
-                          </div>
-                        )}
-                      </div>
-                      <div className="text-center sm:text-left mb-2">
-                        <CardTitle className="text-2xl font-bold tracking-tight">{displayName || '...'}</CardTitle>
-                        <p className="text-sm font-medium text-muted-foreground mt-1 capitalize flex items-center justify-center sm:justify-start gap-1">
-                          {roleLabel}
-                        </p>
-                      </div>
+                  <h1 className="text-2xl md:text-3xl font-bold font-serif text-foreground leading-tight">
+                    {displayName || 'Tài khoản của tôi'}
+                  </h1>
+                  <p className="text-sm text-muted-foreground mt-1">{profile?.email}</p>
+                </div>
+                {/* Edit / Save buttons */}
+                <div className="shrink-0">
+                  {!isEditing ? (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => { setProfileFieldErrors({}); setIsEditing(true); }}
+                      className="rounded-xl border-accent/30 text-accent hover:bg-accent/5 cursor-pointer"
+                    >
+                      <Edit2 className="w-4 h-4 mr-2" />
+                      Chỉnh sửa
+                    </Button>
+                  ) : (
+                    <div className="flex gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => { setProfileFieldErrors({}); setIsEditing(false); }}
+                        disabled={isSaving}
+                        className="rounded-xl cursor-pointer"
+                      >
+                        Hủy
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={handleSave}
+                        disabled={isSaving}
+                        className="rounded-xl bg-accent hover:bg-accent/90 text-accent-foreground shadow-sm cursor-pointer"
+                      >
+                        <Save className="w-4 h-4 mr-2" />
+                        {isSaving ? 'Đang lưu...' : 'Lưu'}
+                      </Button>
                     </div>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <div className="space-y-5">
-                      {/* Read-only fields */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <div className="space-y-2">
-                          <Label htmlFor="username" className="text-gray-600 dark:text-gray-400 ml-1">Tên đăng nhập</Label>
-                          <div className="relative group">
-                            <User className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                            <Input
-                              id="username"
-                              value={profile?.username || ''}
-                              disabled
-                              className="pl-10 rounded-xl bg-gray-50/70 border-gray-100 dark:bg-black/20 dark:border-gray-800 text-gray-500 shadow-sm cursor-not-allowed"
-                            />
-                            <Lock className="absolute right-3.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-300 dark:text-gray-600" />
-                          </div>
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label htmlFor="email" className="text-gray-600 dark:text-gray-400 ml-1">Email</Label>
-                          <div className="relative group">
-                            <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                            <Input
-                              id="email"
-                              type="email"
-                              value={profile?.email || ''}
-                              disabled
-                              className="pl-10 rounded-xl bg-gray-50/70 border-gray-100 dark:bg-black/20 dark:border-gray-800 text-gray-500 shadow-sm cursor-not-allowed"
-                            />
-                            <Lock className="absolute right-3.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-300 dark:text-gray-600" />
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Divider */}
-                      <div className="h-px bg-border/60 w-full" />
-
-                      {/* Editable Fields */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <div className="space-y-2">
-                          <Label htmlFor="first_name" className="text-gray-700 dark:text-gray-300 ml-1">Họ</Label>
-                          <div className="relative group">
-                            <User className={`pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 transition-colors ${isEditing ? 'text-amber-500' : 'text-gray-400'}`} />
-                            <Input
-                              id="first_name"
-                              value={profile?.first_name || ''}
-                              disabled={!isEditing}
-                              className={`pl-10 rounded-xl transition-all font-medium ${isEditing ? "bg-white dark:bg-black/40 border-gray-200 dark:border-gray-700 focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:border-amber-500" : "bg-transparent border-transparent font-semibold text-gray-900 dark:text-gray-100 shadow-none"}`}
-                              onChange={(e) =>
-                                setProfile((prev) => ({
-                                  ...prev,
-                                  first_name: e.target.value,
-                                }))
-                              }
-                            />
-                          </div>
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label htmlFor="last_name" className="text-gray-700 dark:text-gray-300 ml-1">Tên</Label>
-                          <div className="relative group">
-                            <User className={`pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 transition-colors ${isEditing ? 'text-amber-500' : 'text-gray-400'}`} />
-                            <Input
-                              id="last_name"
-                              value={profile?.last_name || ''}
-                              disabled={!isEditing}
-                              className={`pl-10 rounded-xl transition-all font-medium ${isEditing ? "bg-white dark:bg-black/40 border-gray-200 dark:border-gray-700 focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:border-amber-500" : "bg-transparent border-transparent font-semibold text-gray-900 dark:text-gray-100 shadow-none"}`}
-                              onChange={(e) =>
-                                setProfile((prev) => ({
-                                  ...prev,
-                                  last_name: e.target.value,
-                                }))
-                              }
-                            />
-                          </div>
-                        </div>
-
-                        <div className="space-y-2 sm:col-span-2">
-                          <Label htmlFor="phone" className="text-gray-700 dark:text-gray-300 ml-1">Số điện thoại</Label>
-                          <div className="relative group">
-                            <Phone className={`pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 transition-colors ${isEditing ? 'text-amber-500' : 'text-gray-400'}`} />
-                            <Input
-                              id="phone"
-                              type="tel"
-                              value={profile?.phone || ''}
-                              disabled={!isEditing}
-                              className={`pl-10 rounded-xl transition-all font-medium ${isEditing ? `bg-white dark:bg-black/40 ${profileFieldErrors.phone ? 'border-destructive focus-visible:border-destructive focus-visible:ring-2 focus-visible:ring-destructive/40' : 'border-gray-200 dark:border-gray-700 focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:border-amber-500'}` : "bg-transparent border-transparent font-semibold text-gray-900 dark:text-gray-100 shadow-none"}`}
-                              onChange={(e) => {
-                                const value = e.target.value;
-                                setProfile((prev) => ({
-                                  ...prev,
-                                  phone: value,
-                                }));
-
-                                const phoneError = getProfilePhoneError(value);
-                                setProfileFieldErrors((prev) => ({
-                                  ...prev,
-                                  phone: phoneError,
-                                }));
-                              }}
-                            />
-                          </div>
-                          {isEditing && profileFieldErrors.phone && (
-                            <p className="text-xs text-destructive ml-1">{profileFieldErrors.phone}</p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Phần Quản lý địa chỉ (chỉ hiện với Khách hàng) */}
-                {isCustomer && (
-                  <Card className="rounded-[24px] border-white/50 dark:border-gray-800/80 bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl shadow-lg border animate-in slide-in-from-bottom-8 duration-700 delay-100">
-                    <CardHeader className="pb-4">
-                      <div className="flex items-center justify-between gap-3 flex-wrap">
-                        <CardTitle className="text-xl">Địa chỉ giao hàng</CardTitle>
-                        <Button type="button" onClick={openCreateAddressDialog} disabled={isAddressSaving} className="rounded-full bg-amber-100 text-amber-700 hover:bg-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:hover:bg-amber-900/60 font-semibold border-0 shadow-none">
-                          <Plus className="w-4 h-4 mr-1.5" />
-                          Thêm địa chỉ mới
-                        </Button>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        {isAddressLoading ? (
-                          <div className="flex flex-col items-center justify-center p-8 border border-dashed rounded-2xl bg-white/50">
-                            <Loader2 className="w-6 h-6 animate-spin text-amber-500 mb-2" />
-                            <p className="text-sm text-muted-foreground">Đang tải danh sách địa chỉ...</p>
-                          </div>
-                        ) : addresses.length === 0 ? (
-                          <div className="flex flex-col items-center justify-center p-10 border border-dashed rounded-2xl bg-white/30 text-center">
-                            <MapPin className="w-10 h-10 text-gray-300 mb-3" />
-                            <p className="text-sm text-muted-foreground font-medium">Bạn chưa có địa chỉ nào.</p>
-                            <p className="text-xs text-gray-400 mt-1">Hãy thêm địa chỉ để tiện lợi khi đặt hàng!</p>
-                          </div>
-                        ) : (
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {addresses.map((item) => {
-                              const typeInfo = getAddressTypeIconLabel(item.address_type);
-                              return (
-                                <div key={item.id} className="group relative border border-gray-200/60 dark:border-gray-800 bg-white/80 dark:bg-black/20 rounded-2xl p-5 hover:border-amber-300 dark:hover:border-amber-700 shadow-sm hover:shadow-md transition-all">
-                                  {Number(item.is_default) === 1 && (
-                                    <div className="absolute top-0 right-5 -mt-3">
-                                      <span className="text-[11px] font-bold bg-amber-500 text-white px-3 py-1 rounded-full shadow-sm">
-                                        Mặc định
-                                      </span>
-                                    </div>
-                                  )}
-
-                                  <div className="flex items-start justify-between gap-3 mb-3">
-                                    <div className="flex items-center gap-2">
-                                      <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 dark:text-gray-400 shrink-0">
-                                        {typeInfo.icon}
-                                      </div>
-                                      <div>
-                                        <p className="font-bold text-sm text-gray-900 dark:text-gray-100 line-clamp-1">{item.receiver_name || 'Không tên'}</p>
-                                        <p className="text-xs text-muted-foreground">{item.receiver_phone || 'Thiếu SĐT'}</p>
-                                      </div>
-                                    </div>
-
-                                  </div>
-
-                                  <div className="mb-3 space-y-1">
-                                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 line-clamp-2 leading-relaxed">
-                                      {item.address}
-                                    </p>
-
-                                  </div>
-
-                                  <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-gray-100 dark:border-gray-800/60 mt-1 opacity-80 group-hover:opacity-100 transition-opacity">
-                                    <Button
-                                      type="button"
-                                      size="sm"
-                                      variant="ghost"
-                                      className="h-8 rounded-lg text-xs font-semibold px-2 hover:bg-gray-100 dark:hover:bg-gray-800"
-                                      onClick={() => handleEditAddress(item)}
-                                    >
-                                      <Edit2 className="w-3 h-3 mr-1" /> Sửa
-                                    </Button>
-
-                                    <Button
-                                      type="button"
-                                      size="sm"
-                                      variant="ghost"
-                                      className="h-8 rounded-lg text-xs font-semibold px-2 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
-                                      disabled={isAddressSaving}
-                                      onClick={() => handleDeleteAddress(item.id)}
-                                    >
-                                      <Trash2 className="w-3 h-3 mr-1" /> Xóa
-                                    </Button>
-
-                                    <div className="flex-1" />
-
-                                    {Number(item.is_default) !== 1 && (
-                                      <Button
-                                        type="button"
-                                        size="sm"
-                                        variant="secondary"
-                                        className="h-8 rounded-lg text-[11px] font-semibold"
-                                        disabled={isAddressSaving}
-                                        onClick={() => handleSetDefaultAddress(item.id)}
-                                      >
-                                        Đặt mặc định
-                                      </Button>
-                                    )}
-                                  </div>
-                                </div>
-                              )
-                            })}
-                          </div>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
-              </div>
-
-              {/* Cột 2: Cài đặt tài khoản (Bên phải) */}
-              <div className="lg:col-span-4 flex flex-col gap-6">
-                <Card className="rounded-[24px] border-white/50 dark:border-gray-800/80 bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl shadow-lg border">
-                  <CardHeader>
-                    <CardTitle className="text-xl">Cài đặt tài khoản</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div className="group flex items-center justify-between p-4 rounded-2xl bg-white/50 dark:bg-black/20 border border-gray-100 dark:border-gray-800 transition-all hover:border-amber-200 dark:hover:border-amber-900 hover:shadow-sm">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center shrink-0">
-                            <Lock className="w-5 h-5 text-blue-500" />
-                          </div>
-                          <div>
-                            <p className="font-semibold text-sm">Bảo mật</p>
-                            <p className="text-xs text-muted-foreground mt-0.5">
-                              {isGoogleLogin ? 'Đăng nhập Google' : 'Mật khẩu & Đăng nhập'}
-                            </p>
-                          </div>
-                        </div>
-                        {!isGoogleLogin && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="rounded-xl border-gray-200 shadow-sm"
-                            onClick={() => navigate(APP_ROUTES.CHANGE_PASSWORD)}
-                          >
-                            Đổi mật khẩu
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-
-
-                {/* Widget Information */}
-                <div className="p-5 rounded-[24px] border border-amber-200/50 bg-amber-50/50 dark:bg-amber-900/10 dark:border-amber-900/30 text-center">
-                  <p className="text-sm font-medium text-amber-800 dark:text-amber-400 mb-2">Thành viên {storeName}</p>
-                  <p className="text-xs text-amber-600/80 dark:text-amber-500/70">
-                    Bạn luôn có thể quản lý các thông tin cá nhân và cài đặt ứng dụng ngay tại trang này.
-                  </p>
+                  )}
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
 
+            {/* ── Main Grid ── */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
 
+              {/* ── Left: Account info ── */}
+              <div className="lg:col-span-2 flex flex-col gap-6">
 
-      {/* Địa chỉ Modal */}
+                {/* Profile fields */}
+                <div className="rounded-2xl bg-card border border-border/50 p-6 md:p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-1 h-6 bg-accent rounded-full" />
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Thông tin cá nhân</p>
+                  </div>
+
+                  <div className="space-y-5">
+                    {/* Read-only */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div className="space-y-2">
+                        <Label htmlFor="username" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Tên đăng nhập</Label>
+                        <div className="relative">
+                          <User className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/50" />
+                          <Input
+                            id="username"
+                            value={profile?.username || ''}
+                            disabled
+                            className="pl-10 rounded-xl bg-secondary/40 border-transparent text-muted-foreground cursor-not-allowed"
+                          />
+                          <Lock className="absolute right-3.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground/30" />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="email" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Email</Label>
+                        <div className="relative">
+                          <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/50" />
+                          <Input
+                            id="email"
+                            type="email"
+                            value={profile?.email || ''}
+                            disabled
+                            className="pl-10 rounded-xl bg-secondary/40 border-transparent text-muted-foreground cursor-not-allowed"
+                          />
+                          <Lock className="absolute right-3.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground/30" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="h-px bg-border/60" />
+
+                    {/* Editable */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div className="space-y-2">
+                        <Label htmlFor="first_name" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Họ</Label>
+                        <div className="relative">
+                          <User className={`pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 transition-colors ${isEditing ? 'text-accent' : 'text-muted-foreground/50'}`} />
+                          <Input
+                            id="first_name"
+                            value={profile?.first_name || ''}
+                            disabled={!isEditing}
+                            className={`pl-10 rounded-xl transition-all ${isEditing ? 'bg-background border-border focus-visible:ring-accent/40 focus-visible:border-accent' : 'bg-transparent border-transparent font-semibold text-foreground shadow-none'}`}
+                            onChange={(e) => setProfile((prev) => ({ ...prev, first_name: e.target.value }))}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="last_name" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Tên</Label>
+                        <div className="relative">
+                          <User className={`pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 transition-colors ${isEditing ? 'text-accent' : 'text-muted-foreground/50'}`} />
+                          <Input
+                            id="last_name"
+                            value={profile?.last_name || ''}
+                            disabled={!isEditing}
+                            className={`pl-10 rounded-xl transition-all ${isEditing ? 'bg-background border-border focus-visible:ring-accent/40 focus-visible:border-accent' : 'bg-transparent border-transparent font-semibold text-foreground shadow-none'}`}
+                            onChange={(e) => setProfile((prev) => ({ ...prev, last_name: e.target.value }))}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2 sm:col-span-2">
+                        <Label htmlFor="phone" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Số điện thoại</Label>
+                        <div className="relative">
+                          <Phone className={`pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 transition-colors ${isEditing ? 'text-accent' : 'text-muted-foreground/50'}`} />
+                          <Input
+                            id="phone"
+                            type="tel"
+                            value={profile?.phone || ''}
+                            disabled={!isEditing}
+                            className={`pl-10 rounded-xl transition-all ${isEditing ? `bg-background ${profileFieldErrors.phone ? 'border-destructive focus-visible:ring-destructive/40' : 'border-border focus-visible:ring-accent/40 focus-visible:border-accent'}` : 'bg-transparent border-transparent font-semibold text-foreground shadow-none'}`}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              setProfile((prev) => ({ ...prev, phone: value }));
+                              setProfileFieldErrors((prev) => ({ ...prev, phone: getProfilePhoneError(value) }));
+                            }}
+                          />
+                        </div>
+                        {isEditing && profileFieldErrors.phone && (
+                          <p className="text-xs text-destructive ml-1">{profileFieldErrors.phone}</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Addresses (customer only) */}
+                {isCustomer && (
+                  <div className="rounded-2xl bg-card border border-border/50 p-6 md:p-8">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center gap-3">
+                        <div className="w-1 h-6 bg-accent rounded-full" />
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Địa chỉ giao hàng</p>
+                      </div>
+                      <Button
+                        type="button"
+                        size="sm"
+                        onClick={openCreateAddressDialog}
+                        disabled={isAddressSaving}
+                        className="rounded-xl bg-accent/10 text-accent hover:bg-accent/20 border-0 shadow-none font-semibold cursor-pointer"
+                      >
+                        <Plus className="w-4 h-4 mr-1.5" />
+                        Thêm địa chỉ
+                      </Button>
+                    </div>
+
+                    {isAddressLoading ? (
+                      <div className="flex flex-col items-center justify-center p-10 rounded-xl border border-dashed border-border">
+                        <Loader2 className="w-6 h-6 animate-spin text-accent mb-2" />
+                        <p className="text-sm text-muted-foreground">Đang tải...</p>
+                      </div>
+                    ) : addresses.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center p-12 rounded-xl border border-dashed border-border text-center">
+                        <MapPin className="w-10 h-10 text-muted-foreground/30 mb-3" />
+                        <p className="text-sm font-medium text-muted-foreground">Bạn chưa có địa chỉ nào</p>
+                        <p className="text-xs text-muted-foreground/70 mt-1">Hãy thêm địa chỉ để tiện lợi khi đặt hàng!</p>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {addresses.map((item) => {
+                          const typeInfo = getAddressTypeIconLabel(item.address_type);
+                          const isDefault = Number(item.is_default) === 1;
+                          return (
+                            <div
+                              key={item.id}
+                              className={`relative group flex flex-col gap-3 p-5 rounded-2xl border transition-all duration-200 hover:shadow-md ${isDefault ? 'border-accent/40 bg-accent/5' : 'border-border/50 bg-card hover:border-accent/20'}`}
+                            >
+                              {isDefault && (
+                                <span className="absolute top-3 right-3 text-[10px] font-bold bg-accent text-accent-foreground px-2.5 py-0.5 rounded-full">
+                                  Mặc định
+                                </span>
+                              )}
+
+                              <div className="flex items-center gap-3 pr-20">
+                                <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center text-accent shrink-0">
+                                  {typeInfo.icon}
+                                </div>
+                                <div>
+                                  <p className="font-bold text-sm text-foreground">{item.receiver_name || 'Không tên'}</p>
+                                  <p className="text-xs text-muted-foreground font-mono">{item.receiver_phone || 'Thiếu SĐT'}</p>
+                                </div>
+                              </div>
+
+                              <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">{item.address}</p>
+
+                              <div className="flex items-center gap-1 pt-2 border-t border-border/40">
+                                <Button
+                                  type="button" size="sm" variant="ghost"
+                                  className="h-7 rounded-lg text-xs px-2 hover:text-accent hover:bg-accent/5 cursor-pointer"
+                                  onClick={() => handleEditAddress(item)}
+                                >
+                                  <Edit2 className="w-3 h-3 mr-1" /> Sửa
+                                </Button>
+                                <Button
+                                  type="button" size="sm" variant="ghost"
+                                  className="h-7 rounded-lg text-xs px-2 text-destructive hover:text-destructive hover:bg-destructive/5 cursor-pointer"
+                                  disabled={isAddressSaving}
+                                  onClick={() => handleDeleteAddress(item.id)}
+                                >
+                                  <Trash2 className="w-3 h-3 mr-1" /> Xóa
+                                </Button>
+                                <div className="flex-1" />
+                                {!isDefault && (
+                                  <Button
+                                    type="button" size="sm" variant="outline"
+                                    className="h-7 rounded-lg text-[11px] font-semibold border-accent/30 text-accent hover:bg-accent/5 cursor-pointer"
+                                    disabled={isAddressSaving}
+                                    onClick={() => handleSetDefaultAddress(item.id)}
+                                  >
+                                    Đặt mặc định
+                                  </Button>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* ── Right: Account settings sidebar ── */}
+              <div className="lg:col-span-1 flex flex-col gap-4">
+
+                {/* Security */}
+                <div className="rounded-2xl bg-card border border-border/50 p-6">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-1 h-6 bg-accent rounded-full" />
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Cài đặt</p>
+                  </div>
+                  <div className="flex items-center justify-between p-4 rounded-xl bg-secondary/30 border border-border/40 hover:border-accent/20 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
+                        <Lock className="w-4 h-4 text-blue-500" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-sm text-foreground">Bảo mật</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {isGoogleLogin ? 'Đăng nhập Google' : 'Mật khẩu & Đăng nhập'}
+                        </p>
+                      </div>
+                    </div>
+                    {!isGoogleLogin && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="rounded-xl border-border text-xs cursor-pointer"
+                        onClick={() => navigate(APP_ROUTES.CHANGE_PASSWORD)}
+                      >
+                        Đổi mật khẩu
+                      </Button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Store member widget */}
+                <div className="rounded-2xl bg-card border border-border/60 p-6 text-center">
+                  <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent mx-auto mb-4">
+                    <Star className="w-6 h-6" />
+                  </div>
+                  <p className="text-sm font-bold text-foreground font-serif mb-1">Thành viên {storeName}</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Quản lý thông tin cá nhân, địa chỉ giao hàng và cài đặt tài khoản ngay tại đây.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* ── Address Dialog ── */}
       <Dialog
         open={addressDialogOpen}
         onOpenChange={(open) => {
           setAddressDialogOpen(open);
-          if (!open && !isAddressSaving) {
-            resetAddressForm();
-          }
+          if (!open && !isAddressSaving) resetAddressForm();
         }}
       >
-        <DialogContent className="sm:max-w-lg bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-white/20 dark:border-gray-800 rounded-3xl p-6 sm:p-8">
+        <DialogContent className="sm:max-w-lg bg-card border border-border rounded-3xl p-6 sm:p-8">
           <DialogHeader>
-            <DialogTitle className="text-xl font-bold flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-amber-500" />
+            <DialogTitle className="text-xl font-bold font-serif flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-accent" />
               {editingAddressId ? 'Cập nhật địa chỉ' : 'Thêm địa chỉ mới'}
             </DialogTitle>
-            <DialogDescription className="text-gray-500">
+            <DialogDescription className="text-muted-foreground">
               Nhập thông tin nhận hàng để đội ngũ giao hàng có thể tiếp cận bạn nhanh nhất.
             </DialogDescription>
           </DialogHeader>
@@ -787,38 +770,33 @@ export function UserProfile() {
           <div className="space-y-5 mt-2">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label htmlFor="receiver_name" className="text-xs font-semibold text-gray-500 ml-1">Tên người nhận</Label>
+                <Label htmlFor="receiver_name" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Tên người nhận</Label>
                 <div className="relative group">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-amber-500 transition-colors" />
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50 group-focus-within:text-accent transition-colors" />
                   <Input
                     id="receiver_name"
                     value={addressForm.receiver_name}
                     onChange={(e) => setAddressForm((prev) => ({ ...prev, receiver_name: e.target.value }))}
                     placeholder="VD: Anh Tùng"
-                    className="pl-9 h-11 rounded-xl bg-gray-50/80 dark:bg-black/20 focus-visible:ring-amber-500/50 focus-visible:border-amber-500"
+                    className="pl-9 h-11 rounded-xl focus-visible:ring-accent/40 focus-visible:border-accent"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="receiver_phone" className="text-xs font-semibold text-gray-500 ml-1">Số điện thoại lấy hàng</Label>
+                <Label htmlFor="receiver_phone" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Số điện thoại</Label>
                 <div className="relative group">
-                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-amber-500 transition-colors" />
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50 group-focus-within:text-accent transition-colors" />
                   <Input
                     id="receiver_phone"
                     value={addressForm.receiver_phone}
                     onChange={(e) => {
                       const value = e.target.value;
                       setAddressForm((prev) => ({ ...prev, receiver_phone: value }));
-
-                      const phoneError = getReceiverPhoneError(value);
-                      setAddressFieldErrors((prev) => ({
-                        ...prev,
-                        receiver_phone: phoneError,
-                      }));
+                      setAddressFieldErrors((prev) => ({ ...prev, receiver_phone: getReceiverPhoneError(value) }));
                     }}
                     placeholder="09xx..."
-                    className={`pl-9 h-11 rounded-xl bg-gray-50/80 dark:bg-black/20 ${addressFieldErrors.receiver_phone ? 'border-destructive focus-visible:border-destructive focus-visible:ring-destructive/40' : 'focus-visible:ring-amber-500/50 focus-visible:border-amber-500'}`}
+                    className={`pl-9 h-11 rounded-xl ${addressFieldErrors.receiver_phone ? 'border-destructive focus-visible:ring-destructive/40' : 'focus-visible:ring-accent/40 focus-visible:border-accent'}`}
                   />
                 </div>
                 {addressFieldErrors.receiver_phone && (
@@ -827,10 +805,9 @@ export function UserProfile() {
               </div>
             </div>
 
-
-
+            {/* Address type selector */}
             <div className="space-y-2">
-              <Label htmlFor="address_type" className="text-xs font-semibold text-gray-500 ml-1">Lưu địa chỉ là</Label>
+              <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Loại địa chỉ</Label>
               <div className="flex gap-2">
                 {[
                   { value: 'home', label: 'Nhà riêng', icon: Home },
@@ -844,19 +821,20 @@ export function UserProfile() {
                       key={type.value}
                       type="button"
                       onClick={() => setAddressForm((prev) => ({ ...prev, address_type: type.value }))}
-                      className={`flex-1 flex items-center justify-center gap-2 h-10 rounded-xl text-sm font-medium transition-all ${isActive
-                          ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400 ring-2 ring-amber-500/50 outline-none'
-                          : 'bg-gray-50 text-gray-600 hover:bg-gray-100 dark:bg-gray-800/50 dark:text-gray-400 hover:dark:bg-gray-800 border border-gray-200 dark:border-gray-700'
-                        }`}
+                      className={`flex-1 flex items-center justify-center gap-2 h-10 rounded-xl text-sm font-medium transition-all cursor-pointer ${isActive
+                        ? 'bg-accent/10 text-accent ring-2 ring-accent/40'
+                        : 'bg-secondary/40 text-muted-foreground hover:bg-secondary border border-border'
+                      }`}
                     >
                       <Icon className="w-4 h-4" />
                       {type.label}
                     </button>
-                  )
+                  );
                 })}
               </div>
             </div>
 
+            {/* Map autocomplete */}
             <div className="space-y-4">
               <div className="space-y-1.5">
                 <VietmapAddressAutocomplete
@@ -864,32 +842,25 @@ export function UserProfile() {
                   error={addressFieldErrors.address}
                   hideGPSButton={true}
                   onAddressSelect={({ address, latitude, longitude }) => {
-                    setAddressForm((prev) => ({
-                      ...prev,
-                      address,
-                      latitude,
-                      longitude,
-                    }));
-
-                    setAddressFieldErrors((prev) => ({
-                      ...prev,
-                      address: address.trim() ? '' : prev.address,
-                    }));
+                    setAddressForm((prev) => ({ ...prev, address, latitude, longitude }));
+                    setAddressFieldErrors((prev) => ({ ...prev, address: address.trim() ? '' : prev.address }));
                   }}
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="address_detail" className="text-xs font-semibold text-gray-500 ml-1">Chi tiết số nhà, ngõ ngách <span className="text-destructive">*</span></Label>
+                <Label htmlFor="address_detail" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Chi tiết số nhà, ngõ ngách <span className="text-destructive">*</span>
+                </Label>
                 <Input
                   id="address_detail"
                   value={addressForm.address_detail}
                   onChange={(e) => {
                     setAddressForm((prev) => ({ ...prev, address_detail: e.target.value }));
-                    setAddressFieldErrors(prev => ({ ...prev, address_detail: e.target.value.trim() ? "" : prev.address_detail }));
+                    setAddressFieldErrors(prev => ({ ...prev, address_detail: e.target.value.trim() ? '' : prev.address_detail }));
                   }}
                   placeholder="VD: Số nhà 10, Ngõ 20..."
-                  className={`h-11 rounded-xl bg-gray-50/80 dark:bg-black/20 ${addressFieldErrors.address_detail ? 'border-destructive focus-visible:border-destructive' : 'focus-visible:ring-amber-500/50 focus-visible:border-amber-500'}`}
+                  className={`h-11 rounded-xl ${addressFieldErrors.address_detail ? 'border-destructive focus-visible:ring-destructive/40' : 'focus-visible:ring-accent/40 focus-visible:border-accent'}`}
                 />
                 {addressFieldErrors.address_detail && (
                   <p className="text-xs text-destructive ml-1">{addressFieldErrors.address_detail}</p>
@@ -899,14 +870,10 @@ export function UserProfile() {
 
             <div className="flex justify-end gap-3 pt-2">
               <Button
-                type="button"
-                variant="ghost"
-                onClick={() => {
-                  setAddressDialogOpen(false);
-                  resetAddressForm();
-                }}
+                type="button" variant="ghost"
+                onClick={() => { setAddressDialogOpen(false); resetAddressForm(); }}
                 disabled={isAddressSaving}
-                className="rounded-xl font-medium hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="rounded-xl cursor-pointer"
               >
                 Hủy bỏ
               </Button>
@@ -914,29 +881,24 @@ export function UserProfile() {
                 type="button"
                 onClick={handleSubmitAddress}
                 disabled={isAddressSaving}
-                className="rounded-xl px-6 font-bold shadow-md bg-gray-900 hover:bg-gray-800 dark:bg-white dark:text-gray-900"
+                className="rounded-xl px-6 font-bold shadow-sm bg-accent hover:bg-accent/90 text-accent-foreground cursor-pointer"
               >
-                {isAddressSaving
-                  ? 'Đang xử lý...'
-                  : editingAddressId
-                    ? 'Lưu thay đổi'
-                    : 'Hoàn tất thêm mới'}
+                {isAddressSaving ? 'Đang xử lý...' : editingAddressId ? 'Lưu thay đổi' : 'Hoàn tất thêm mới'}
               </Button>
-              {/* ... dialog actions */}
             </div>
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* Delete Address Confirmation Dialog */}
+      {/* ── Delete Confirmation Dialog ── */}
       <Dialog open={!!addressToDelete} onOpenChange={(open) => !open && setAddressToDelete(null)}>
-        <DialogContent className="sm:max-w-md bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-white/20 dark:border-gray-800 rounded-3xl p-6">
+        <DialogContent className="sm:max-w-md bg-card border border-border rounded-3xl p-6">
           <DialogHeader>
-            <DialogTitle className="text-xl font-bold flex items-center gap-2 text-red-600">
+            <DialogTitle className="text-xl font-bold font-serif flex items-center gap-2 text-destructive">
               <Trash2 className="w-5 h-5 flex-shrink-0" />
               Xóa địa chỉ
             </DialogTitle>
-            <DialogDescription className="text-gray-500 font-medium pt-1">
+            <DialogDescription className="text-muted-foreground pt-1">
               Bạn có chắc chắn muốn xóa địa chỉ này? Hành động này không thể hoàn tác.
             </DialogDescription>
           </DialogHeader>
@@ -946,14 +908,14 @@ export function UserProfile() {
               variant="outline"
               onClick={() => setAddressToDelete(null)}
               disabled={isAddressSaving}
-              className="rounded-xl font-semibold hover:bg-gray-100"
+              className="rounded-xl cursor-pointer"
             >
               Hủy
             </Button>
             <Button
               onClick={confirmDeleteAddress}
               disabled={isAddressSaving}
-              className="rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold"
+              className="rounded-xl bg-destructive hover:bg-destructive/90 text-destructive-foreground cursor-pointer"
             >
               {isAddressSaving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Trash2 className="w-4 h-4 mr-2" />}
               Xác nhận xóa
@@ -961,6 +923,7 @@ export function UserProfile() {
           </div>
         </DialogContent>
       </Dialog>
+
     </div>
   );
 }

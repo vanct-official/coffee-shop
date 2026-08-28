@@ -13,6 +13,8 @@ import {
 } from '../../../../components/ui/alert-dialog';
 import { TimePicker, TimeRangePreview } from '../../../../components/ui/time-picker';
 import shiftTemplateService from '../../../../services/shiftTemplateService';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 const COLOR_OPTIONS = [
   { value: 'red', label: 'Đỏ', bg: 'bg-red-100', text: 'text-red-700', dot: 'bg-red-500' },
@@ -30,6 +32,7 @@ const getColorClass = (v) => COLOR_OPTIONS.find((c) => c.value === v) || COLOR_O
 const formatTime = (t) => t?.slice(0, 5) || '';
 
 export default function ShiftTemplatePage() {
+  useDocumentTitle('Mẫu ca làm việc | Admin');
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
@@ -112,16 +115,17 @@ export default function ShiftTemplatePage() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-semibold mb-1">Quản lý ca làm</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">Thiết lập các ca làm việc cho quán</p>
-        </div>
-        <Button onClick={openCreate} className="gap-2">
-          <Plus className="w-4 h-4" /> Thêm ca mới
-        </Button>
-      </div>
+    <div className="space-y-6">
+      <AdminPageHeader
+        title="Quản lý Ca làm việc"
+        subtitle="Thiết lập các mẫu ca và khung giờ làm việc chuẩn cho quán"
+        icon={Clock}
+        actions={
+          <Button onClick={openCreate} className="gap-2 cursor-pointer shadow-xs">
+            <Plus className="w-4 h-4" /> Thêm ca mới
+          </Button>
+        }
+      />
 
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

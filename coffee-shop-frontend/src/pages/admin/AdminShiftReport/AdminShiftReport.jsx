@@ -1,8 +1,7 @@
 import { format, startOfDay, endOfDay, subDays } from "date-fns";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { vi } from "date-fns/locale";
-import {
-  Calendar as CalendarIcon,
+import { Calendar as CalendarIcon,
   Loader2,
   Clock,
   TrendingUp,
@@ -17,9 +16,9 @@ import {
   ChevronRight,
   Printer,
   ShieldAlert,
+  ClipboardList
 } from "lucide-react";
-import {
-  Dialog,
+import { Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -32,13 +31,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
+import { Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Select,
+import { Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
@@ -46,6 +43,8 @@ import {
 } from "@/components/ui/select";
 import cashSessionService from "@/services/cashSessionService";
 import userService from "@/services/userService";
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 const moneyFormatter = new Intl.NumberFormat("vi-VN");
 const toNumber = (value) => Number(value) || 0;
@@ -68,6 +67,7 @@ const parseReportRows = (payload) => {
 };
 
 const AdminShiftReport = () => {
+  useDocumentTitle('Báo cáo ca làm việc | Admin');
   const [dateRange, setDateRange] = useState({
     from: subDays(new Date(), 7),
     to: new Date(),
@@ -363,19 +363,13 @@ const AdminShiftReport = () => {
 
   return (
     <div className="report-shell space-y-6 p-6 min-h-screen bg-background print:bg-card text-card-foreground print:p-0">
-      <div className="report-card flex items-center justify-between gap-4 rounded-2xl border bg-card text-card-foreground p-5 shadow-sm print:hidden">
-        <div className="space-y-1">
-          <div className="inline-flex items-center rounded-full border border-sky-200 bg-sky-50 dark:bg-sky-900/30 px-3 py-1 text-xs font-medium text-sky-700 dark:text-sky-200">
-            Báo cáo ca làm việc
-          </div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">
-            Báo cáo ca làm việc
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Theo dõi dòng tiền và đơn hàng theo từng ca
-          </p>
-        </div>
-        <div className="flex flex-col md:flex-row items-end md:items-center justify-end gap-3">
+      <div className="print:hidden">
+        <AdminPageHeader
+          title="Báo cáo Ca làm việc"
+          subtitle="Theo dõi dòng tiền, doanh thu và đối soát đơn hàng theo từng ca"
+          icon={ClipboardList}
+          actions={
+            <div className="flex flex-col md:flex-row items-end md:items-center justify-end gap-3">
           <Button
             variant="outline"
             onClick={handlePrint}
@@ -439,36 +433,38 @@ const AdminShiftReport = () => {
             </SelectContent>
           </Select>
 
-          {filterType === "custom" && (
-            <div className="flex items-center gap-2">
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="w-[240px] justify-start text-left font-normal transition-shadow duration-200 focus:shadow-md"
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    <span>{rangeLabel}</span>
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="end">
-                  <Calendar
-                    initialFocus
-                    mode="range"
-                    defaultMonth={dateRange.from}
-                    selected={dateRange}
-                    onSelect={(value) => {
-                      setDateRange(value ?? { from: undefined, to: undefined });
-                      setPagination((p) => ({ ...p, currentPage: 1 }));
-                    }}
-                    numberOfMonths={2}
-                    locale={vi}
-                  />
-                </PopoverContent>
-              </Popover>
+              {filterType === "custom" && (
+                <div className="flex items-center gap-2">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-[240px] justify-start text-left font-normal transition-shadow duration-200 focus:shadow-md cursor-pointer"
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        <span>{rangeLabel}</span>
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="end">
+                      <Calendar
+                        initialFocus
+                        mode="range"
+                        defaultMonth={dateRange.from}
+                        selected={dateRange}
+                        onSelect={(value) => {
+                          setDateRange(value ?? { from: undefined, to: undefined });
+                          setPagination((p) => ({ ...p, currentPage: 1 }));
+                        }}
+                        numberOfMonths={2}
+                        locale={vi}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          }
+        />
       </div>
 
       {/* Print Header */}

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Loader2, Printer, Save } from "lucide-react";
+import { Settings2, Loader2, Printer, Save } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,8 @@ import receiptSettingService from "@/services/receiptSettingService";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AdminAttendanceSettings from "./AdminAttendanceSettings";
 import VietmapAddressAutocomplete from "@/components/order/VietmapAddressAutocomplete";
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 const DEFAULT_FORM = {
   store_name: "Coffee Shop",
@@ -35,6 +37,7 @@ const toLines = (text) =>
 const fromLines = (lines) => (Array.isArray(lines) ? lines.join("\n") : "");
 
 export default function AdminReceiptSettings() {
+  useDocumentTitle('Cài đặt hóa đơn & cửa hàng | Admin');
   const [form, setForm] = useState(DEFAULT_FORM);
   const [logoFile, setLogoFile] = useState(null);
   const [logoPreview, setLogoPreview] = useState("");
@@ -237,15 +240,19 @@ export default function AdminReceiptSettings() {
   const displayLogo = logoPreview || "";
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="space-y-6">
       <Tabs defaultValue="receipt" className="w-full relative">
-        <div className="flex items-center justify-between flex-wrap gap-3 mb-6 pb-2 border-b">
-          <h1 className="text-xl font-semibold">Tùy chỉnh</h1>
-          <TabsList className="grid w-full max-w-[400px] grid-cols-2">
-            <TabsTrigger value="receipt">Mẫu in Hóa đơn</TabsTrigger>
-            <TabsTrigger value="attendance">Kỷ luật Điểm danh</TabsTrigger>
-          </TabsList>
-        </div>
+        <AdminPageHeader
+          title="Tùy chỉnh Hệ thống"
+          subtitle="Cấu hình thông tin hóa đơn in ấn và quy tắc kỷ luật điểm danh"
+          icon={Settings2}
+          actions={
+            <TabsList className="grid w-full sm:w-[360px] grid-cols-2">
+              <TabsTrigger value="receipt">Mẫu in Hóa đơn</TabsTrigger>
+              <TabsTrigger value="attendance">Kỷ luật Điểm danh</TabsTrigger>
+            </TabsList>
+          }
+        />
 
         <TabsContent value="receipt" className="space-y-6 outline-none mt-0">
           <div className="flex items-center justify-end">

@@ -28,6 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -47,8 +48,10 @@ import AreaModal from "../AdminAreas/AreaModal";
 import { STORAGE_KEYS } from "@/constants";
 import { jwtDecode } from "jwt-decode";
 import PaginationControl from "@/components/common/PaginationControl";
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export default function AdminTables() {
+  useDocumentTitle('Quản lý bàn | Admin');
   const token =
     localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN) ||
     sessionStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
@@ -217,34 +220,37 @@ export default function AdminTables() {
   const currentAreaObj = areas.find((a) => a.id.toString() === selectedAreaId);
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="space-y-6">
       {/* HEADER */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div className="flex items-center gap-3">
-          <h1 className="text-xl font-semibold">Quản lý khu vực & bàn</h1>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={fetchData}
-            disabled={loading}
-          >
-            <Loader2 className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
-          </Button>
-          <Button className="gap-2" variant="secondary" onClick={handleAddArea}>
-            <MapPin className="w-4 h-4" />
-            Thêm khu vực
-          </Button>
-          {canCreateTable && (
-            <Button className="gap-2" onClick={handleAddTable}>
-              <Plus className="w-4 h-4" />
-              Thêm bàn mới
+      <AdminPageHeader
+        title="Quản lý Khu vực & Bàn"
+        subtitle="Sơ đồ bàn, khu vực và quản lý đặt bàn theo thời gian thực"
+        icon={TableIcon}
+        actions={
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={fetchData}
+              disabled={loading}
+              title="Tải lại"
+              className="cursor-pointer"
+            >
+              <Loader2 className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
             </Button>
-          )}
-        </div>
-      </div>
+            <Button className="gap-2 cursor-pointer shadow-xs" variant="secondary" onClick={handleAddArea}>
+              <MapPin className="w-4 h-4" />
+              Thêm khu vực
+            </Button>
+            {canCreateTable && (
+              <Button className="gap-2 cursor-pointer shadow-xs" onClick={handleAddTable}>
+                <Plus className="w-4 h-4" />
+                Thêm bàn mới
+              </Button>
+            )}
+          </div>
+        }
+      />
 
       {/* FILTERS & STATS */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">

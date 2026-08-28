@@ -9,6 +9,7 @@ import {
   Settings,
   Plus,
   Trash2,
+  Shield
 } from "lucide-react";
 import reputationService from "@/services/reputationService";
 import receiptSettingService from "@/services/receiptSettingService";
@@ -32,6 +33,8 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import PaginationControl from "@/components/common/PaginationControl";
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 const PAGE_SIZE = 10;
 
@@ -43,6 +46,7 @@ const formatDateTime = (value) => {
 };
 
 export default function AdminReputation() {
+  useDocumentTitle('Quản lý uy tín khách hàng | Admin');
   const [keyword, setKeyword] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [page, setPage] = useState(1);
@@ -255,19 +259,18 @@ export default function AdminReputation() {
   }, [historyRows]);
 
   return (
-    <div className="space-y-6 p-6">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div>
-            <h2 className="text-xl font-semibold">Quản lý điểm uy tín</h2>
-          </div>
-        </div>
-        
-        <Button onClick={handleOpenSettings}>
-          <Settings className="w-4 h-4 mr-2" />
-          Cài đặt hạn mức
-        </Button>
-      </div>
+    <div className="space-y-6">
+      <AdminPageHeader
+        title="Quản lý Điểm Uy tín"
+        subtitle="Theo dõi chỉ số uy tín, tỉ lệ nhận hàng và thiết lập hạn mức cảnh báo"
+        icon={Shield}
+        actions={
+          <Button onClick={handleOpenSettings} className="cursor-pointer shadow-xs">
+            <Settings className="w-4 h-4 mr-2" />
+            Cài đặt hạn mức
+          </Button>
+        }
+      />
 
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1 max-w-sm">

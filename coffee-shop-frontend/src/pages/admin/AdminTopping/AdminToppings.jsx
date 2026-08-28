@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
-import { Plus, Search, Edit, Trash2 } from 'lucide-react';
+import { Plus, Coffee, Search, Edit, Trash2 } from 'lucide-react';
 import toppingService from '../../../services/toppingService';
 import useFetch from '../../../hooks/useFetch';
 import { Button } from '../../../components/ui/button';
@@ -17,8 +17,11 @@ import PaginationControl from '../../../components/common/PaginationControl';
 import CreateTopping from './Action/CreateTopping';
 import UpdateTopping from './Action/UpdateTopping';
 import DeleteTopping from './Action/DeleteTopping';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export default function AdminToppings() {
+  useDocumentTitle('Quản lý topping | Admin');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState('');
   const [modal, setModal] = useState({ type: null, data: null });
@@ -73,17 +76,18 @@ export default function AdminToppings() {
   }, [filteredToppings, currentPage]);
 
   return (
-    <div className='p-6'>
-      {/* ===== HEADER ===== */}
-      <div className='flex items-center justify-between mb-6'>
-        <div>
-          <h2 className="text-xl font-semibold">Topping</h2>
-        </div>
-        <Button onClick={() => openModal('create')} className='cursor-pointer'>
-          <Plus className='w-4 h-4 mr-2' />
-          Thêm topping
-        </Button>
-      </div>
+    <div className='space-y-6'>
+      <AdminPageHeader
+        title="Quản lý Topping"
+        subtitle="Danh sách topping thêm cho đồ uống và món ăn"
+        icon={Coffee}
+        actions={
+          <Button onClick={() => openModal('create')} className='cursor-pointer shadow-xs'>
+            <Plus className='w-4 h-4 mr-2' />
+            Thêm topping
+          </Button>
+        }
+      />
 
       {/* ===== SEARCH & SORT ===== */}
       <div className='mb-4 flex flex-col sm:flex-row gap-3'>

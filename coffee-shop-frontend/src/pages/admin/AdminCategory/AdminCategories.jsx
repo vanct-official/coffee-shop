@@ -1,9 +1,10 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
-import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight, LayoutGrid } from 'lucide-react';
 import categoryService from '../../../services/categoryService';
 import useFetch from '../../../hooks/useFetch';
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
+import { Badge } from '../../../components/ui/badge';
 import {
   Table,
   TableBody,
@@ -15,8 +16,11 @@ import {
 import CreateCategory from './Action/CreateCategory';
 import UpdateCategory from './Action/UpdateCategory';
 import DeleteCategory from './Action/DeleteCategory';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export default function AdminCategories() {
+  useDocumentTitle('Quản lý danh mục | Admin');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -92,22 +96,26 @@ export default function AdminCategories() {
   };
 
   return (
-    <div className='p-6'>
-      {/* ===== HEADER ===== */}
-
-      <div className='flex items-center justify-between mb-6'>
-        <div>
-          <h2 className="text-xl font-semibold">Danh mục</h2>
-        </div>
-
-        <Button
-          onClick={() => openModal('create')}
-          className={'cursor-pointer'}
-        >
-          <Plus className='w-4 h-4 mr-2' />
-          Thêm danh mục
-        </Button>
-      </div>
+    <div className='space-y-6'>
+      <AdminPageHeader
+        title="Quản lý Danh mục"
+        subtitle="Phân loại các nhóm sản phẩm và đồ uống trong thực đơn"
+        icon={LayoutGrid}
+        badge={
+          <Badge variant="outline" className="text-xs bg-accent/10 border-accent/30 text-accent font-medium">
+            {categories.length} danh mục
+          </Badge>
+        }
+        actions={
+          <Button
+            onClick={() => openModal('create')}
+            className='cursor-pointer shadow-xs'
+          >
+            <Plus className='w-4 h-4 mr-2' />
+            Thêm danh mục
+          </Button>
+        }
+      />
 
       {/* ===== SEARCH ===== */}
 

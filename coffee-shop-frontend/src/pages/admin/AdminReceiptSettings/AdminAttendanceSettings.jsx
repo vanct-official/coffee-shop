@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import attendanceSettingService from "@/services/attendanceSettingService";
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export default function AdminAttendanceSettings() {
+  useDocumentTitle('Cài đặt chấm công | Admin');
   const [form, setForm] = useState({
     early_checkin_minutes: 15,
     late_after_minutes: 10,

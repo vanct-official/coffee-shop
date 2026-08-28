@@ -30,6 +30,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { format, subDays, startOfYear, endOfDay, startOfDay, differenceInDays } from "date-fns";
 import { CalendarIcon, LayoutDashboard, RefreshCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 const formatMoney = (n) => `${Number(n || 0).toLocaleString()}đ`;
 
@@ -58,6 +60,7 @@ function fillMissingDates(series, startDateStr, endDateStr) {
 }
 // Top sản phẩm bán chạy nhất trong khoảng thời gian đã chọn
 export default function AdminDB() {
+  useDocumentTitle('Sao lưu dữ liệu | Admin');
   const [rangeType, setRangeType] = useState("7"); // '7', '30', 'year', 'custom'
   const [customRange, setCustomRange] = useState({
     from: subDays(new Date(), 6),
@@ -201,86 +204,86 @@ export default function AdminDB() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="space-y-6">
       {/* Header controls */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div>
-            <h2 className="text-xl font-semibold">Tổng quan cửa hàng</h2>
-          </div>
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-2">
-          {rangeType === "custom" && (
-            <div className={cn("grid gap-2")}>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    id="date"
-                    variant={"outline"}
-                    className={cn(
-                      "w-[260px] justify-start text-left font-normal",
-                      !customRange && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {customRange?.from ? (
-                      customRange.to ? (
-                        <>
-                          {format(customRange.from, "dd/MM/yyyy")} -{" "}
-                          {format(customRange.to, "dd/MM/yyyy")}
-                        </>
+      <AdminPageHeader
+        title="Tổng quan Cửa hàng"
+        subtitle="Báo cáo doanh thu, tăng trưởng và hiệu suất bán hàng tổng thể của quán"
+        icon={LayoutDashboard}
+        actions={
+          <div className="flex flex-wrap items-center gap-2">
+            {rangeType === "custom" && (
+              <div className={cn("grid gap-2")}>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      id="date"
+                      variant={"outline"}
+                      className={cn(
+                        "w-[240px] justify-start text-left font-normal cursor-pointer",
+                        !customRange && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {customRange?.from ? (
+                        customRange.to ? (
+                          <>
+                            {format(customRange.from, "dd/MM/yyyy")} -{" "}
+                            {format(customRange.to, "dd/MM/yyyy")}
+                          </>
+                        ) : (
+                          format(customRange.from, "dd/MM/yyyy")
+                        )
                       ) : (
-                        format(customRange.from, "dd/MM/yyyy")
-                      )
-                    ) : (
-                      <span>Chọn ngày</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="end">
-                  <Calendar
-                    initialFocus
-                    mode="range"
-                    defaultMonth={customRange?.from}
-                    selected={customRange}
-                    onSelect={setCustomRange}
-                    numberOfMonths={2}
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-          )}
+                        <span>Chọn ngày</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="end">
+                    <Calendar
+                      initialFocus
+                      mode="range"
+                      defaultMonth={customRange?.from}
+                      selected={customRange}
+                      onSelect={setCustomRange}
+                      numberOfMonths={2}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+            )}
 
-          <Select value={rangeType} onValueChange={setRangeType}>
-            <SelectTrigger className="w-[150px]">
-              <SelectValue placeholder="Chọn thời gian" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="7">7 ngày qua</SelectItem>
-              <SelectItem value="30">30 ngày qua</SelectItem>
-              <SelectItem value="year">Năm nay</SelectItem>
-              <SelectItem value="custom">Tùy chọn</SelectItem>
-            </SelectContent>
-          </Select>
+            <Select value={rangeType} onValueChange={setRangeType}>
+              <SelectTrigger className="w-[140px] cursor-pointer">
+                <SelectValue placeholder="Chọn thời gian" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="7">7 ngày qua</SelectItem>
+                <SelectItem value="30">30 ngày qua</SelectItem>
+                <SelectItem value="year">Năm nay</SelectItem>
+                <SelectItem value="custom">Tùy chọn</SelectItem>
+              </SelectContent>
+            </Select>
 
-          <Button
-            onClick={handleApplyFilter}
-            className="flex items-center gap-2"
-          >
-            Lọc
-          </Button>
+            <Button
+              onClick={handleApplyFilter}
+              className="flex items-center gap-2 cursor-pointer shadow-xs"
+            >
+              Lọc
+            </Button>
 
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={handleApplyFilter}
-            title="Làm mới"
-          >
-            <RefreshCcw className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleApplyFilter}
+              title="Làm mới"
+              className="cursor-pointer"
+            >
+              <RefreshCcw className="h-4 w-4" />
+            </Button>
+          </div>
+        }
+      />
 
       {/* KPI cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">

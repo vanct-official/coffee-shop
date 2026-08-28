@@ -17,7 +17,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: env.ALLOWED_ORIGINS,
+    origin: [env.CLIENT_URL, env.CLIENT_URL.replace(':3000', ':5173')],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   },

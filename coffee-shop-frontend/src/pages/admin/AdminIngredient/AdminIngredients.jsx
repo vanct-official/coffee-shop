@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import { Plus, Search, Edit, Trash2, Package } from 'lucide-react';
+import { Plus, Package, Search, Edit, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import ingredientService from '../../../services/ingredientService';
 import useFetch from '../../../hooks/useFetch';
@@ -18,8 +18,11 @@ import CreateIngredient from './Action/CreateIngredient';
 import UpdateIngredient from './Action/UpdateIngredient';
 import DeleteIngredient from './Action/DeleteIngredient';
 import PaginationControl from '../../../components/common/PaginationControl';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export default function AdminIngredients() {
+  useDocumentTitle('Quản lý nguyên liệu | Admin');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 10;
@@ -87,21 +90,21 @@ export default function AdminIngredients() {
   };
 
   return (
-    <div className='p-6'>
-      {/* ===== HEADER ===== */}
-      <div className='flex items-center justify-between mb-6'>
-        <div>
-          <h1 className="text-xl font-semibold mb-1">Quản lý nguyên liệu</h1>
-        </div>
-
-        <Button
-          onClick={() => openModal('create')}
-          className={'cursor-pointer'}
-        >
-          <Plus className='w-4 h-4 mr-2' />
-          Thêm nguyên liệu
-        </Button>
-      </div>
+    <div className='space-y-6'>
+      <AdminPageHeader
+        title="Quản lý Nguyên liệu"
+        subtitle="Theo dõi định lượng, tồn kho và đơn vị tính của từng nguyên liệu"
+        icon={Package}
+        actions={
+          <Button
+            onClick={() => openModal('create')}
+            className='cursor-pointer shadow-xs'
+          >
+            <Plus className='w-4 h-4 mr-2' />
+            Thêm nguyên liệu
+          </Button>
+        }
+      />
 
       {/* ===== SEARCH ===== */}
       <div className='mb-4'>

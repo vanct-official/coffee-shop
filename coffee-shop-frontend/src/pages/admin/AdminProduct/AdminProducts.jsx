@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
-import { Plus, Search, Edit, Trash2, Filter } from 'lucide-react';
+import { Plus, Search, Edit, Trash2, Filter, Package } from 'lucide-react';
 
 import productService from '../../../services/productService';
 import categoryService from '../../../services/categoryService';
@@ -23,10 +23,13 @@ import DeleteProduct from './Action/DeleteProduct';
 import AddRecipeModal from './Action/AddRecipeModal';
 import ViewRecipeModal from './Action/ViewRecipeModal';
 import PaginationControl from '../../../components/common/PaginationControl';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 const PAGE_SIZE = 8;
 
 export default function AdminProducts() {
+  useDocumentTitle('Quản lý sản phẩm | Admin');
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
@@ -137,17 +140,23 @@ export default function AdminProducts() {
   };
 
   return (
-    <div className='p-6'>
-      <div className='flex items-center justify-between mb-6'>
-        <div>
-          <h2 className="text-xl font-semibold">Sản phẩm</h2>
-        </div>
-
-        <Button onClick={() => openModal('create')} className='cursor-pointer'>
-          <Plus className='w-4 h-4 mr-2' />
-          Thêm sản phẩm
-        </Button>
-      </div>
+    <div className='space-y-6'>
+      <AdminPageHeader
+        title="Quản lý Sản phẩm"
+        subtitle="Danh sách các món, đồ uống, công thức và giá bán trong thực đơn"
+        icon={Package}
+        badge={
+          <Badge variant="outline" className="text-xs bg-accent/10 border-accent/30 text-accent font-medium">
+            {pagination.totalItems || products.length} món
+          </Badge>
+        }
+        actions={
+          <Button onClick={() => openModal('create')} className='cursor-pointer shadow-xs'>
+            <Plus className='w-4 h-4 mr-2' />
+            Thêm sản phẩm
+          </Button>
+        }
+      />
 
       <div className='mb-4 flex flex-wrap items-center gap-3'>
         {/* Search */}

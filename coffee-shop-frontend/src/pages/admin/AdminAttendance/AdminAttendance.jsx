@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Loader2, Edit, X } from 'lucide-react';
+import { UserCheck, Loader2, Edit, X } from 'lucide-react';
 import attendanceService from '../../../services/attendanceService';
 import userService from '../../../services/userService';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components/ui/table';
@@ -11,6 +11,8 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import PaginationControl from '../../../components/common/PaginationControl';
 import { Label } from '../../../components/ui/label';
 import { toast } from 'sonner';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 const CHECKOUT_GRACE_MINUTES = 30;
 
@@ -105,6 +107,7 @@ const shouldShowMissingCheckout = (record) => {
 };
 
 export default function AdminAttendance() {
+  useDocumentTitle('Chấm công | Admin');
   const [attendances, setAttendances] = useState([]);
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -257,15 +260,12 @@ export default function AdminAttendance() {
   }
 
   return (
-    <div className="p-4 sm:p-6 space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <div>
-          <h1 className="text-xl font-semibold">Điểm danh nhân viên</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Theo dõi, quản lý lịch sử ra vào ca của nhân viên.
-          </p>
-        </div>
-      </div>
+    <div className="space-y-6">
+      <AdminPageHeader
+        title="Điểm danh Nhân viên"
+        subtitle="Theo dõi, quản lý lịch sử ra vào ca và trạng thái chấm công của nhân viên"
+        icon={UserCheck}
+      />
 
       <div className="bg-card rounded-xl border border-border p-4 space-y-3">
         <div className="flex flex-wrap items-center gap-2">

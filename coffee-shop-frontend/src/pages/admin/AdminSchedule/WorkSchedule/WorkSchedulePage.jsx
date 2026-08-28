@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, UserPlus, Users, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, UserPlus, Users, X, Calendar } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '../../../../components/ui/button';
 import {
@@ -9,6 +9,8 @@ import {
 import shiftService from '../../../../services/shiftService';
 import AssignSingleModal from './action/AssignSingleModal';
 import AssignBulkModal from './action/AssignBulkModal';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 // ─── Color map ───────────────────────────────────────────────────────────────
 const COLOR_MAP = {
@@ -51,6 +53,7 @@ const MONTH_NAMES = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5',
 
 // ─── Avatar ──────────────────────────────────────────────────────────────────
 function Avatar({ name, size = 'sm' }) {
+  useDocumentTitle('Phân công lịch làm | Admin');
   const initials = name?.split(' ').slice(-1)[0]?.[0]?.toUpperCase() || '?';
   const sz = size === 'sm' ? 'w-6 h-6 text-[10px]' : 'w-8 h-8 text-xs';
   return (
@@ -548,12 +551,12 @@ export default function WorkSchedulePage() {
   const range = getRange();
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
-      {/* Page title */}
-      <div>
-        <h1 className="text-xl font-semibold mb-1">Lịch làm việc</h1>
-        <p className="text-sm text-muted-foreground mt-0.5">Xem lịch phân ca nhân viên theo ngày / tuần / tháng</p>
-      </div>
+    <div className="space-y-6">
+      <AdminPageHeader
+        title="Lịch làm việc"
+        subtitle="Xem và phân công lịch làm việc cho nhân viên theo ngày, tuần, tháng"
+        icon={Calendar}
+      />
 
       {/* Toolbar */}
       <div className="flex items-center justify-between flex-wrap gap-3">

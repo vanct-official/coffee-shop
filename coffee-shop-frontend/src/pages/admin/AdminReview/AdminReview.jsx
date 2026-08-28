@@ -1,19 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import {
-  Loader2,
+import { Loader2,
   Search,
   Star,
   ChevronLeft,
   ChevronRight,
   X,
+  MessageSquare,
 } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
 import reviewService from "@/services/reviewService";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Table,
+import { Table,
   TableBody,
   TableCell,
   TableHead,
@@ -23,12 +22,15 @@ import {
 import { Badge } from "@/components/ui/badge";
 import PaginationControl from "@/components/common/PaginationControl";
 import AdminReviewReplyModal from "./AdminReviewReplyModal";
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 const isVideoUrl = (url) =>
   typeof url === "string" &&
   (url.match(/\.(mp4|webm|ogg|mov)$/i) || url.includes("video/upload"));
 
 export default function AdminReviews() {
+  useDocumentTitle('Quản lý đánh giá | Admin');
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -140,21 +142,19 @@ export default function AdminReviews() {
   }
 
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <div className="flex justify-between items-start mb-6 gap-4">
-          <div className="flex items-center gap-3">
-            <div>
-              <h2 className="text-xl font-semibold">Quản lý đánh giá</h2>
-            </div>
-          </div>
-        </div>
+    <div className="space-y-6">
+      <AdminPageHeader
+        title="Quản lý Đánh giá"
+        subtitle="Theo dõi phản hồi, số sao và trả lời đánh giá từ khách hàng"
+        icon={MessageSquare}
+      />
 
+      <div className="mb-6">
         <div className="flex flex-col md:flex-row gap-3">
-          <div className="relative flex-1">
+          <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Tìm theo sản phẩm, người dùng, bình luận hoặc số sao..."
+              placeholder="Tìm theo sản phẩm, người dùng, bình luận..."
               value={keyword}
               onChange={(e) => {
                 setPage(1);

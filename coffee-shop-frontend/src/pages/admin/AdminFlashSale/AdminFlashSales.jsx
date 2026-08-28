@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Plus, Edit, Trash2, Clock, Loader2, Search } from "lucide-react";
+import { Plus, Zap, Edit, Trash2, Clock, Loader2, Search } from "lucide-react";
 import { toast } from "sonner";
 import { adminFlashSaleService } from "@/services/adminFlashSaleService";
 import PaginationControl from "@/components/common/PaginationControl";
@@ -24,8 +24,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import AdminFlashSaleModal from "./AdminFlashSaleModal";
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export default function AdminFlashSales() {
+  useDocumentTitle('Quản lý flash sale | Admin');
   const [sales, setSales] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -137,30 +140,28 @@ export default function AdminFlashSales() {
   };
 
   return (
-    <div className="p-4 sm:p-6 space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div className="flex items-center gap-3">
-          <div>
-            <h1 className="text-xl font-semibold">
-              Quản lý flash sale
-            </h1>
+    <div className="space-y-6">
+      <AdminPageHeader
+        title="Quản lý Flash Sale"
+        subtitle="Các chương trình khuyến mãi giảm giá chớp nhoáng theo khung giờ"
+        icon={Zap}
+        actions={
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
+              <Input
+                placeholder="Tìm kiếm chiến dịch..."
+                className="pl-9 w-full sm:w-[280px]"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <Button onClick={handleOpenAdd} className="cursor-pointer shadow-xs">
+              <Plus className="w-4 h-4 mr-2" /> Tạo chiến dịch mới
+            </Button>
           </div>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
-            <Input
-              placeholder="Tìm kiếm chiến dịch..."
-              className="pl-9 w-full sm:w-[350px]"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <Button onClick={handleOpenAdd}>
-            <Plus className="w-4 h-4 mr-2" /> Tạo chiến dịch mới
-          </Button>
-        </div>
-      </div>
+        }
+      />
 
       <div className="relative bg-card rounded-xl border border-border overflow-hidden">
         {loading && (

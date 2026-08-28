@@ -4,6 +4,7 @@ import {
   Trash2,
   Edit,
   Plus,
+  FileText
 } from "lucide-react";
 import newsService from "@/services/newsService";
 import { Button } from "@/components/ui/button";
@@ -30,10 +31,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 const PAGE_SIZE = 7;
 
 export default function AdminNewsList() {
+  useDocumentTitle('Quản lý tin tức | Admin');
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -131,24 +135,23 @@ export default function AdminNewsList() {
   }
 
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <div className="flex justify-between items-start mb-6">
-          <div className="flex items-center gap-3">
-            <div>
-              <h2 className="text-xl font-semibold">Quản lý bài viết</h2>
-            </div>
-          </div>
-
+    <div className="space-y-6">
+      <AdminPageHeader
+        title="Quản lý Bài viết"
+        subtitle="Đăng tải và quản lý tin tức, câu chuyện thương hiệu và sự kiện"
+        icon={FileText}
+        actions={
           <Button onClick={() => {
             setSelectedNewsId(null);
             setIsModalOpen(true);
-          }}>
+          }} className="cursor-pointer shadow-xs">
             <Plus className="w-4 h-4 mr-2" />
-            Thêm Mới
+            Thêm mới
           </Button>
-        </div>
+        }
+      />
 
+      <div className="mb-6">
         <div className="flex flex-col sm:flex-row gap-3">
           <Input
             placeholder="Tìm theo tiêu đề hoặc tag..."

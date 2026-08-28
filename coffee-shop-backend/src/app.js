@@ -24,7 +24,7 @@ app.use(helmet({
 // CORS configuration
 app.use(
   cors({
-    origin: env.ALLOWED_ORIGINS,
+    origin: [env.CLIENT_URL, env.CLIENT_URL.replace(':3000', ':5173')],
     credentials: true,
   })
 );

@@ -33,6 +33,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 const PAGE_SIZE = 10;
 const HISTORY_LIMIT = 100;
@@ -74,6 +76,7 @@ const unwrapResponse = (response) => {
 };
 
 export default function AdminLoyalty() {
+  useDocumentTitle('Quản lý điểm tích lũy | Admin');
   const [keyword, setKeyword] = useState("");
   const [page, setPage] = useState(1);
   const [customers, setCustomers] = useState([]);
@@ -233,14 +236,12 @@ export default function AdminLoyalty() {
   }, [historyRows]);
 
   return (
-    <div className="space-y-6 p-6">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div>
-            <h2 className="text-xl font-semibold">Quản lý điểm loyalty</h2>
-          </div>
-        </div>
-      </div>
+    <div className="space-y-6">
+      <AdminPageHeader
+        title="Quản lý Điểm Loyalty"
+        subtitle="Theo dõi và quản lý điểm thưởng, lịch sử tích lũy của khách hàng"
+        icon={Coins}
+      />
 
       <div className="relative max-w-md">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
