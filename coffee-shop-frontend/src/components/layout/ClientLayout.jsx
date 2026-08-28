@@ -5,9 +5,9 @@ import AiAssistantWidget from "./AiAssistantWidget";
 
 export default function ClientLayout() {
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 dark:border-gray-800">
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Header />
-      <main className="flex-1 w-full bg-white dark:bg-gray-950">
+      <main className="flex-1 w-full bg-background">
         <Outlet />
       </main>
       <AiAssistantWidget />

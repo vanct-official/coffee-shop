@@ -58,7 +58,7 @@ const ReviewItem = ({ item, currentUserId, categoryName }) => {
         <div className="text-[13px] text-gray-800 dark:text-gray-200 mb-1 font-medium">
           {currentUserId && item.user_id === currentUserId ? "Tôi" : item.full_name}
         </div>
-        <div className="flex gap-0.5 text-[#ee4d2d] mb-1.5">
+        <div className="flex gap-0.5 text-accent mb-1.5">
           {Array.from({ length: 5 }).map((_, index) => (
             <Star
               key={index}
@@ -104,9 +104,9 @@ const ReviewItem = ({ item, currentUserId, categoryName }) => {
                     onClick={() =>
                       setExpandedIndex(expandedIndex === idx ? null : idx)
                     }
-                    className={`relative block w-[72px] h-[72px] bg-gray-50 overflow-hidden cursor-zoom-in group ${expandedIndex === idx
-                      ? "border-2 border-[#ee4d2d]"
-                      : "border border-gray-100"
+                    className={`relative block w-[72px] h-[72px] bg-secondary overflow-hidden cursor-zoom-in group ${expandedIndex === idx
+                      ? "border-2 border-accent"
+                      : "border border-border"
                       }`}
                   >
                     {videoMode ? (
@@ -180,7 +180,7 @@ const ReviewItem = ({ item, currentUserId, categoryName }) => {
         )}
 
         {(item.reply_comment || (item.reply_images && item.reply_images.length > 0)) && (
-          <div className="mt-4 bg-[#fcfcfc] dark:bg-gray-900 border-l-[3px] border-[#ee4d2d] p-3 shadow-sm">
+          <div className="mt-4 bg-secondary border-l-[3px] border-accent p-3 shadow-sm">
             <div className="flex items-center gap-2 mb-1.5">
               <span className="font-semibold text-gray-800 dark:text-gray-200 text-[13px]">Phản hồi của Người Bán</span>
               {item.replied_at && (
@@ -206,9 +206,9 @@ const ReviewItem = ({ item, currentUserId, categoryName }) => {
                         onClick={() =>
                           setExpandedReplyIndex(expandedReplyIndex === idx ? null : idx)
                         }
-                        className={`relative block w-[60px] h-[60px] bg-gray-50 overflow-hidden cursor-zoom-in group ${expandedReplyIndex === idx
-                          ? "border-2 border-[#ee4d2d]"
-                          : "border border-gray-200 hover:border-gray-400 transition-colors"
+                        className={`relative block w-[60px] h-[60px] bg-secondary overflow-hidden cursor-zoom-in group ${expandedReplyIndex === idx
+                          ? "border-2 border-accent"
+                          : "border border-border hover:border-accent/60 transition-colors"
                           }`}
                       >
                         {videoMode ? (
@@ -896,7 +896,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 min-h-[50px]">
       <div className="text-base md:text-lg text-gray-500 dark:text-gray-400 flex items-center flex-wrap gap-2 font-medium">
         <span
-          className="cursor-pointer hover:text-amber-600 transition-colors"
+          className="cursor-pointer hover:text-accent transition-colors"
           onClick={() => navigate("/")}
         >
           Trang chủ
@@ -905,7 +905,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
           <>
             <span className="text-gray-400">/</span>
             <span
-              className="cursor-pointer hover:text-amber-600 transition-colors"
+              className="cursor-pointer hover:text-accent transition-colors"
               onClick={() =>
                 navigate(`/${product.category_slug}`)
               }
@@ -917,7 +917,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
         {product?.name && (
           <>
             <span className="text-gray-400">/</span>
-            <span className="text-amber-600 font-bold">
+            <span className="text-accent font-bold font-serif">
               {product.name}
             </span>
           </>
@@ -928,7 +928,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
 
   if (productLoading && !product) {
     return (
-      <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 relative">
+      <div className="min-h-screen flex flex-col bg-background relative">
         <main className="flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 pt-2 md:pt-4 pb-10 md:pb-16 mb-5">
           {renderBreadcrumbs()}
           <div className="w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-start mt-4">
@@ -954,7 +954,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
 
   if (!product) {
     return (
-      <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 relative">
+      <div className="min-h-screen flex flex-col bg-background relative">
         <main className="flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 pt-2 md:pt-4 pb-10 md:pb-16 mb-5">
           {renderBreadcrumbs()}
           <div className="flex-1 flex items-center justify-center min-h-[50vh] text-gray-600 dark:text-gray-400">
@@ -966,7 +966,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 relative">
+    <div className="min-h-screen flex flex-col bg-background relative">
       <main className={`flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 pt-2 md:pt-4 pb-10 md:pb-16 mb-5 ${productLoading && product ? 'opacity-50 pointer-events-none transition-opacity duration-300' : 'transition-opacity duration-300'}`}>
         {renderBreadcrumbs()}
 
@@ -974,12 +974,12 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4 relative">
               {isFlashSale && (
-                <div className="absolute top-4 left-4 z-20 bg-red-600 text-white text-sm font-bold px-3 py-1.5 rounded-lg shadow-lg flex items-center gap-1.5 animate-pulse">
+                <div className="absolute top-4 left-4 z-20 bg-accent text-accent-foreground text-sm font-bold px-3 py-1.5 rounded-lg shadow-lg flex items-center gap-1.5 animate-pulse">
                   ⚡ Flash Sale Giảm {flashSaleDiscount}%
                 </div>
               )}
               {/* Main Image */}
-              <div className="w-full max-w-[480px] lg:max-w-[540px] mx-auto aspect-square flex items-center justify-center relative group bg-gray-50/50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden p-2">
+              <div className="w-full max-w-[480px] lg:max-w-[540px] mx-auto aspect-square flex items-center justify-center relative group bg-card border border-border rounded-2xl overflow-hidden p-2">
                 <img
                   src={
                     displayImages[activeImageIndex]?.image_url || defaultImage
@@ -1024,8 +1024,8 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                       onClick={() => setActiveImageIndex(index)}
                       className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden bg-white transition-all
                         ${activeImageIndex === index
-                          ? "border-[1.5px] border-[#A0522D]"
-                          : "border border-gray-200 opacity-60 hover:opacity-100"
+                          ? "border-[1.5px] border-accent"
+                          : "border border-border opacity-60 hover:opacity-100"
                         }`}
                     >
                       <img
@@ -1043,10 +1043,10 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
           <div>
             <div className="flex items-start justify-between gap-4 mb-4">
               <div>
-                <p className="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-2">
+                <p className="text-sm uppercase tracking-wide text-muted-foreground mb-2">
                   {product.category_name || "Danh mục"}
                 </p>
-                <h5 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                <h5 className="text-2xl font-bold font-serif text-foreground">
                   {product.name}
                 </h5>
               </div>
@@ -1066,9 +1066,9 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                       key={size.id}
                       type="button"
                       onClick={() => setSelectedSize(size.size)}
-                      className={`px-4 py-2 rounded-full border font-medium ${selectedSize === size.size
-                        ? "bg-amber-600 text-white border-amber-600"
-                        : "bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-gray-300"
+                      className={`px-4 py-2 rounded-full border font-medium transition-colors ${selectedSize === size.size
+                        ? "bg-primary text-primary-foreground border-primary"
+                        : "bg-card text-foreground border-border hover:border-accent"
                         }`}
                     >
                       {size.size}
@@ -1087,7 +1087,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                 <button
                   type="button"
                   onClick={() => setShowToppings((prev) => !prev)}
-                  className="w-full flex items-center justify-between rounded-2xl border border-gray-300 bg-white dark:bg-gray-900 px-4 py-3 hover:border-amber-500 transition"
+                  className="w-full flex items-center justify-between rounded-2xl border border-border bg-card px-4 py-3 hover:border-accent transition"
                 >
                   <span className="font-medium text-gray-800 dark:text-gray-200">
                     Muốn gọi thêm
@@ -1112,7 +1112,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                       return (
                         <div
                           key={topping.id}
-                          className="border border-gray-200  rounded-2xl p-4 bg-white dark:bg-gray-900"
+                          className="border border-border/50 rounded-2xl p-4 bg-card"
                         >
                           <div className="flex items-center justify-between gap-4">
                             <label className="flex items-center gap-3 cursor-pointer flex-1">
@@ -1127,7 +1127,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                                 <p className="font-medium text-gray-900 dark:text-gray-100 break-words">
                                   {topping.name}
                                 </p>
-                                <p className="text-sm text-amber-600 font-semibold">
+                                <p className="text-sm text-accent font-semibold">
                                   +
                                   {Number(topping.price).toLocaleString(
                                     "vi-VN"
@@ -1144,7 +1144,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                 )}
 
                 {selectedToppings.length > 0 && (
-                  <div className="mt-4 rounded-2xl bg-amber-50 dark:bg-amber-900/20 border border-amber-100 p-4 text-sm">
+                  <div className="mt-4 rounded-2xl bg-secondary border border-border p-4 text-sm">
                     <div className="flex items-center justify-between mb-3">
                       <p className="font-semibold text-gray-800 dark:text-gray-200">
                         Topping đã chọn ({selectedToppings.length})
@@ -1152,7 +1152,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                       <button
                         type="button"
                         onClick={() => setSelectedToppings([])}
-                        className="text-red-500 hover:text-red-600 hover:underline font-medium px-2 py-0.5 rounded transition"
+                        className="text-destructive hover:text-destructive/80 hover:underline font-medium px-2 py-0.5 rounded transition"
                       >
                         Xóa tất cả
                       </button>
@@ -1170,14 +1170,14 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                               onClick={() =>
                                 toggleTopping({ id: item.topping_id })
                               }
-                              className="text-gray-400 hover:text-red-500 bg-white hover:bg-red-50 dark:bg-gray-800 p-0.5 rounded shadow-sm border border-gray-200 dark:border-gray-700 transition"
+                              className="text-gray-400 hover:text-destructive bg-secondary hover:bg-destructive/10 p-0.5 rounded shadow-sm border border-border transition"
                               title="Xóa topping này"
                             >
                               <X className="w-3.5 h-3.5" />
                             </button>
                             <span className="truncate">{item.name}</span>
                           </div>
-                          <span className="font-medium text-amber-600 shrink-0">
+                          <span className="font-medium text-accent shrink-0">
                             +{Number(item.price).toLocaleString("vi-VN")}đ
                           </span>
                         </div>
@@ -1189,33 +1189,33 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
             )}
 
             {isFlashSale && (
-              <div className="mb-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="mb-4 bg-accent/10 border border-accent/20 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-start gap-3">
-                  <div className="bg-white dark:bg-gray-800 p-2 rounded-full shadow-sm shrink-0">
-                    <Zap className="w-5 h-5 text-red-600 animate-pulse" />
+                  <div className="bg-card p-2 rounded-full shadow-sm shrink-0">
+                    <Zap className="w-5 h-5 text-accent animate-pulse" />
                   </div>
                   <div>
-                    <h5 className="font-bold text-red-600 dark:text-red-400 text-sm mb-1 uppercase tracking-wider">
+                    <h5 className="font-bold text-accent text-sm mb-1 uppercase tracking-wider">
                       Flash sale
                     </h5>
-                    <p className="text-xs text-red-500/80 dark:text-red-300">
+                    <p className="text-xs text-accent/80">
                       Sản phẩm sẽ tự động trở về giá gốc khi hết thời gian
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 bg-white dark:bg-gray-800 p-2.5 rounded-xl shadow-sm border border-red-100 dark:border-red-900/40 shrink-0">
-                  <Clock className="w-5 h-5 text-red-500 shrink-0" />
-                  <div className="flex items-center gap-1 text-[15px] font-bold text-red-600 dark:text-red-400">
-                    <div className="w-7 h-7 flex items-center justify-center bg-red-50 dark:bg-red-900/30 rounded">
+                <div className="flex items-center gap-2 bg-card p-2.5 rounded-xl shadow-sm border border-accent/20 shrink-0">
+                  <Clock className="w-5 h-5 text-accent shrink-0" />
+                  <div className="flex items-center gap-1 text-[15px] font-bold text-accent">
+                    <div className="w-7 h-7 flex items-center justify-center bg-accent/20 rounded">
                       {String(timeLeft.hours).padStart(2, "0")}
                     </div>
                     <span>:</span>
-                    <div className="w-7 h-7 flex items-center justify-center bg-red-50 dark:bg-red-900/30 rounded">
+                    <div className="w-7 h-7 flex items-center justify-center bg-accent/20 rounded">
                       {String(timeLeft.minutes).padStart(2, "0")}
                     </div>
                     <span>:</span>
-                    <div className="w-7 h-7 flex items-center justify-center bg-red-50 dark:bg-red-900/30 rounded">
+                    <div className="w-7 h-7 flex items-center justify-center bg-accent/20 rounded">
                       {String(timeLeft.seconds).padStart(2, "0")}
                     </div>
                   </div>
@@ -1223,15 +1223,15 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
               </div>
             )}
 
-            <div className="mb-8 p-4 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800">
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
+            <div className="mb-8 p-4 rounded-2xl bg-secondary/40 border border-border/50">
+              <p className="text-sm font-medium text-muted-foreground mb-1">
                 Tổng tiền tạm tính
               </p>
 
               <div className="flex flex-col">
                 {isFlashSale && originalDisplayPrice ? (
                   <div className="flex items-center gap-3">
-                    <p className="text-xl font-semibold text-red-600">
+                    <p className="text-xl font-bold text-accent">
                       {selectedSizeObj
                         ? `${displayPrice.toLocaleString("vi-VN")}đ`
                         : "Liên hệ"}
@@ -1241,7 +1241,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                     </span>
                   </div>
                 ) : (
-                  <p className="text-xl font-semibold text-amber-600">
+                  <p className="text-xl font-bold text-accent">
                     {selectedSizeObj
                       ? `${displayPrice.toLocaleString("vi-VN")}đ`
                       : "Liên hệ"}
@@ -1273,7 +1273,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
               <button
                 type="button"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-9 h-9 border rounded"
+                className="w-9 h-9 border border-border bg-card text-foreground rounded hover:bg-secondary transition-colors"
               >
                 -
               </button>
@@ -1283,14 +1283,14 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
               <button
                 type="button"
                 onClick={() => setQuantity(quantity + 1)}
-                className="w-9 h-9 border rounded"
+                className="w-9 h-9 border border-border bg-card text-foreground rounded hover:bg-secondary transition-colors"
               >
                 +
               </button>
             </div>
 
             {!isStoreOpen && (
-              <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 rounded-xl flex items-center gap-2">
+              <div className="mb-4 p-3 bg-destructive/10 text-destructive border border-destructive/20 rounded-xl flex items-center gap-2">
                 <span className="font-medium text-sm">
                   Cửa hàng hiện đang đóng cửa. {nextOpenMessage}. Xin quý khách
                   thông cảm
@@ -1302,7 +1302,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
               <Button
                 onClick={addToCart}
                 disabled={!isStoreOpen}
-                className="bg-amber-600 hover:bg-amber-700 text-white px-8 py-6 text-base disabled:bg-gray-400 disabled:opacity-100"
+                className="bg-primary hover:bg-accent text-primary-foreground px-8 py-6 text-base disabled:bg-gray-400 disabled:opacity-100 font-semibold"
               >
                 <Plus className="w-5 h-5 mr-2" />
                 {isStoreOpen ? "Thêm vào giỏ hàng" : "Đóng cửa"}
@@ -1312,7 +1312,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                 onClick={buyNow}
                 disabled={!isStoreOpen}
                 variant="outline"
-                className="px-8 py-6 text-base border-amber-600 text-amber-600 hover:bg-amber-50 hover:text-amber-700 dark:hover:bg-amber-900/40 dark:hover:text-amber-500 disabled:border-gray-400 disabled:text-gray-500 disabled:hover:bg-transparent disabled:hover:text-gray-500 transition-colors"
+                className="px-8 py-6 text-base border-primary text-primary hover:bg-secondary hover:text-accent hover:border-accent font-semibold transition-colors"
               >
                 Mua ngay
               </Button>
@@ -1322,7 +1322,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
 
         {/* TRẢI RỘNG 100% NHƯ SHOPEE: DESCRIPTION */}
         <div className="mt-16 pt-10 border-t border-gray-200 dark:border-gray-800">
-          <h3 className="text-xl uppercase flex items-center h-[60px] font-medium text-gray-900 dark:text-gray-100 mb-6 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 px-4">
+          <h3 className="text-lg font-bold font-serif uppercase flex items-center h-[60px] text-foreground mb-6 bg-secondary/30 border border-border px-4">
             Mô tả sản phẩm
           </h3>
           <div className="px-4">
@@ -1347,22 +1347,22 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
 
         {/* TRẢI RỘNG 100% NHƯ SHOPEE: REVIEWS */}
         <div className="mt-16 pt-10 border-t border-gray-200 dark:border-gray-800">
-          <h3 className="text-[1.125rem] font-medium text-gray-900 dark:text-gray-100 mb-4 px-4 uppercase">
+          <h3 className="text-lg font-bold font-serif text-foreground mb-4 px-4 uppercase">
             Đánh giá sản phẩm
           </h3>
 
-          <div className="bg-[#fffbf8] dark:bg-orange-950/20 border border-[#f9ede5] dark:border-orange-900/40 p-6 flex flex-col md:flex-row items-start md:items-center gap-8 mb-8 mx-4">
+          <div className="bg-secondary border border-border p-6 flex flex-col md:flex-row items-start md:items-center gap-8 mb-8 mx-4">
             <div className="flex flex-col items-center shrink-0 min-w-[150px]">
-              <div className="text-[#ee4d2d] mb-2 font-semibold">
+              <div className="text-accent mb-2 font-semibold">
                 <span className="text-3xl">
                   {averageRating > 0 ? averageRating : "5.0"}
                 </span>
-                <span className="text-base text-gray-500 font-normal">
+                <span className="text-base text-muted-foreground font-normal">
                   {" "}
                   trên 5
                 </span>
               </div>
-              <div className="flex text-[#ee4d2d] gap-0.5">
+              <div className="flex text-accent gap-0.5">
                 {Array.from({ length: 5 }).map((_, idx) => (
                   <Star key={idx} className="w-5 h-5 fill-current" />
                 ))}
@@ -1374,8 +1374,8 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                 onClick={() => setReviewFilter("all")}
                 className={
                   reviewFilter === "all"
-                    ? "px-4 py-1.5 border border-[#ee4d2d] text-[#ee4d2d] bg-white text-sm cursor-pointer dark:bg-gray-900 dark:border-red-500 dark:text-red-400"
-                    : "px-4 py-1.5 border border-transparent bg-white text-gray-800 hover:border-[#ee4d2d] hover:text-[#ee4d2d] text-sm cursor-pointer shadow-sm dark:bg-gray-800 dark:text-gray-200"
+                    ? "px-4 py-1.5 border border-accent text-accent bg-card text-sm cursor-pointer"
+                    : "px-4 py-1.5 border border-border bg-card text-foreground hover:border-accent hover:text-accent text-sm cursor-pointer shadow-sm"
                 }
               >
                 Tất Cả
@@ -1384,8 +1384,8 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                 onClick={() => setReviewFilter("5")}
                 className={
                   reviewFilter === "5"
-                    ? "px-4 py-1.5 border border-[#ee4d2d] text-[#ee4d2d] bg-white text-sm cursor-pointer dark:bg-gray-900 dark:border-red-500 dark:text-red-400"
-                    : "px-4 py-1.5 border border-transparent bg-white text-gray-800 hover:border-[#ee4d2d] hover:text-[#ee4d2d] text-sm cursor-pointer shadow-sm dark:bg-gray-800 dark:text-gray-200"
+                    ? "px-4 py-1.5 border border-accent text-accent bg-card text-sm cursor-pointer"
+                    : "px-4 py-1.5 border border-border bg-card text-foreground hover:border-accent hover:text-accent text-sm cursor-pointer shadow-sm"
                 }
               >
                 5 Sao ({reviews.filter((r) => Number(r.rating) === 5).length})
@@ -1394,8 +1394,8 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                 onClick={() => setReviewFilter("4")}
                 className={
                   reviewFilter === "4"
-                    ? "px-4 py-1.5 border border-[#ee4d2d] text-[#ee4d2d] bg-white text-sm cursor-pointer dark:bg-gray-900 dark:border-red-500 dark:text-red-400"
-                    : "px-4 py-1.5 border border-transparent bg-white text-gray-800 hover:border-[#ee4d2d] hover:text-[#ee4d2d] text-sm cursor-pointer shadow-sm dark:bg-gray-800 dark:text-gray-200"
+                    ? "px-4 py-1.5 border border-accent text-accent bg-card text-sm cursor-pointer"
+                    : "px-4 py-1.5 border border-border bg-card text-foreground hover:border-accent hover:text-accent text-sm cursor-pointer shadow-sm"
                 }
               >
                 4 Sao ({reviews.filter((r) => Number(r.rating) === 4).length})
@@ -1404,8 +1404,8 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                 onClick={() => setReviewFilter("3")}
                 className={
                   reviewFilter === "3"
-                    ? "px-4 py-1.5 border border-[#ee4d2d] text-[#ee4d2d] bg-white text-sm cursor-pointer dark:bg-gray-900 dark:border-red-500 dark:text-red-400"
-                    : "px-4 py-1.5 border border-transparent bg-white text-gray-800 hover:border-[#ee4d2d] hover:text-[#ee4d2d] text-sm cursor-pointer shadow-sm dark:bg-gray-800 dark:text-gray-200"
+                    ? "px-4 py-1.5 border border-accent text-accent bg-card text-sm cursor-pointer"
+                    : "px-4 py-1.5 border border-border bg-card text-foreground hover:border-accent hover:text-accent text-sm cursor-pointer shadow-sm"
                 }
               >
                 3 Sao ({reviews.filter((r) => Number(r.rating) === 3).length})
@@ -1414,8 +1414,8 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                 onClick={() => setReviewFilter("2")}
                 className={
                   reviewFilter === "2"
-                    ? "px-4 py-1.5 border border-[#ee4d2d] text-[#ee4d2d] bg-white text-sm cursor-pointer dark:bg-gray-900 dark:border-red-500 dark:text-red-400"
-                    : "px-4 py-1.5 border border-transparent bg-white text-gray-800 hover:border-[#ee4d2d] hover:text-[#ee4d2d] text-sm cursor-pointer shadow-sm dark:bg-gray-800 dark:text-gray-200"
+                    ? "px-4 py-1.5 border border-accent text-accent bg-card text-sm cursor-pointer"
+                    : "px-4 py-1.5 border border-border bg-card text-foreground hover:border-accent hover:text-accent text-sm cursor-pointer shadow-sm"
                 }
               >
                 2 Sao ({reviews.filter((r) => Number(r.rating) === 2).length})
@@ -1424,8 +1424,8 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                 onClick={() => setReviewFilter("1")}
                 className={
                   reviewFilter === "1"
-                    ? "px-4 py-1.5 border border-[#ee4d2d] text-[#ee4d2d] bg-white text-sm cursor-pointer dark:bg-gray-900 dark:border-red-500 dark:text-red-400"
-                    : "px-4 py-1.5 border border-transparent bg-white text-gray-800 hover:border-[#ee4d2d] hover:text-[#ee4d2d] text-sm cursor-pointer shadow-sm dark:bg-gray-800 dark:text-gray-200"
+                    ? "px-4 py-1.5 border border-accent text-accent bg-card text-sm cursor-pointer"
+                    : "px-4 py-1.5 border border-border bg-card text-foreground hover:border-accent hover:text-accent text-sm cursor-pointer shadow-sm"
                 }
               >
                 1 Sao ({reviews.filter((r) => Number(r.rating) === 1).length})
@@ -1434,8 +1434,8 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                 onClick={() => setReviewFilter("has_comment")}
                 className={
                   reviewFilter === "has_comment"
-                    ? "px-4 py-1.5 border border-[#ee4d2d] text-[#ee4d2d] bg-white text-sm cursor-pointer dark:bg-gray-900 dark:border-red-500 dark:text-red-400"
-                    : "px-4 py-1.5 border border-transparent bg-white text-gray-800 hover:border-[#ee4d2d] hover:text-[#ee4d2d] text-sm cursor-pointer shadow-sm dark:bg-gray-800 dark:text-gray-200"
+                    ? "px-4 py-1.5 border border-accent text-accent bg-card text-sm cursor-pointer"
+                    : "px-4 py-1.5 border border-border bg-card text-foreground hover:border-accent hover:text-accent text-sm cursor-pointer shadow-sm"
                 }
               >
                 Có Bình Luận (
@@ -1449,8 +1449,8 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                 onClick={() => setReviewFilter("has_image")}
                 className={
                   reviewFilter === "has_image"
-                    ? "px-4 py-1.5 border border-[#ee4d2d] text-[#ee4d2d] bg-white text-sm cursor-pointer dark:bg-gray-900 dark:border-red-500 dark:text-red-400"
-                    : "px-4 py-1.5 border border-transparent bg-white text-gray-800 hover:border-[#ee4d2d] hover:text-[#ee4d2d] text-sm cursor-pointer shadow-sm dark:bg-gray-800 dark:text-gray-200"
+                    ? "px-4 py-1.5 border border-accent text-accent bg-card text-sm cursor-pointer"
+                    : "px-4 py-1.5 border border-border bg-card text-foreground hover:border-accent hover:text-accent text-sm cursor-pointer shadow-sm"
                 }
               >
                 Có Hình Ảnh (
@@ -1526,7 +1526,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                         >
                           <Star
                             className={`w-8 h-8 ${starValue <= myRating
-                              ? "text-[#ee4d2d] fill-current"
+                              ? "text-accent fill-current"
                               : "text-gray-300"
                               }`}
                           />
@@ -1541,7 +1541,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                   onChange={(e) => setMyComment(e.target.value)}
                   rows={4}
                   placeholder="Hãy chia sẻ nhận xét cho sản phẩm này nhé!"
-                  className="w-full text-sm mb-4 border-gray-200 focus:border-[#ee4d2d] focus:ring-[#ee4d2d]"
+                  className="w-full text-sm mb-4 border-border focus:border-accent focus:ring-accent"
                 />
 
                 <div className="flex flex-wrap gap-3 mb-6">
@@ -1571,7 +1571,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                           onClick={() =>
                             handleRemoveExistingImage(img.public_id)
                           }
-                          className="absolute top-0 right-0 bg-[#ee4d2d] text-white p-0.5 z-10"
+                          className="absolute top-0 right-0 bg-destructive text-white p-0.5 z-10"
                         >
                           <X className="w-3 h-3" />
                         </button>
@@ -1583,7 +1583,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                     return (
                       <div
                         key={idx}
-                        className="relative w-[72px] h-[72px] shrink-0 border border-gray-200 shadow-sm bg-black overflow-hidden"
+                        className="relative w-[72px] h-[72px] shrink-0 border border-border shadow-sm bg-black overflow-hidden"
                       >
                         {isVid ? (
                           <video
@@ -1600,7 +1600,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                         <button
                           type="button"
                           onClick={() => handleRemoveMyImage(idx)}
-                          className="absolute top-0 right-0 bg-[#ee4d2d] text-white p-0.5 z-10"
+                          className="absolute top-0 right-0 bg-destructive text-white p-0.5 z-10"
                         >
                           <X className="w-3 h-3" />
                         </button>
@@ -1608,7 +1608,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                     );
                   })}
                   {myImages.length + existingImages.length < 4 && (
-                    <label className="w-[72px] h-[72px] shrink-0 flex flex-col items-center justify-center border-2 border-dashed border-[#ee4d2d] text-[#ee4d2d] cursor-pointer hover:bg-orange-50 transition bg-white">
+                    <label className="w-[72px] h-[72px] shrink-0 flex flex-col items-center justify-center border-2 border-dashed border-accent text-accent cursor-pointer hover:bg-secondary transition bg-card">
                       <ImagePlus className="w-6 h-6 mb-1" />
                       <span className="text-[10px] uppercase font-medium">
                         Thêm Hình
@@ -1628,7 +1628,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                   <Button
                     onClick={handleSubmitReview}
                     disabled={reviewSubmitting}
-                    className="bg-[#ee4d2d] hover:bg-[#d03d1e] text-white min-w-[140px] border-0"
+                    className="bg-primary hover:bg-accent text-primary-foreground min-w-[140px] border-0"
                   >
                     {reviewSubmitting ? (
                       <>
@@ -1660,14 +1660,14 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
       <section className="w-full px-4 sm:px-6 lg:px-8 pb-14">
         <div className="w-full mx-auto">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+            <h3 className="text-xl font-bold font-serif text-foreground mb-2">
               Sản phẩm liên quan
             </h3>
 
             <Button
               variant="ghost"
               onClick={() => navigate("/products")}
-              className="text-amber-600"
+              className="text-accent hover:text-accent/80 font-semibold"
             >
               Xem tất cả
             </Button>
@@ -1675,7 +1675,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
 
           {relatedLoading ? (
             <div className="flex justify-center py-10">
-              <Loader2 className="w-8 h-8 animate-spin text-amber-600" />
+              <Loader2 className="w-8 h-8 animate-spin text-accent" />
             </div>
           ) : relatedProducts.length === 0 ? (
             <div className="text-sm text-center text-gray-500">
@@ -1740,11 +1740,11 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                   return (
                     <SwiperSlide key={item.id} className="h-auto">
                       <div className="group h-full pb-4 px-2 pt-2">
-                        <div className="flex h-full flex-col overflow-hidden rounded-[24px] bg-[#FCFAF8] dark:bg-gray-900 border border-transparent hover:border-[#E8DFD5] dark:hover:border-gray-800 transition-all duration-300 hover:-translate-y-1 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] hover:shadow-lg p-5">
+                    <div className="flex h-full flex-col overflow-hidden rounded-2xl bg-card border border-border/50 hover:border-accent/40 transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-md p-5">
                           <div className="relative">
                             {relatedSale && (
                               <div className="absolute top-0 left-0 z-10 flex flex-col gap-2">
-                                <span className="bg-red-500 text-white text-[10px] uppercase font-bold px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+                                <span className="bg-accent text-accent-foreground text-[10px] uppercase font-bold px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
                                   <Zap className="w-3 h-3 fill-white" /> Giảm{" "}
                                   {relatedSale.discount_percent}%
                                 </span>
@@ -1786,8 +1786,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                               className="cursor-pointer"
                             >
                               <h3
-                                className="line-clamp-2 text-base font-bold text-[#4A3219] dark:text-gray-100 transition hover:text-[#8B5A2B] min-h-[44px] mb-1.5"
-                                style={{ fontFamily: "serif" }}
+                                className="line-clamp-2 text-base font-bold font-serif text-foreground transition hover:text-accent min-h-[44px] mb-1.5"
                               >
                                 {item.name}
                               </h3>
@@ -1809,12 +1808,12 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                                     <span className="text-[#a8a8a8] text-xs line-through font-medium">
                                       {minPrice.toLocaleString("vi-VN")}đ
                                     </span>
-                                    <span className="text-[#D62828] font-bold text-lg leading-none mt-1">
+                                    <span className="text-accent font-bold text-lg leading-none mt-1">
                                       {finalSalePrice.toLocaleString("vi-VN")}đ
                                     </span>
                                   </>
                                 ) : (
-                                  <span className="text-[#8B5A2B] font-bold text-lg leading-none mt-1">
+                                  <span className="text-accent font-bold text-lg leading-none mt-1">
                                     {priceText}
                                   </span>
                                 )}
@@ -1826,7 +1825,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                                     e.stopPropagation();
                                     setQuickViewProduct(item);
                                   }}
-                                  className="w-8 h-8 rounded-md flex items-center justify-center shrink-0 transition-colors shadow-sm bg-amber-100 dark:bg-amber-900/30 hover:bg-amber-200 dark:hover:bg-amber-800/50 text-amber-700 dark:text-amber-500"
+                                  className="w-8 h-8 rounded-md flex items-center justify-center shrink-0 transition-colors shadow-sm bg-secondary hover:bg-secondary/85 text-foreground"
                                   title="Xem nhanh"
                                 >
                                   <svg
@@ -1850,7 +1849,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                                     onClick={(e) =>
                                       handleRelatedFastAdd(e, item)
                                     }
-                                    className="w-8 h-8 rounded-md flex items-center justify-center shrink-0 transition-colors shadow-sm bg-[#8B5A2B] hover:bg-[#69421c] text-white"
+                                    className="w-8 h-8 rounded-md flex items-center justify-center shrink-0 transition-colors shadow-sm bg-primary hover:bg-accent text-primary-foreground"
                                     title="Thêm vào giỏ"
                                   >
                                     <ShoppingCart className="w-[15px] h-[15px] xl:ml-[-1px]" />
@@ -1858,7 +1857,7 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
                                 ) : (
                                   <div
                                     onClick={(e) => e.stopPropagation()}
-                                    className="flex items-center justify-center text-[11px] font-bold text-rose-600 bg-rose-50 px-2 h-8 rounded-md border border-rose-100 whitespace-nowrap shadow-sm cursor-not-allowed"
+                                    className="flex items-center justify-center text-[11px] font-bold text-destructive bg-destructive/10 px-2 h-8 rounded-md border border-destructive/20 whitespace-nowrap shadow-sm cursor-not-allowed"
                                     title={nextOpenMessage}
                                   >
                                     Đóng cửa

@@ -825,11 +825,11 @@ export default function AdminApp() {
                 </button>
               </AlertDialogTrigger>
               <AlertDialogContent className="rounded-3xl border-0 shadow-2xl p-0 overflow-hidden sm:max-w-[400px]">
-                <div className="bg-gradient-to-br from-amber-50 to-orange-100/60 dark:from-orange-950/40 dark:to-amber-900/20 px-6 py-6 text-center">
-                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 mb-4 ring-8 ring-primary/5 dark:ring-primary/10">
+                <div className="bg-secondary px-6 py-6 text-center">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 mb-4 ring-8 ring-primary/5">
                     <LogOut className="h-8 w-8 text-primary translate-x-0.5" />
                   </div>
-                  <AlertDialogTitle className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">
+                  <AlertDialogTitle className="text-xl font-bold text-foreground mb-2">
                     Đăng xuất hệ thống
                   </AlertDialogTitle>
                   <AlertDialogDescription className="text-slate-500 dark:text-slate-400">
@@ -884,7 +884,7 @@ export default function AdminApp() {
             >
               <Bell className="w-5 h-5" />
               {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-accent text-accent-foreground text-xs flex items-center justify-center animate-pulse">
                   {unreadCount}
                 </span>
               )}
@@ -923,10 +923,10 @@ export default function AdminApp() {
                           item.recipient_id || `${item.id}-${item.created_at}`
                         }
                         onClick={() => handleReadNotification(item)}
-                        className={`w-full text-left px-4 py-3 border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
+                        className={`w-full text-left px-4 py-3 border-b border-border hover:bg-secondary transition-colors ${
                           Number(item.is_read) === 0
-                            ? "bg-orange-50 dark:bg-amber-900/20"
-                            : "bg-white dark:bg-gray-800"
+                            ? "bg-accent/10 text-foreground"
+                            : "bg-card text-foreground"
                         }`}
                       >
                         <div className="flex items-start justify-between gap-3">
@@ -946,7 +946,7 @@ export default function AdminApp() {
 
                           <div className="flex flex-col items-end gap-2 shrink-0">
                             {Number(item.is_read) === 0 && (
-                              <span className="w-2 h-2 rounded-full bg-red-500 mt-1" />
+                              <span className="w-2 h-2 rounded-full bg-accent mt-1" />
                             )}
 
                             <button

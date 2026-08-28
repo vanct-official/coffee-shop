@@ -146,11 +146,11 @@ export default function BestSellerSection({
   }, []);
 
   return (
-    <section className="py-8 md:py-12 lg:py-16 bg-white dark:bg-gray-950">
+    <section className="py-8 md:py-12 lg:py-16 bg-background">
       <div className="w-full px-4 lg:px-6 xl:px-8">
-        <div className="bg-[#F8F5F0] dark:bg-[#1a1614] rounded-none sm:rounded-3xl py-12 md:py-16 px-4 sm:px-8 lg:px-12 w-full">
+        <div className="bg-card/40 border border-border/40 rounded-3xl py-12 md:py-16 px-4 sm:px-8 lg:px-12 w-full">
           <div className="flex flex-col items-center text-center justify-center gap-2 mb-8">
-            <h2 className="text-2xl md:text-3xl font-semibold text-amber-900 dark:text-amber-500" style={{ fontFamily: 'serif' }}>
+            <h2 className="text-2xl md:text-3xl font-bold font-serif text-primary">
               Sản phẩm nổi bật
             </h2>
             <p className="max-w-2xl text-sm md:text-base text-gray-500 dark:text-gray-400">
@@ -164,8 +164,8 @@ export default function BestSellerSection({
                 key={tab}
                 onClick={() => handleTabChange(tab)}
                 className={`px-5 py-2 rounded-full text-sm font-semibold transition-colors ${activeTab === tab
-                  ? "bg-[#8B5A2B] text-white shadow-sm"
-                  : "bg-[#F3EBE1] text-[#8B5A2B] hover:bg-[#EAE0D3] dark:bg-[#3E2723] dark:text-amber-200 dark:hover:bg-[#4E342E]"
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "bg-secondary text-foreground hover:bg-secondary/80"
                   }`}
               >
                 {tab}
@@ -176,7 +176,7 @@ export default function BestSellerSection({
           {isCurrentlyLoading && (
             <div className="flex items-center justify-center py-20">
               <div className="flex flex-col items-center gap-4">
-                <Loader2 className="h-10 w-10 animate-spin text-[#8B5A2B]" />
+                <Loader2 className="h-10 w-10 animate-spin text-accent" />
                 <p className="text-muted-foreground">Đang tải sản phẩm...</p>
               </div>
             </div>
@@ -194,7 +194,7 @@ export default function BestSellerSection({
                       animation: `fadeInUp 0.6s ease-out ${index * 0.08}s both`,
                     }}
                   >
-                    <div className="flex h-full flex-col overflow-hidden rounded-[24px] bg-[#FCFAF8] dark:bg-gray-900 border border-transparent hover:border-[#E8DFD5] dark:hover:border-gray-800 transition-all duration-300 hover:-translate-y-1 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] hover:shadow-lg p-5">
+                    <div className="flex h-full flex-col overflow-hidden rounded-2xl bg-card border border-border/50 hover:border-accent/40 transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-md p-5">
                       <div className="relative">
                         {/* Badges */}
                         <div className="absolute top-0 left-0 z-10 flex flex-col gap-2">
@@ -232,7 +232,7 @@ export default function BestSellerSection({
                         </p>
 
                         <Link to={`/${product.slug || 'products/' + product.id}`}>
-                          <h3 className="line-clamp-1 text-base font-bold text-[#4A3219] dark:text-gray-100 transition hover:text-[#8B5A2B] mb-1.5" style={{ fontFamily: 'serif' }}>
+                          <h3 className="line-clamp-1 text-base font-bold font-serif text-foreground transition hover:text-accent mb-1.5">
                             {product.name}
                           </h3>
                         </Link>
@@ -255,7 +255,7 @@ export default function BestSellerSection({
                                 .filter((price) => Number.isFinite(price) && price > 0);
 
                               if (validPrices.length === 0) {
-                                return <p className="break-words text-[15px] font-bold leading-tight text-[#8B5A2B] dark:text-amber-500">Liên hệ</p>;
+                                  return <p className="break-words text-[15px] font-bold leading-tight text-accent">Liên hệ</p>;
                               }
 
                               const minPrice = Math.min(...validPrices);
@@ -279,7 +279,7 @@ export default function BestSellerSection({
                                 return (
                                   <div className="flex flex-col">
                                     <span className="text-[11px] line-through text-gray-400">{originalText}</span>
-                                    <p className="break-words text-[15px] font-bold leading-tight text-[#8B5A2B] dark:text-amber-500">
+                                    <p className="break-words text-[15px] font-bold leading-tight text-accent">
                                       {saleText}
                                     </p>
                                   </div>
@@ -287,7 +287,7 @@ export default function BestSellerSection({
                               }
 
                               return (
-                                <p className="break-words text-[15px] font-bold leading-tight text-[#8B5A2B] dark:text-amber-500">
+                                <p className="break-words text-[15px] font-bold leading-tight text-accent">
                                   {originalText}
                                 </p>
                               );
@@ -301,7 +301,7 @@ export default function BestSellerSection({
                                 e.stopPropagation();
                                 setQuickViewProduct(product);
                               }}
-                              className="w-8 h-8 rounded-md flex items-center justify-center shrink-0 transition-colors shadow-sm bg-amber-100 dark:bg-amber-900/30 hover:bg-amber-200 dark:hover:bg-amber-800/50 text-amber-700 dark:text-amber-500"
+                              className="w-8 h-8 rounded-md flex items-center justify-center shrink-0 transition-colors shadow-sm bg-secondary hover:bg-secondary/85 text-foreground"
                               title="Xem nhanh"
                             >
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" /><circle cx="12" cy="12" r="3" /></svg>
@@ -309,7 +309,7 @@ export default function BestSellerSection({
                             {isOpen ? (
                               <button
                                 onClick={(e) => handleFastAdd(e, product)}
-                                className="w-8 h-8 rounded-md flex items-center justify-center shrink-0 transition-colors shadow-sm bg-[#8B5A2B] hover:bg-[#69421c] text-white"
+                                 className="w-8 h-8 rounded-md flex items-center justify-center shrink-0 transition-colors shadow-sm bg-primary hover:bg-accent text-primary-foreground"
                                 title="Thêm vào giỏ"
                               >
                                 <ShoppingCart className="w-[15px] h-[15px] xl:ml-[-1px]" />
@@ -317,7 +317,7 @@ export default function BestSellerSection({
                             ) : (
                               <div
                                 onClick={(e) => e.stopPropagation()}
-                                className="flex items-center justify-center text-[11px] font-bold text-rose-600 bg-rose-50 px-2 h-8 rounded-md border border-rose-100 whitespace-nowrap shadow-sm cursor-not-allowed"
+                                 className="flex items-center justify-center text-[11px] font-bold text-destructive bg-destructive/10 px-2 h-8 rounded-md border border-destructive/20 whitespace-nowrap shadow-sm cursor-not-allowed"
                                 title={nextOpenMessage}
                               >
                                 Đóng cửa

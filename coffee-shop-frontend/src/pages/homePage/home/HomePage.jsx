@@ -162,9 +162,9 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 dark:border-gray-800">
+    <div className="min-h-screen flex flex-col bg-background">
       <FadeInView delay={0} duration={1200}>
-        <div className="w-full bg-white dark:bg-gray-950 pb-4">
+        <div className="w-full bg-background pb-4">
           <div className="w-full px-4 lg:px-6 xl:px-8 relative flex items-stretch">
             {/* BANNER */}
             <div className="flex-1 w-full overflow-hidden">
@@ -201,7 +201,7 @@ export default function HomePage() {
       </FadeInView>
 
       <FadeInView delay={200}>
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-300 to-transparent" />
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
       </FadeInView>
 
       <FadeInView>
@@ -211,7 +211,7 @@ export default function HomePage() {
       {/* Scroll to Top Button */}
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-24 right-6 p-3 bg-amber-600 hover:bg-amber-700 text-white rounded-full shadow-lg shadow-amber-900/20 z-40 transition-all duration-300 ${showScrollTop ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0 pointer-events-none"
+        className={`fixed bottom-24 right-6 p-3 bg-primary hover:bg-accent text-primary-foreground rounded-full shadow-lg shadow-primary/20 z-40 transition-all duration-300 ${showScrollTop ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0 pointer-events-none"
           }`}
         title="Cuộn lên đầu trang"
       >
@@ -252,7 +252,7 @@ export default function HomePage() {
         }
 
         .homepage-banner-swiper .swiper-pagination-bullet-active {
-          background: #C65D2E;
+          background: var(--accent);
         }
       `}</style>
     </div>

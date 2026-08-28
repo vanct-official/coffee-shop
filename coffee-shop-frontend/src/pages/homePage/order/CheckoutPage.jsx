@@ -649,7 +649,7 @@ export default function CheckoutPage() {
               <div className="mb-4 space-y-4">
                 {token && (
                   <div className="mb-5">
-                    <label className="text-sm font-semibold mb-3 block text-amber-900 dark:text-amber-500">
+                    <label className="text-sm font-semibold mb-3 block text-primary">
                       Tùy chọn giao hàng
                     </label>
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
@@ -704,7 +704,7 @@ export default function CheckoutPage() {
                   <div className="bg-gray-50/50 dark:bg-gray-800/30 border border-gray-200 dark:border-gray-800 rounded-xl p-5 mb-2">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-amber-600" />
+                        <MapPin className="w-4 h-4 text-accent" />
                         <label className="text-sm font-medium block">
                           Chọn từ Sổ địa chỉ
                         </label>
@@ -727,8 +727,8 @@ export default function CheckoutPage() {
                     </div>
 
                     {selectedAddress ? (
-                      <div className="border rounded-xl p-4 bg-amber-50/50 dark:bg-amber-900/10 border-amber-200 shadow-sm relative overflow-hidden">
-                        <div className="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
+                      <div className="border rounded-xl p-4 bg-secondary border-border shadow-sm relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-1 h-full bg-accent"></div>
                         <div className="flex flex-col gap-1 ml-1">
                           <div className="flex items-center justify-between">
                             <p className="text-[15px] font-bold text-gray-900 dark:text-gray-100">
@@ -740,7 +740,7 @@ export default function CheckoutPage() {
                                 {selectedAddress.receiver_phone}
                               </span>
                             </p>
-                            <span className="text-[11px] font-medium text-amber-700 bg-amber-100 dark:bg-amber-900/50 dark:text-amber-400 px-2 py-0.5 rounded-full border border-amber-200">
+                            <span className="text-[11px] font-medium text-accent bg-accent/15 px-2 py-0.5 rounded-full border border-accent/20">
                               {getAddressTypeLabel(
                                 selectedAddress.address_type,
                               )}
@@ -766,7 +766,7 @@ export default function CheckoutPage() {
 
                 {(!token || addressMode === "new") && (
                   <div className="bg-white dark:bg-transparent rounded-xl">
-                    <span className="text-sm font-medium mb-2 block text-amber-900 dark:text-amber-500">
+                    <span className="text-sm font-medium mb-2 block text-primary">
                       Nhập địa chỉ giao hàng
                     </span>
                     <VietmapAddressAutocomplete
@@ -849,8 +849,8 @@ export default function CheckoutPage() {
                 <div
                   className={`mb-3 p-3 rounded-lg text-sm ${
                     paymentValidation.forcePayOS
-                      ? "bg-yellow-50 text-yellow-800 border border-yellow-200"
-                      : "bg-blue-50 text-blue-800 border border-blue-200"
+                      ? "bg-accent/10 text-accent border border-accent/25"
+                      : "bg-secondary text-primary border border-border"
                   }`}
                 >
                   <p className="font-medium">{paymentValidation.message}</p>
@@ -915,8 +915,8 @@ export default function CheckoutPage() {
                         isDisabled
                           ? "border-gray-200  bg-gray-100 dark:bg-gray-800 opacity-50 cursor-not-allowed"
                           : selected
-                            ? "border-amber-500 bg-amber-50 dark:bg-amber-900/20"
-                            : "border-gray-200  bg-white dark:bg-gray-900 hover:border-gray-300"
+                            ? "border-accent bg-secondary"
+                            : "border-border bg-card hover:border-accent/60"
                       }`}
                     >
                       <span
@@ -924,8 +924,8 @@ export default function CheckoutPage() {
                           isDisabled
                             ? "bg-gray-200"
                             : selected
-                              ? "bg-amber-100 dark:bg-amber-900/30"
-                              : "bg-gray-100 dark:bg-gray-800"
+                              ? "bg-accent/15"
+                              : "bg-secondary text-foreground"
                         }`}
                       >
                         {isDisabled ? (
@@ -962,8 +962,8 @@ export default function CheckoutPage() {
                           isDisabled
                             ? "border-gray-300 bg-gray-300"
                             : selected
-                              ? "border-amber-500 bg-amber-50 dark:bg-amber-900/200"
-                              : "border-gray-300"
+                              ? "border-accent bg-accent/15"
+                              : "border-border"
                         }`}
                       />
                     </button>
@@ -996,10 +996,9 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          <div className="border rounded-2xl p-5 bg-gray-50 dark:bg-gray-950 h-fit lg:sticky lg:top-24">
+          <div className="border border-border rounded-2xl p-5 bg-card h-fit lg:sticky lg:top-24">
             <h2
-              className="text-xl md:text-xl font-semibold text-amber-900 dark:text-amber-500 mb-4"
-              style={{ fontFamily: "serif" }}
+              className="text-xl md:text-xl font-bold font-serif text-primary mb-4"
             >
               Đơn hàng
             </h2>
@@ -1013,7 +1012,7 @@ export default function CheckoutPage() {
                   <div className="flex items-start gap-3 flex-1 text-left">
                     <div className="relative shrink-0">
                       <div
-                        className="w-12 h-12 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-100 dark:border-gray-800 flex items-center justify-center p-1.5 overflow-hidden mix-blend-multiply dark:mix-blend-normal cursor-pointer transition-opacity hover:opacity-80"
+                        className="w-12 h-12 bg-secondary rounded-lg border border-border flex items-center justify-center p-1.5 overflow-hidden mix-blend-multiply dark:mix-blend-normal cursor-pointer transition-opacity hover:opacity-80"
                         onClick={() =>
                           navigate(
                             `/${
@@ -1040,14 +1039,14 @@ export default function CheckoutPage() {
                         activeSale.product_ids?.includes(
                           Number(item.product_id || item.id),
                         ) && (
-                          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-bold px-1 py-0.5 rounded-sm shadow-sm whitespace-nowrap z-10">
+                          <span className="absolute -top-1 -right-1 bg-accent text-accent-foreground text-[8px] font-bold px-1 py-0.5 rounded-sm shadow-sm whitespace-nowrap z-10">
                             -{activeSale.discount_percent}%
                           </span>
                         )}
                     </div>
                     <div>
                       <p
-                        className="font-medium text-sm leading-snug cursor-pointer hover:text-amber-600 transition-colors"
+                        className="font-bold font-serif text-sm leading-snug cursor-pointer hover:text-accent transition-colors"
                         onClick={() =>
                           navigate(
                             `/${
@@ -1063,7 +1062,7 @@ export default function CheckoutPage() {
                         activeSale.product_ids?.includes(
                           Number(item.product_id || item.id),
                         ) && (
-                          <div className="mt-0.5 text-[11px] text-red-600 font-bold">
+                          <div className="mt-0.5 text-[11px] text-accent font-bold">
                             🔥 Flash sale
                           </div>
                         )}
@@ -1130,7 +1129,7 @@ export default function CheckoutPage() {
             </div>
 
             {token ? (
-              <div className="mb-5 rounded-xl border border-amber-200 bg-amber-50 p-3 dark:bg-amber-900/10 dark:border-amber-900/30">
+              <div className="mb-5 rounded-xl border border-border bg-secondary p-3">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
@@ -1210,7 +1209,7 @@ export default function CheckoutPage() {
                 <div className="flex flex-col">
                   <span>Tổng cộng</span>
                 </div>
-                <span className="text-amber-600">
+                <span className="text-accent">
                   {totalAmount.toLocaleString("vi-VN")}đ
                 </span>
               </div>
@@ -1220,7 +1219,7 @@ export default function CheckoutPage() {
               Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo{" "}
               <Link
                 to="/order-policy"
-                className="text-amber-600 hover:text-amber-700 hover:underline transition-colors font-medium"
+                className="text-accent hover:text-accent/80 hover:underline transition-colors font-medium"
               >
                 Điều khoản Cửa Hàng
               </Link>
@@ -1264,8 +1263,8 @@ export default function CheckoutPage() {
                     onClick={() => handleSelectAddress(item)}
                     className={`w-full text-left border rounded-xl p-4 transition ${
                       isSelected
-                        ? "border-amber-500 bg-amber-50 dark:bg-amber-900/20"
-                        : "border-gray-200  hover:border-gray-300 bg-white dark:bg-gray-900"
+                        ? "border-accent bg-secondary"
+                        : "border-border hover:border-accent bg-card"
                     }`}
                   >
                     <div className="flex items-center justify-between gap-3 mb-2">

@@ -84,7 +84,7 @@ function Footer() {
                   alt={`${storeName} Logo`}
                   className="h-16 w-auto group-hover:opacity-80 transition-opacity object-contain rounded-xl shadow-sm"
                 />
-                <h3 className="text-xl font-semibold tracking-tight text-amber-900 dark:text-amber-500 transition-colors line-clamp-2" style={{ fontFamily: 'serif' }}>
+                <h3 className="text-xl font-bold tracking-tight text-primary font-serif transition-colors line-clamp-2">
                   {storeName}
                 </h3>
               </Link>
@@ -217,8 +217,8 @@ function Footer() {
                 Chứng nhận
               </h4>
               <div className="mt-4 flex flex-col gap-3">
-                <div className="border bg-gray-50 dark:bg-background/50 rounded flex items-center gap-3 p-2 h-11 transition-colors hover:bg-gray-100 w-full">
-                  <ShieldCheck className="text-gray-800 dark:text-gray-200 w-6 h-6 flex-shrink-0 ml-1" />
+                <div className="border border-border bg-secondary hover:bg-secondary/85 rounded-xl flex items-center gap-3 p-2 h-11 transition-colors w-full">
+                  <ShieldCheck className="text-foreground w-6 h-6 flex-shrink-0 ml-1" />
                   <div className="text-[9px] min-[1100px]:text-[10px] font-bold leading-tight text-gray-800 dark:text-gray-200 text-left uppercase overflow-hidden text-ellipsis whitespace-nowrap">
                     Protected by
                     <br />
@@ -227,8 +227,8 @@ function Footer() {
                     </span>
                   </div>
                 </div>
-                <div className="border bg-gray-50 dark:bg-background/50 rounded flex items-center gap-3 p-2 h-11 transition-colors hover:bg-gray-100 w-full">
-                  <CheckCircle2 className="text-[#0d5cb6] w-6 h-6 flex-shrink-0 ml-1" />
+                <div className="border border-border bg-secondary hover:bg-secondary/85 rounded-xl flex items-center gap-3 p-2 h-11 transition-colors w-full">
+                  <CheckCircle2 className="text-[#0d5cb6] dark:text-[#38bdf8] w-6 h-6 flex-shrink-0 ml-1" />
                   <div className="text-[8px] min-[1100px]:text-[9px] font-bold leading-tight text-[#0d5cb6] uppercase text-left overflow-hidden text-ellipsis whitespace-nowrap">
                     Đã thông báo
                     <br />
@@ -274,20 +274,20 @@ function Footer() {
                   href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center transition-all hover:-translate-y-1 shadow-md"
+                  className="w-9 h-9 rounded-full bg-primary hover:bg-accent text-primary-foreground flex items-center justify-center transition-all hover:-translate-y-1 shadow-sm"
                   aria-label="Facebook"
                 >
                   <Facebook
                     size={18}
                     fill="currentColor"
-                    className="text-white"
+                    className="text-primary-foreground"
                   />
                 </a>
                 <a
                   href="https://zalo.me"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center transition-all hover:-translate-y-1 shadow-md font-bold text-[11px]"
+                  className="w-9 h-9 rounded-full bg-primary hover:bg-accent text-primary-foreground flex items-center justify-center transition-all hover:-translate-y-1 shadow-sm font-bold text-[11px]"
                   aria-label="Zalo"
                 >
                   Zalo

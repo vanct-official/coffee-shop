@@ -1,48 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
-@font-face {
-  font-family: "SF Pro Display";
-  src: url("/assets/fonts/SF-Pro-Display-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "SF Pro Display";
-  src: url("/assets/fonts/SF-Pro-Display-Medium.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "SF Pro Display";
-  src: url("/assets/fonts/SF-Pro-Display-Semibold.woff2") format("woff2");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "SF Pro Display";
-  src: url("/assets/fonts/SF-Pro-Display-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
 /* =========================
-   THEME MAPPING (GIỮ NGUYÊN)
+   THEME MAPPING
    ========================= */
 @theme inline {
-  --font-family-sans:
-    -apple-system, system-ui, "SF Pro Display", "SF Pro Text", "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-sans: "Roboto", -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-serif: "Playfair Display", Georgia, serif;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -99,123 +67,114 @@
 }
 
 /* =========================
-   LIGHT MODE – TƯƠI SÁNG & SANG TRỌNG
+   LIGHT MODE – LUXURY WARM CREAM
    ========================= */
 :root {
-  --radius: 0.75rem;
+  --radius: 0.5rem;
 
-  /* San Francisco Font (Apple) with fallbacks */
-  --font-sans:
-    -apple-system, system-ui, "SF Pro Display", "SF Pro Text", "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Roboto", sans-serif;
+  --font-serif: "Playfair Display", serif;
 
-  /* Nền trắng kem sáng sủa hơn, bớt ám vàng */
-  --background: #fffcf9;
-  --foreground: #2d2420; /* Đen nâu nhẹ, dịu mắt hơn đen tuyền */
+  --background: #FAF6F0;
+  --foreground: #1E0F0A;
 
-  --card: #ffffff;
-  --card-foreground: #2d2420;
+  --card: #FDFBF9;
+  --card-foreground: #1E0F0A;
 
-  --popover: #ffffff;
-  --popover-foreground: #2d2420;
+  --popover: #FDFBF9;
+  --popover-foreground: #1E0F0A;
 
-  /* ĐỔI: Cam đất nung (Terracotta) - Nổi bật, ấm áp nhưng không già */
-  --primary: #c25e28;
-  --primary-foreground: #ffffff;
+  --primary: #2C1810;
+  --primary-foreground: #FAF6F0;
 
-  /* ĐỔI: Be hồng nhạt - Sạch sẽ hơn */
-  --secondary: #f4efe9;
-  --secondary-foreground: #4a3b32;
+  --secondary: #EFEAE2;
+  --secondary-foreground: #2C1810;
 
-  /* ĐỔI: Xám ấm nhẹ */
-  --muted: #f0eae4;
-  --muted-foreground: #8a7a70;
+  --muted: #F2EBE1;
+  --muted-foreground: #7D6E65;
 
-  /* ĐỔI: Xanh Teal/Cổ vịt - Tạo điểm nhấn đối lập cực đẹp với màu cam đất */
-  --accent: #4c7f75;
-  --accent-foreground: #ffffff;
+  --accent: #A3704C;
+  --accent-foreground: #FAF6F0;
 
-  --destructive: #d94646;
+  --destructive: #8B261D;
 
-  --border: #e6dbd1; /* Viền sáng hơn */
-  --input: #f0eae4;
-  --ring: #c25e28;
+  --border: #E5DCD0;
+  --input: #F2EBE1;
+  --ring: #A3704C;
 
-  /* Chart: Phối hài hòa giữa nóng và lạnh */
-  --chart-1: #c25e28; /* Terracotta */
-  --chart-2: #4c7f75; /* Teal */
-  --chart-3: #e09f3e; /* Mustard */
-  --chart-4: #8a5a44; /* Coffee */
-  --chart-5: #d4c5b0; /* Sand */
+  --chart-1: #2C1810;
+  --chart-2: #A3704C;
+  --chart-3: #C5A880;
+  --chart-4: #8E6F52;
+  --chart-5: #D9C8B5;
 
-  --sidebar: #fbf7f4;
-  --sidebar-foreground: #2d2420;
-  --sidebar-primary: #c25e28;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f0eae4;
-  --sidebar-accent-foreground: #4a3b32;
-  --sidebar-border: #e6dbd1;
-  --sidebar-ring: #c25e28;
+  --sidebar: #FAF6F0;
+  --sidebar-foreground: #1E0F0A;
+  --sidebar-primary: #2C1810;
+  --sidebar-primary-foreground: #FAF6F0;
+  --sidebar-accent: #EFEAE2;
+  --sidebar-accent-foreground: #2C1810;
+  --sidebar-border: #E5DCD0;
+  --sidebar-ring: #A3704C;
 }
 
 /* =========================
-   DARK MODE – SÂU LẮNG & HIỆN ĐẠI
+   DARK MODE – DEEP ROASTED ESPRESSO
    ========================= */
 .dark {
-  /* Nền tối sâu (Warm Black) thay vì nâu nhờ */
-  --background: #14110f;
-  --foreground: #f0e6dd;
+  --background: #120907;
+  --foreground: #F5ECE3;
 
-  --card: #1c1917; /* Card nổi nhẹ lên */
-  --card-foreground: #f0e6dd;
+  --card: #1A0F0C;
+  --card-foreground: #F5ECE3;
 
-  --popover: #1c1917;
-  --popover-foreground: #f0e6dd;
+  --popover: #1A0F0C;
+  --popover-foreground: #F5ECE3;
 
-  /* Primary Dark: Cam cháy rực rỡ hơn để nổi trên nền đen */
-  --primary: #e07a48;
-  --primary-foreground: #14110f;
+  --primary: #EFE3D5;
+  --primary-foreground: #120907;
 
-  --secondary: #292524;
-  --secondary-foreground: #f0e6dd;
+  --secondary: #2C1C17;
+  --secondary-foreground: #EFE3D5;
 
-  --muted: #2e2925;
-  --muted-foreground: #a89c94;
+  --muted: #2C1C17;
+  --muted-foreground: #A8988E;
 
-  /* Accent Dark: Xanh ngọc trầm */
-  --accent: #5d968b;
-  --accent-foreground: #14110f;
+  --accent: #C5A880;
+  --accent-foreground: #120907;
 
-  --destructive: #e05d5d;
+  --destructive: #CF4436;
 
-  --border: #332d29;
-  --input: #2e2925;
-  --ring: #e07a48;
+  --border: #35231E;
+  --input: #2C1C17;
+  --ring: #C5A880;
 
-  --chart-1: #e07a48;
-  --chart-2: #5d968b;
-  --chart-3: #eebb66;
-  --chart-4: #bf8569;
-  --chart-5: #8c7e73;
+  --chart-1: #EFE3D5;
+  --chart-2: #C5A880;
+  --chart-3: #8E6F52;
+  --chart-4: #D9C8B5;
+  --chart-5: #35231E;
 
-  --sidebar: #110e0c;
-  --sidebar-foreground: #f0e6dd;
-  --sidebar-primary: #e07a48;
-  --sidebar-primary-foreground: #14110f;
-  --sidebar-accent: #292524;
-  --sidebar-accent-foreground: #f0e6dd;
-  --sidebar-border: #332d29;
-  --sidebar-ring: #e07a48;
+  --sidebar: #120907;
+  --sidebar-foreground: #F5ECE3;
+  --sidebar-primary: #EFE3D5;
+  --sidebar-primary-foreground: #120907;
+  --sidebar-accent: #2C1C17;
+  --sidebar-accent-foreground: #EFE3D5;
+  --sidebar-border: #35231E;
 }
 
-/* BASE STYLES GIỮ NGUYÊN */
+/* BASE STYLES */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    @apply bg-background text-foreground font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-serif);
+    @apply tracking-tight;
   }
 }
 
@@ -267,7 +226,7 @@
 }
 
 .product-rich-content a {
-  color: #c25e28;
+  color: var(--primary);
   text-decoration: underline;
 }
 

@@ -682,7 +682,7 @@ function Header() {
       <span>
         {parts.map((part, i) =>
           regex.test(part) ? (
-            <span key={i} className="text-red-500 font-bold bg-gray-100 dark:bg-gray-800/50 rounded px-0.5">
+            <span key={i} className="text-accent font-bold bg-secondary/80 rounded px-0.5">
               {part}
             </span>
           ) : (
@@ -721,7 +721,7 @@ function Header() {
           <p className="text-base font-semibold text-gray-800 dark:text-gray-200 line-clamp-2">
             {highlightText(item.name, kw)}
           </p>
-          <p className="text-sm font-semibold text-red-500 mt-1">
+          <p className="text-sm font-semibold text-accent mt-1">
             {minPrice !== null
               ? `${minPrice.toLocaleString("vi-VN")}đ`
               : "Liên hệ"}
@@ -759,7 +759,7 @@ function Header() {
           <p className="text-[14px] font-semibold text-gray-800 dark:text-gray-200 line-clamp-2 leading-tight">
             {highlightText(item.name, kw)}
           </p>
-          <p className="text-[13px] font-semibold text-red-500 mt-1">
+          <p className="text-[13px] font-semibold text-accent mt-1">
             {minPrice !== null
               ? `${minPrice.toLocaleString("vi-VN")}đ`
               : "Liên hệ"}
@@ -771,7 +771,7 @@ function Header() {
 
   return (
     <>
-      <header className="flex flex-col border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 dark:border-gray-800 sticky top-0 z-50 shadow-sm transition-all duration-300">
+      <header className="flex flex-col border-b border-border bg-background/90 backdrop-blur-md sticky top-0 z-50 shadow-sm transition-all duration-300">
         <div className="w-full px-4 lg:px-6 xl:px-8 py-3 sm:py-4 flex justify-between items-center gap-3 md:gap-4 lg:gap-8">
           <div
             className="flex-shrink-0 cursor-pointer flex items-center gap-2 sm:gap-3"
@@ -783,7 +783,7 @@ function Header() {
               alt={`${storeName} Logo`}
               className="h-10 sm:h-12 w-auto hover:opacity-80 transition-opacity duration-300 object-contain rounded-xl"
             />
-            <h1 className="hidden sm:block text-lg lg:text-xl font-bold text-amber-900 dark:text-amber-500 whitespace-nowrap" style={{ fontFamily: 'serif' }}>
+            <h1 className="hidden sm:block text-lg lg:text-xl font-bold font-serif text-primary whitespace-nowrap">
               {storeName}
             </h1>
           </div>
@@ -953,8 +953,8 @@ function Header() {
             >
               <button
                 className={`flex items-center gap-1.5 font-bold px-3 py-2 rounded-xl transition-all border ${categoryOpen
-                  ? "bg-amber-50 dark:bg-amber-900/20 text-amber-600 border-amber-200 dark:border-amber-800"
-                  : "text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-transparent hover:border-gray-200 dark:hover:border-gray-700"
+                  ? "bg-secondary text-primary border-border"
+                  : "text-foreground hover:bg-secondary border-transparent hover:border-border"
                   }`}
                 onClick={() => {
                   navigate("/products");
@@ -968,15 +968,15 @@ function Header() {
               {categoryOpen && (
                 <div className="absolute top-full left-0 pt-2 z-[100] flex items-start gap-1.5">
                   {/* Cột trái: Bảng Danh mục (luôn hiện) */}
-                  <div className="w-[240px] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl shadow-xl flex flex-col p-2 gap-1 max-h-[70vh] overflow-y-auto custom-scrollbar">
+                  <div className="w-[240px] bg-card border border-border rounded-2xl shadow-xl flex flex-col p-2 gap-1 max-h-[70vh] overflow-y-auto custom-scrollbar">
                     {categories.map((cat) => (
                       <button
                         key={cat.id}
                         onMouseEnter={() => handleCategoryHover(cat)}
                         onClick={() => goToCategory(cat)}
                         className={`w-full text-left px-3 py-2 text-[14px] rounded-lg transition-colors flex items-center justify-between ${hoveredCategory === cat.id
-                          ? "bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-500 font-medium"
-                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                          ? "bg-secondary text-primary font-medium"
+                          : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
                           }`}
                       >
                         <span>{cat.name}</span>
@@ -987,7 +987,7 @@ function Header() {
 
                   {/* Cột phải: Bảng Products (chỉ hiện khi hover) */}
                   {hoveredCategory && (
-                    <div className="w-[260px] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl shadow-xl flex flex-col p-2 gap-1 max-h-[70vh] overflow-y-auto custom-scrollbar">
+                    <div className="w-[260px] bg-card border border-border rounded-2xl shadow-xl flex flex-col p-2 gap-1 max-h-[70vh] overflow-y-auto custom-scrollbar">
                       {categoryProductsMap[hoveredCategory] ? (
                         categoryProductsMap[hoveredCategory].length > 0 ? (
                           <>
@@ -999,14 +999,14 @@ function Header() {
                                   setCategoryOpen(false);
                                   setMobileMenuOpen(false);
                                 }}
-                                className="w-full text-left px-3 py-2 text-[14px] text-gray-700 dark:text-gray-300 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20 dark:hover:text-amber-500 rounded-lg transition-colors truncate"
+                                className="w-full text-left px-3 py-2 text-[14px] text-muted-foreground hover:text-accent hover:bg-secondary rounded-lg transition-colors truncate"
                               >
                                 {product.name}
                               </button>
                             ))}
                             <button
                               onClick={() => goToCategory(categories.find(c => c.id === hoveredCategory))}
-                              className="w-full text-left px-3 py-2 text-[13px] text-amber-600 hover:underline font-medium mt-1"
+                              className="w-full text-left px-3 py-2 text-[13px] text-accent hover:underline font-medium mt-1"
                             >
                               Xem tất cả...
                             </button>
@@ -1036,8 +1036,8 @@ function Header() {
               <button
                 onClick={() => setExploreOpen(!exploreOpen)}
                 className={`flex items-center gap-1.5 font-bold px-3 py-2 rounded-xl transition-all border ${exploreOpen
-                  ? "bg-amber-50 dark:bg-amber-900/20 text-amber-600 border-amber-200 dark:border-amber-800"
-                  : "text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-transparent hover:border-gray-200 dark:hover:border-gray-700"
+                  ? "bg-secondary text-primary border-border"
+                  : "text-foreground hover:bg-secondary border-transparent hover:border-border"
                   }`}
               >
                 <span className="text-[13px] uppercase tracking-wide">Khám phá</span>
@@ -1045,15 +1045,15 @@ function Header() {
               </button>
               {exploreOpen && (
                 <div className="absolute top-full left-0 pt-2 z-[100]">
-                  <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-xl w-[200px] py-2">
+                  <div className="bg-card border border-border rounded-xl shadow-xl w-[200px] py-2">
                     <button
                       onClick={() => {
                         setExploreOpen(false);
                         navigate("/store");
                       }}
-                      className="w-full flex items-center gap-3 px-4 py-2 hover:bg-amber-50 dark:hover:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 transition hover:text-amber-600"
+                      className="w-full flex items-center gap-3 px-4 py-2 hover:bg-secondary text-sm font-medium text-foreground transition hover:text-accent"
                     >
-                      <MapPin className="w-4 h-4" />
+                      <MapPin className="w-4 h-4 text-accent" />
                       <span>Cửa hàng</span>
                     </button>
                     <button
@@ -1061,9 +1061,9 @@ function Header() {
                         setExploreOpen(false);
                         navigate("/news");
                       }}
-                      className="w-full flex items-center gap-3 px-4 py-2 hover:bg-amber-50 dark:hover:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 transition hover:text-amber-600"
+                      className="w-full flex items-center gap-3 px-4 py-2 hover:bg-secondary text-sm font-medium text-foreground transition hover:text-accent"
                     >
-                      <Newspaper className="w-4 h-4" />
+                      <Newspaper className="w-4 h-4 text-accent" />
                       <span>Tin tức</span>
                     </button>
 

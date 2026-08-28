@@ -373,12 +373,12 @@ export default function ProductListPage({
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
+    <div className="min-h-screen flex flex-col bg-background">
       <main className="flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 pt-2 md:pt-4 pb-10 md:pb-16 mb-5">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 min-h-[50px]">
           <div className="text-base md:text-lg text-gray-500 dark:text-gray-400 flex items-center space-x-2 font-medium">
             <span
-              className="cursor-pointer hover:text-amber-600 transition-colors"
+              className="cursor-pointer hover:text-accent transition-colors"
               onClick={() => navigate("/")}
             >
               Trang chủ
@@ -386,7 +386,7 @@ export default function ProductListPage({
             {categoryName && (
               <>
                 <span className="text-gray-400">/</span>
-                <span className="text-amber-600 font-bold">{categoryName}</span>
+                <span className="text-accent font-bold font-serif">{categoryName}</span>
               </>
             )}
           </div>
@@ -394,14 +394,13 @@ export default function ProductListPage({
           {/* Cụm Filter Top Bar */}
         </div>
 
-        <div className="sticky top-[72px] z-20 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md pt-2 pb-4 mb-8 border-b border-gray-100 dark:border-gray-800">
+        <div className="sticky top-[72px] z-20 bg-background/95 backdrop-blur-md pt-2 pb-4 mb-8 border-b border-border">
           {/* Danh mục cuộn ngang */}
           <div className="flex items-center space-x-3 overflow-x-auto custom-scrollbar pb-3 mb-4">
             <button
-              onClick={() => handleCategoryChange(null)}
               className={`whitespace-nowrap px-6 py-2.5 rounded-full font-semibold transition-all flex items-center gap-2 ${!categoryId
-                ? "bg-amber-600 text-white shadow-md shadow-amber-200 dark:shadow-none"
-                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200"
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "bg-secondary text-foreground hover:bg-secondary/85"
                 }`}
             >
               <span>Tất cả</span>
@@ -411,8 +410,8 @@ export default function ProductListPage({
                 key={cat.id}
                 onClick={() => handleCategoryChange(cat)}
                 className={`whitespace-nowrap px-5 py-2.5 rounded-full font-semibold transition-all flex items-center gap-2 ${String(categoryId) === String(cat.id)
-                  ? "bg-amber-600 text-white shadow-md shadow-amber-200 dark:shadow-none"
-                  : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200"
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "bg-secondary text-foreground hover:bg-secondary/85"
                   }`}
               >
                 {cat.image_url && (
@@ -431,19 +430,19 @@ export default function ProductListPage({
             <div className="flex flex-wrap items-center gap-3">
               {/* Lọc Size */}
               <div className="relative group">
-                <button className={`flex items-center gap-2 px-4 py-2 border rounded-xl transition font-medium text-sm ${filterSize ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-500' : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-amber-500'}`}>
-                  Kích thước {filterSize && <span className="w-5 h-5 bg-amber-600 text-white rounded-full flex items-center justify-center text-xs">{filterSize}</span>}
+                <button className={`flex items-center gap-2 px-4 py-2 border rounded-xl transition font-medium text-sm ${filterSize ? 'border-accent bg-secondary text-primary' : 'border-border bg-card hover:border-accent'}`}>
+                  Kích thước {filterSize && <span className="w-5 h-5 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-xs">{filterSize}</span>}
                 </button>
-                <div className="absolute top-full left-0 mt-2 p-4 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl shadow-xl w-64 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                  <h4 className="font-bold mb-3 text-gray-900 dark:text-gray-100">Chọn kích thước</h4>
+                <div className="absolute top-full left-0 mt-2 p-4 bg-card border border-border rounded-2xl shadow-xl w-64 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                  <h4 className="font-bold mb-3 text-foreground font-serif">Chọn kích thước</h4>
                   <div className="flex gap-2">
                     {SIZES.map((s) => (
                       <button
                         key={s}
                         onClick={() => updateQuery({ size: filterSize === s ? "" : s, page: 1 })}
                         className={`w-12 h-10 rounded-xl flex justify-center items-center border font-semibold transition ${filterSize === s
-                          ? "bg-amber-600 text-white border-amber-600 shadow-md shadow-amber-200"
-                          : "bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 border-gray-200 hover:border-amber-500 hover:text-amber-600"
+                          ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                          : "bg-card text-muted-foreground border-border hover:border-accent hover:text-accent"
                           }`}
                       >
                         {s}
@@ -455,29 +454,29 @@ export default function ProductListPage({
 
               {/* Lọc Giá */}
               <div className="relative group">
-                <button className={`flex items-center gap-2 px-4 py-2 border rounded-xl transition font-medium text-sm ${(filterMinPrice || filterMaxPrice) ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-500' : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-amber-500'}`}>
-                  Khoảng giá {(filterMinPrice || filterMaxPrice) && <span className="w-2.5 h-2.5 bg-amber-600 rounded-full"></span>}
+                <button className={`flex items-center gap-2 px-4 py-2 border rounded-xl transition font-medium text-sm ${(filterMinPrice || filterMaxPrice) ? 'border-accent bg-secondary text-primary' : 'border-border bg-card hover:border-accent'}`}>
+                  Khoảng giá {(filterMinPrice || filterMaxPrice) && <span className="w-2.5 h-2.5 bg-accent rounded-full"></span>}
                 </button>
-                <div className="absolute top-full left-0 mt-2 p-4 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl shadow-xl w-72 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                  <h4 className="font-bold mb-3 text-gray-900 dark:text-gray-100">Khoảng giá</h4>
+                <div className="absolute top-full left-0 mt-2 p-4 bg-card border border-border rounded-2xl shadow-xl w-72 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                  <h4 className="font-bold mb-3 text-foreground font-serif">Khoảng giá</h4>
                   <div className="flex items-center gap-2 mb-3">
-                    <input type="number" placeholder="Tối thiểu" value={minPriceInput} onChange={(e) => setMinPriceInput(e.target.value)} className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-amber-500 text-gray-900 dark:text-gray-100" />
+                    <input type="number" placeholder="Tối thiểu" value={minPriceInput} onChange={(e) => setMinPriceInput(e.target.value)} className="w-full bg-secondary border border-border rounded-lg px-3 py-2 text-sm outline-none focus:border-accent text-foreground" />
                     <span className="text-gray-400">-</span>
-                    <input type="number" placeholder="Tối đa" value={maxPriceInput} onChange={(e) => setMaxPriceInput(e.target.value)} className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-amber-500 text-gray-900 dark:text-gray-100" />
+                    <input type="number" placeholder="Tối đa" value={maxPriceInput} onChange={(e) => setMaxPriceInput(e.target.value)} className="w-full bg-secondary border border-border rounded-lg px-3 py-2 text-sm outline-none focus:border-accent text-foreground" />
                   </div>
-                  <Button className="w-full bg-amber-600 hover:bg-amber-700 text-white" size="sm" onClick={handleApplyPrice}>Áp dụng</Button>
+                  <Button className="w-full bg-primary hover:bg-accent text-primary-foreground" size="sm" onClick={handleApplyPrice}>Áp dụng</Button>
                 </div>
               </div>
 
               {/* Lọc Đánh giá */}
               <div className="relative group">
-                <button className={`flex items-center gap-2 px-4 py-2 border rounded-xl transition font-medium text-sm ${filterMinRating ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-500' : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-amber-500'}`}>
+                <button className={`flex items-center gap-2 px-4 py-2 border rounded-xl transition font-medium text-sm ${filterMinRating ? 'border-accent bg-secondary text-primary' : 'border-border bg-card hover:border-accent'}`}>
                   Đánh giá
-                  <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                  <Star className="w-3.5 h-3.5 text-accent fill-accent" />
                   {filterMinRating && <span>{filterMinRating}+</span>}
                 </button>
-                <div className="absolute top-full left-0 mt-2 p-4 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl shadow-xl w-56 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                  <h4 className="font-bold mb-3 text-gray-900 dark:text-gray-100">Theo đánh giá</h4>
+                <div className="absolute top-full left-0 mt-2 p-4 bg-card border border-border rounded-2xl shadow-xl w-56 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                  <h4 className="font-bold mb-3 text-foreground font-serif">Theo đánh giá</h4>
                   <div className="space-y-3">
                     {[
                       { value: "4.5", label: "4.5 sao trở lên", stars: 4.5 },
@@ -486,10 +485,10 @@ export default function ProductListPage({
                     ].map((option) => (
                       <label key={option.value} className="flex items-center gap-3 cursor-pointer group/rating">
                         <div className="relative flex items-center justify-center w-5 h-5">
-                          <input type="radio" name="rating_filter_top" value={option.value} checked={filterMinRating === option.value} onChange={(e) => updateQuery({ min_rating: e.target.value, page: 1 })} className="peer appearance-none w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-full checked:border-amber-500 checked:bg-transparent transition-colors cursor-pointer" />
-                          <div className="absolute w-2.5 h-2.5 rounded-full bg-amber-500 scale-0 peer-checked:scale-100 transition-transform pointer-events-none"></div>
+                          <input type="radio" name="rating_filter_top" value={option.value} checked={filterMinRating === option.value} onChange={(e) => updateQuery({ min_rating: e.target.value, page: 1 })} className="peer appearance-none w-5 h-5 border-2 border-border rounded-full checked:border-accent checked:bg-transparent transition-colors cursor-pointer" />
+                          <div className="absolute w-2.5 h-2.5 rounded-full bg-accent scale-0 peer-checked:scale-100 transition-transform pointer-events-none"></div>
                         </div>
-                        <span className="text-gray-700 dark:text-gray-300 group-hover/rating:text-amber-600 transition-colors text-sm">{option.label}</span>
+                        <span className="text-foreground group-hover/rating:text-accent transition-colors text-sm">{option.label}</span>
                       </label>
                     ))}
                   </div>
@@ -499,7 +498,7 @@ export default function ProductListPage({
 
             {/* Sắp xếp */}
             <div className="w-full sm:w-56">
-              <select value={sortBy} onChange={(e) => handleSortChange(e.target.value)} className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2 outline-none focus:border-amber-500 text-sm font-medium text-gray-900 dark:text-gray-100 shadow-sm">
+              <select value={sortBy} onChange={(e) => handleSortChange(e.target.value)} className="w-full bg-card border border-border rounded-xl px-4 py-2 outline-none focus:border-accent text-sm font-medium text-foreground shadow-sm">
                 <option value="">Sắp xếp mặc định</option>
                 <option value="name_asc">A - Z</option>
                 <option value="name_desc">Z - A</option>
@@ -524,40 +523,40 @@ export default function ProductListPage({
                     <Filter className="w-3.5 h-3.5 mr-1" /> Đang lọc theo:
                   </span>
                   {keyword && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-sm font-medium transition-all hover:bg-amber-100">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary text-primary border border-border text-sm font-medium transition-all hover:bg-secondary/80">
                       Từ khóa: {keyword}
                       <button
                         onClick={() => updateQuery({ keyword: "", page: 1 })}
-                        className="hover:text-red-500 transition-colors"
+                        className="hover:text-destructive transition-colors"
                       >
                         <X className="w-3.5 h-3.5" />
                       </button>
                     </span>
                   )}
                   {filterSize && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-sm font-medium transition-all hover:bg-amber-100">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary text-primary border border-border text-sm font-medium transition-all hover:bg-secondary/80">
                       Size: {filterSize}
                       <button
                         onClick={() => updateQuery({ size: "", page: 1 })}
-                        className="hover:text-red-500 transition-colors"
+                        className="hover:text-destructive transition-colors"
                       >
                         <X className="w-3.5 h-3.5" />
                       </button>
                     </span>
                   )}
                   {filterMinRating && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-sm font-medium transition-all hover:bg-amber-100">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary text-primary border border-border text-sm font-medium transition-all hover:bg-secondary/80">
                       {filterMinRating}+ Sao
                       <button
                         onClick={() => updateQuery({ min_rating: "", page: 1 })}
-                        className="hover:text-red-500 transition-colors"
+                        className="hover:text-destructive transition-colors"
                       >
                         <X className="w-3.5 h-3.5" />
                       </button>
                     </span>
                   )}
                   {(filterMinPrice || filterMaxPrice) && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-sm font-medium transition-all hover:bg-amber-100">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary text-primary border border-border text-sm font-medium transition-all hover:bg-secondary/80">
                       Giá:{" "}
                       {filterMinPrice
                         ? `${Number(filterMinPrice).toLocaleString("vi-VN")}đ`
@@ -572,7 +571,7 @@ export default function ProductListPage({
                           setMaxPriceInput("");
                           updateQuery({ min_price: "", max_price: "", page: 1 });
                         }}
-                        className="hover:text-red-500 transition-colors"
+                        className="hover:text-destructive transition-colors"
                       >
                         <X className="w-3.5 h-3.5" />
                       </button>
@@ -591,7 +590,7 @@ export default function ProductListPage({
                         page: 1,
                       });
                     }}
-                    className="text-sm text-red-500 hover:text-red-600 font-medium underline ml-2 decoration-transparent hover:decoration-red-600 transition-all"
+                    className="text-sm text-destructive hover:text-destructive/80 font-medium underline ml-2 decoration-transparent hover:decoration-destructive transition-all"
                   >
                     Xóa tất cả
                   </button>
@@ -603,7 +602,7 @@ export default function ProductListPage({
                 {Array.from({ length: 10 }).map((_, i) => (
                   <div
                     key={i}
-                    className="flex flex-col h-full bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-[24px] p-5 shadow-sm animate-pulse"
+                    className="flex flex-col h-full bg-card border border-border/50 rounded-2xl p-5 shadow-sm animate-pulse"
                   >
                     <div className="w-full h-48 bg-gray-200 dark:bg-gray-800 rounded-xl mb-4"></div>
                     <div className="w-1/3 h-3 bg-gray-200 dark:bg-gray-800 rounded mb-2"></div>
@@ -650,13 +649,13 @@ export default function ProductListPage({
                         key={item.id}
                         className="group h-full pb-4 px-2 pt-2 animate-in fade-in duration-300"
                       >
-                        <div className="flex h-full flex-col overflow-hidden rounded-[24px] bg-[#FCFAF8] dark:bg-gray-900 border border-transparent hover:border-[#E8DFD5] dark:hover:border-gray-800 transition-all duration-300 hover:-translate-y-1 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] hover:shadow-lg p-5">
+                        <div className="flex h-full flex-col overflow-hidden rounded-2xl bg-card border border-border/50 hover:border-accent/40 transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-md p-5">
                           <div className="relative">
                             {/* Badges */}
                             {activeSale &&
                               activeSale.product_ids?.includes(item.id) && (
                                 <div className="absolute top-0 left-0 z-10 flex flex-col gap-2">
-                                  <span className="bg-red-500 text-white text-[10px] uppercase font-bold px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+                                  <span className="bg-accent text-accent-foreground text-[10px] uppercase font-bold px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
                                     ⚡ Flash Sale -{activeSale.discount_percent}%
                                   </span>
                                 </div>
@@ -687,8 +686,7 @@ export default function ProductListPage({
 
                             <Link to={`/${item.slug || "products/" + item.id}`}>
                               <h3
-                                className="line-clamp-2 min-h-[44px] text-base font-bold text-[#4A3219] dark:text-gray-100 transition hover:text-[#8B5A2B] mb-1.5"
-                                style={{ fontFamily: "serif" }}
+                                className="line-clamp-2 min-h-[44px] text-base font-bold font-serif text-foreground transition hover:text-accent mb-1.5"
                               >
                                 {item.name}
                               </h3>
@@ -753,7 +751,7 @@ export default function ProductListPage({
                                           <span className="text-[11px] line-through text-gray-400 truncate">
                                             {originalText}
                                           </span>
-                                          <p className="text-[13px] sm:text-[14px] font-bold leading-tight text-[#8B5A2B] dark:text-amber-500">
+                                          <p className="text-[13px] sm:text-[14px] font-bold leading-tight text-accent">
                                             {saleText}
                                           </p>
                                         </div>
@@ -761,13 +759,13 @@ export default function ProductListPage({
                                     }
 
                                     return (
-                                      <p className="text-[14px] sm:text-[15px] font-bold leading-tight text-[#8B5A2B] dark:text-amber-500">
+                                      <p className="text-[14px] sm:text-[15px] font-bold leading-tight text-accent">
                                         {originalText}
                                       </p>
                                     );
                                   }
                                   return (
-                                    <p className="text-[14px] sm:text-[15px] font-bold leading-tight text-[#8B5A2B] dark:text-amber-500">
+                                    <p className="text-[14px] sm:text-[15px] font-bold leading-tight text-accent">
                                       Liên hệ
                                     </p>
                                   );
@@ -780,7 +778,7 @@ export default function ProductListPage({
                                     e.stopPropagation();
                                     setQuickViewProduct(item);
                                   }}
-                                  className="w-8 h-8 rounded-md flex items-center justify-center shrink-0 transition-colors shadow-sm bg-amber-100 dark:bg-amber-900/30 hover:bg-amber-200 dark:hover:bg-amber-800/50 text-amber-700 dark:text-amber-500"
+                                  className="w-8 h-8 rounded-md flex items-center justify-center shrink-0 transition-colors shadow-sm bg-secondary hover:bg-secondary/85 text-foreground"
                                   title="Xem nhanh"
                                 >
                                   <svg
@@ -806,7 +804,7 @@ export default function ProductListPage({
                                       e.preventDefault();
                                       handleFastAdd(e, item);
                                     }}
-                                    className="w-8 h-8 rounded-md flex items-center justify-center shrink-0 transition-colors shadow-sm bg-[#8B5A2B] hover:bg-[#69421c] text-white"
+                                    className="w-8 h-8 rounded-md flex items-center justify-center shrink-0 transition-colors shadow-sm bg-primary hover:bg-accent text-primary-foreground"
                                     title="Thêm vào giỏ"
                                   >
                                     <ShoppingCart className="w-[15px] h-[15px] xl:ml-[-1px]" />
@@ -814,7 +812,7 @@ export default function ProductListPage({
                                 ) : (
                                   <div
                                     onClick={(e) => e.stopPropagation()}
-                                    className="flex items-center justify-center text-[11px] font-bold text-rose-600 bg-rose-50 px-2 h-8 rounded-md border border-rose-100 whitespace-nowrap shadow-sm cursor-not-allowed"
+                                    className="flex items-center justify-center text-[11px] font-bold text-destructive bg-destructive/10 px-2 h-8 rounded-md border border-destructive/20 whitespace-nowrap shadow-sm cursor-not-allowed"
                                     title={nextOpenMessage}
                                   >
                                     Đóng cửa
@@ -832,7 +830,7 @@ export default function ProductListPage({
                 {page < totalPages && (
                   <div className="flex justify-center mt-12 mb-6">
                     <Button
-                      className="bg-transparent border-2 border-amber-600 text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-full px-8 py-6 text-base font-bold shadow-sm transition-all hover:scale-105"
+                      className="bg-transparent border-2 border-primary text-primary hover:bg-secondary hover:border-accent hover:text-accent rounded-full px-8 py-6 text-base font-bold shadow-sm transition-all hover:scale-105"
                       onClick={() => handlePageChange(page + 1)}
                       disabled={loading}
                     >

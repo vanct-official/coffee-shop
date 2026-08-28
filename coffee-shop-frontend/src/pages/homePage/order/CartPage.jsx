@@ -166,17 +166,17 @@ export default function CartPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
+    <div className="min-h-screen flex flex-col bg-background">
       <section className="flex-1 w-full px-4 sm:px-6 lg:px-8 py-10 flex flex-col">
         <div className="w-full mx-auto flex-1 flex flex-col">
           <div className="flex items-center justify-between gap-4 mb-8 flex-wrap shrink-0">
-            <h1 className="text-2xl md:text-2xl font-semibold text-amber-900 dark:text-amber-500" style={{ fontFamily: 'serif' }}>Giỏ hàng</h1>
+            <h1 className="text-2xl md:text-2xl font-bold font-serif text-primary">Giỏ hàng</h1>
 
             <div className="flex gap-3 shrink-0">
               {cart.length > 0 && (
                 <Button
                   variant="ghost"
-                  className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
+                  className="text-destructive hover:text-destructive/80 hover:bg-destructive/10"
                   onClick={() => setIsClearDialogOpen(true)}
                 >
                   Xóa tất cả
@@ -187,20 +187,20 @@ export default function CartPage() {
 
           {cart.length === 0 ? (
             <div className="flex-1 flex flex-col items-center pt-8 w-full">
-              <div className="text-center py-16 px-6 w-full flex flex-col items-center justify-center bg-gray-50/50 dark:bg-gray-800/20 rounded-3xl border border-dashed border-gray-200 dark:border-gray-700">
-                <div className="w-24 h-24 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center mb-6">
-                  <ShoppingBag className="w-12 h-12 text-amber-500" strokeWidth={1.5} />
+              <div className="text-center py-16 px-6 w-full flex flex-col items-center justify-center bg-card rounded-3xl border border-dashed border-border">
+                <div className="w-24 h-24 bg-accent/15 rounded-full flex items-center justify-center mb-6">
+                  <ShoppingBag className="w-12 h-12 text-accent" strokeWidth={1.5} />
                 </div>
-                <h3 className="text-md font-semibold text-gray-600 dark:text-gray-100 mb-5">
+                <h3 className="text-md font-semibold text-foreground mb-5">
                   Giỏ hàng của bạn đang trống
                 </h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-8 max-w-sm">
+                <p className="text-sm text-muted-foreground mb-8 max-w-sm">
                   Giỏ hàng đang kêu réo vì trống trơn. Khám phá bộ sưu tập đồ uống và chọn món bạn yêu thích ngay nhé!
                 </p>
                 <Button
                   onClick={() => navigate("/products")}
                   size="lg"
-                  className="bg-amber-600 hover:bg-amber-700 text-white rounded-full px-8 shadow-md shadow-amber-600/20"
+                  className="bg-primary hover:bg-accent text-primary-foreground rounded-full px-8 shadow-md shadow-primary/20"
                 >
                   <ShoppingBag className="w-5 h-5 mr-2" />
                   Xem Menu ngay
@@ -219,7 +219,7 @@ export default function CartPage() {
                   return (
                     <div
                       key={`cart-item-${item.productSizeId || item.id}-${index}`}
-                      className="border border-gray-200  rounded-2xl p-5 bg-white dark:bg-gray-900"
+                      className="border border-border/60 rounded-2xl p-5 bg-card"
                     >
                       <div className="flex gap-4">
                         <div className="relative shrink-0">
@@ -227,10 +227,10 @@ export default function CartPage() {
                             src={item.image || item.image_url || item.thumbnail || item.product_image || "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085"}
                             alt={item.name}
                             onClick={() => navigate(`/${item.slug || 'products/' + (item.product_id || item.id)}`)}
-                            className="w-24 h-24 text-gray-900 dark:text-gray-100 rounded-xl object-cover border cursor-pointer hover:opacity-80 transition-opacity"
+                            className="w-24 h-24 text-gray-900 dark:text-gray-100 rounded-xl object-cover border border-border cursor-pointer hover:opacity-80 transition-opacity"
                           />
                           {activeSale && activeSale.product_ids?.includes(Number(item.product_id || item.id)) && (
-                            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm shadow-sm overflow-hidden whitespace-nowrap z-10">
+                            <span className="absolute -top-2 -right-2 bg-accent text-accent-foreground text-[10px] font-bold px-1.5 py-0.5 rounded-sm shadow-sm overflow-hidden whitespace-nowrap z-10 animate-pulse">
                               -{activeSale.discount_percent}%
                             </span>
                           )}
@@ -240,24 +240,24 @@ export default function CartPage() {
                           <div className="flex items-start justify-between gap-4 flex-wrap">
                             <div>
                               <h3
-                                className="text-lg font-semibold cursor-pointer hover:text-amber-600 transition-colors"
+                                className="text-lg font-bold font-serif cursor-pointer hover:text-accent transition-colors text-foreground"
                                 onClick={() => navigate(`/${item.slug || 'products/' + (item.product_id || item.id)}`)}
                               >
                                 {item.name}
                               </h3>
                               {activeSale && timeLeft && activeSale.product_ids?.includes(Number(item.product_id || item.id)) && (
-                                <div className="mt-1 text-xs text-red-600 font-medium">
+                                <div className="mt-1 text-xs text-accent font-medium">
                                   🔥 Flash sale sẽ kết thúc trong {timeLeft}
                                 </div>
                               )}
 
                               <div className="mt-2 flex items-center gap-2">
-                                <span className="text-sm text-gray-500 dark:text-gray-400">Size:</span>
+                                <span className="text-sm text-muted-foreground">Size:</span>
                                 {productInfoMap[item.product_id || item.id]?.sizes?.length > 0 ? (
                                   <select
                                     value={item.productSizeId || item.product_size_id}
                                     onChange={(e) => handleSizeChange(item, e.target.value)}
-                                    className="border rounded px-2 py-1 text-sm bg-gray-50 dark:bg-gray-950 outline-none hover:border-amber-500 transition-colors cursor-pointer"
+                                    className="border border-border rounded px-2 py-1 text-sm bg-secondary outline-none hover:border-accent transition-colors cursor-pointer text-foreground font-medium"
                                   >
                                     {productInfoMap[item.product_id || item.id].sizes.map(size => (
                                       <option key={size.id} value={size.id}>
@@ -266,7 +266,7 @@ export default function CartPage() {
                                     ))}
                                   </select>
                                 ) : (
-                                  <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">{item.size}</span>
+                                  <span className="text-sm text-foreground font-medium">{item.size}</span>
                                 )}
                               </div>
 
@@ -279,7 +279,7 @@ export default function CartPage() {
                               </p>
                             </div>
 
-                            <div className="font-bold text-gray-900 dark:text-gray-100 whitespace-nowrap">
+                            <div className="font-bold text-foreground whitespace-nowrap">
                               {itemTotal.toLocaleString("vi-VN")}đ
                             </div>
                           </div>
@@ -297,7 +297,7 @@ export default function CartPage() {
                                       onClick={() => {
                                         updateToppings(cartKey, []);
                                       }}
-                                      className="text-red-500 hover:text-red-600 text-[11px] font-bold transition-colors uppercase"
+                                      className="text-destructive hover:text-destructive/80 text-[11px] font-bold transition-colors uppercase"
                                       title="Xóa tất cả topping"
                                     >
                                       Xóa tất cả
@@ -328,7 +328,7 @@ export default function CartPage() {
                                               topping.topping_id
                                             )
                                           }
-                                          className="text-gray-400 hover:text-red-500 shrink-0 bg-white dark:bg-gray-800 p-1 rounded-sm border shadow-sm transition-colors"
+                                          className="text-muted-foreground hover:text-destructive shrink-0 bg-secondary p-1 rounded-md border border-border shadow-sm transition-colors"
                                           title="Xóa topping"
                                         >
                                           <X className="w-3.5 h-3.5" />
@@ -340,7 +340,7 @@ export default function CartPage() {
                               </div>
                             )}
 
-                          <p className="text-amber-600 font-bold mt-3">
+                          <p className="text-accent font-semibold mt-3">
                             Đơn giá: {unitPrice.toLocaleString("vi-VN")}đ
                           </p>
 
@@ -354,7 +354,7 @@ export default function CartPage() {
                                 );
                                 updateQuantity(cartKey, nextQty);
                               }}
-                              className="w-10 h-10 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-950 text-lg"
+                              className="w-10 h-10 border border-border bg-card text-foreground rounded-lg hover:bg-secondary text-lg transition-colors"
                             >
                               -
                             </button>
@@ -370,7 +370,7 @@ export default function CartPage() {
                                 );
                                 updateQuantity(cartKey, nextQty);
                               }}
-                              className="w-16 h-10 border rounded-lg text-center"
+                              className="w-16 h-10 border border-border bg-card text-foreground rounded-lg text-center"
                             />
 
                             <button
@@ -379,7 +379,7 @@ export default function CartPage() {
                                 const nextQty = Number(item.quantity) + 1;
                                 updateQuantity(cartKey, nextQty);
                               }}
-                              className="w-10 h-10 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-950 text-lg"
+                              className="w-10 h-10 border border-border bg-card text-foreground rounded-lg hover:bg-secondary text-lg transition-colors"
                             >
                               +
                             </button>
@@ -391,31 +391,31 @@ export default function CartPage() {
                               }
                               return Array.isArray(ids) && ids.includes(productInfoMap[item.product_id || item.id]?.category_id);
                             }).length > 0 && (
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  setEditingIndex(isEditing ? null : index)
-                                }
-                                className="text-amber-600 text-sm font-medium hover:underline px-2"
-                              >
-                                {isEditing ? "Đóng thêm topping" : "Thêm topping"}
-                              </button>
+                               <button
+                                  type="button"
+                                  onClick={() =>
+                                    setEditingIndex(isEditing ? null : index)
+                                  }
+                                  className="text-accent text-sm font-semibold hover:underline px-2"
+                                >
+                                  {isEditing ? "Đóng thêm topping" : "Thêm topping"}
+                                </button>
                             )}
 
                             <div className="flex items-center gap-2 ml-auto border-l pl-3 dark:border-gray-800">
                               <button
-                                type="button"
-                                onClick={() => {
-                                  removeItem(cartKey);
-                                  if (editingIndex === index) {
-                                    setEditingIndex(null);
-                                  }
-                                }}
-                                className="w-10 h-10 flex items-center justify-center border rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 text-gray-400 hover:text-red-500 transition-colors shadow-sm"
-                                title="Xóa khỏi giỏ hàng"
-                              >
-                                <Trash2 className="w-5 h-5" />
-                              </button>
+                                  type="button"
+                                  onClick={() => {
+                                    removeItem(cartKey);
+                                    if (editingIndex === index) {
+                                      setEditingIndex(null);
+                                    }
+                                  }}
+                                  className="w-10 h-10 flex items-center justify-center border border-border bg-card text-muted-foreground hover:bg-destructive/10 hover:text-destructive hover:border-destructive/25 transition shadow-sm"
+                                  title="Xóa khỏi giỏ hàng"
+                                >
+                                  <Trash2 className="w-5 h-5" />
+                                </button>
                             </div>
                           </div>
                         </div>
@@ -441,9 +441,9 @@ export default function CartPage() {
                               );
 
                               return (
-                                <div
+                                 <div
                                   key={topping.id}
-                                  className="border border-gray-200  rounded-2xl p-4"
+                                  className="border border-border bg-secondary/50 rounded-2xl p-4"
                                 >
                                   <div className="flex items-center justify-between gap-4">
                                     <label className="flex items-center gap-3 cursor-pointer flex-1">
@@ -460,13 +460,13 @@ export default function CartPage() {
                                         <p className="font-medium text-gray-900 dark:text-gray-100 break-words">
                                           {topping.name}
                                         </p>
-                                        <p className="text-sm text-amber-600 font-semibold">
-                                          +
-                                          {Number(topping.price).toLocaleString(
-                                            "vi-VN"
-                                          )}
-                                          đ
-                                        </p>
+                                         <p className="text-sm text-accent font-semibold">
+                                           +
+                                           {Number(topping.price).toLocaleString(
+                                             "vi-VN"
+                                           )}
+                                           đ
+                                         </p>
                                       </div>
                                     </label>
                                   </div>
@@ -481,26 +481,26 @@ export default function CartPage() {
                 })}
               </div>
 
-              <div className="border rounded-2xl p-5 h-fit bg-gray-50 dark:bg-gray-950 lg:sticky lg:top-24">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+              <div className="border border-border rounded-2xl p-5 h-fit bg-card lg:sticky lg:top-24">
+                <h2 className="text-lg font-bold font-serif text-foreground mb-4">
                   Tóm tắt đơn hàng
                 </h2>
 
-                <div className="flex justify-between text-gray-700 dark:text-gray-300 mb-3">
+                <div className="flex justify-between text-foreground mb-3 font-medium">
                   <span>Tổng tiền</span>
-                  <span className="font-bold text-amber-600">
+                  <span className="font-bold text-accent text-lg">
                     {totalAmount.toLocaleString("vi-VN")}đ
                   </span>
                 </div>
 
-                {!isStoreOpen && (
-                  <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 rounded-xl flex items-center gap-2">
+                 {!isStoreOpen && (
+                  <div className="mt-4 p-3 bg-destructive/10 text-destructive border border-destructive/20 rounded-xl flex items-center gap-2">
                     <span className="font-medium text-sm">Cửa hàng hiện đang đóng cửa. {nextOpenMessage}. Xin quý khách thông cảm.</span>
                   </div>
                 )}
 
-                <Button
-                  className="w-full mt-4 flex items-center justify-center gap-2 disabled:bg-gray-400 disabled:opacity-100"
+                 <Button
+                  className="w-full mt-4 flex items-center justify-center gap-2 bg-primary hover:bg-accent text-primary-foreground disabled:bg-gray-400 disabled:opacity-100 font-semibold"
                   onClick={() => navigate("/checkout")}
                   disabled={!isStoreOpen}
                 >
@@ -534,8 +534,8 @@ export default function CartPage() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Hủy</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-red-600 hover:bg-red-700"
+             <AlertDialogAction
+              className="bg-destructive hover:bg-destructive/95 text-destructive-foreground"
               onClick={() => {
                 clearCart();
                 toast.success("Đã làm trống giỏ hàng");

@@ -41,21 +41,21 @@ const StepHeader = ({ current, number, title, isCompleted }) => {
 	return (
 		<div className={`flex items-center gap-3 transition-opacity duration-300 ${!isActive && !isCompleted ? 'opacity-40' : 'opacity-100'}`}>
 			{isCompleted ? (
-				<div className="h-8 w-8 rounded-full bg-amber-500/20 text-amber-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 animate-in zoom-in">
+				<div className="h-8 w-8 rounded-full bg-accent/15 text-accent flex items-center justify-center flex-shrink-0 animate-in zoom-in">
 					<CheckCircle2 className="h-5 w-5" />
 				</div>
 			) : (
 				<div
 					className={`h-8 w-8 rounded-full border-2 flex items-center justify-center text-sm font-bold flex-shrink-0 transition-colors ${
 						isActive 
-							? "border-amber-500 bg-amber-500 text-white shadow-lg shadow-amber-500/30" 
-							: "border-gray-300 dark:border-gray-600 bg-transparent text-gray-500 dark:text-gray-400"
+							? "border-accent bg-accent text-accent-foreground shadow-sm" 
+							: "border-border bg-transparent text-muted-foreground"
 					}`}
 				>
 					{number}
 				</div>
 			)}
-			<span className={`font-semibold ${isActive ? "text-gray-900 dark:text-white" : isCompleted ? "text-gray-500 line-through decoration-gray-300" : "text-gray-400"}`}>
+			<span className={`font-semibold ${isActive ? "text-foreground" : isCompleted ? "text-muted-foreground line-through decoration-border" : "text-muted-foreground"}`}>
 				{title}
 			</span>
 		</div>
@@ -207,8 +207,8 @@ export default function ForgotPasswordPage() {
 			<div className="relative min-h-screen overflow-hidden">
 				{/* Hiệu ứng Glow nền */}
 				<div className="pointer-events-none absolute inset-0">
-					<div className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-amber-400/20 dark:bg-amber-600/10 blur-[100px]" />
-					<div className="absolute -bottom-24 right-0 h-96 w-96 rounded-full bg-orange-400/20 dark:bg-orange-600/10 blur-[120px]" />
+					<div className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-accent/15 blur-[100px]" />
+					<div className="absolute -bottom-24 right-0 h-96 w-96 rounded-full bg-primary/10 blur-[120px]" />
 				</div>
 
 				<button 
@@ -232,14 +232,14 @@ export default function ForgotPasswordPage() {
 						
 						<div className="relative z-10 max-w-md space-y-6">
 							<div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-5 py-2 text-sm text-white shadow-lg">
-								<Shield className="h-4 w-4 text-amber-400 animate-pulse" />
-								<span className="font-medium tracking-wide">Khôi phục tài khoản</span>
+								<Shield className="h-4 w-4 text-accent animate-pulse" />
+								<span className="font-medium tracking-wide font-sans">Khôi phục tài khoản</span>
 							</div>
 							<div className="space-y-4">
-								<h1 className="text-4xl font-extrabold text-white lg:text-5xl leading-tight drop-shadow-md">
+								<h1 className="text-4xl font-bold font-serif text-white lg:text-5xl leading-tight drop-shadow-md">
 									Đừng lo lắng!
 								</h1>
-								<p className="text-base font-medium text-gray-200 drop-shadow-sm leading-relaxed">
+								<p className="text-base font-medium text-gray-200 drop-shadow-sm leading-relaxed font-sans">
 									Bạn lỡ quên mật khẩu? Hãy làm theo các bước bên phải để khôi phục tài khoản dễ dàng và an toàn.
 								</p>
 							</div>
@@ -250,10 +250,10 @@ export default function ForgotPasswordPage() {
 									"Lấy lại quyền truy cập chỉ trong 2 phút"
 								].map((text, idx) => (
 									<div key={idx} className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md px-5 py-3.5 shadow-sm transition-all hover:bg-white/10">
-										<div className="w-8 h-8 rounded-full bg-amber-400/20 flex items-center justify-center shrink-0">
-											<span className="h-2 w-2 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.6)]" />
+										<div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center shrink-0">
+											<span className="h-2 w-2 rounded-full bg-accent" />
 										</div>
-										<span className="font-medium">{text}</span>
+										<span className="font-medium font-sans">{text}</span>
 									</div>
 								))}
 							</div>
@@ -261,21 +261,21 @@ export default function ForgotPasswordPage() {
 					</div>
 
 					<div className="flex items-center justify-center p-6 sm:p-8 lg:p-12 relative z-10">
-						<div className="w-full max-w-[480px] rounded-[28px] border border-white/50 dark:border-gray-800/80 bg-white/70 dark:bg-gray-900/70 backdrop-blur-2xl p-8 sm:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.5)] animate-in fade-in zoom-in-[0.98] duration-700">
+						<div className="w-full max-w-[480px] rounded-2xl border border-border bg-card/85 backdrop-blur-2xl p-8 sm:p-10 shadow-sm animate-in fade-in zoom-in-[0.98] duration-700">
 							<div className="mb-10 flex flex-col items-center space-y-3 text-center animate-in fade-in slide-in-from-bottom-2 duration-500" style={{ animationDelay: '100ms' }}>
-								<div className="w-16 h-16 bg-amber-100 dark:bg-amber-900/30 rounded-2xl flex items-center justify-center mx-auto mb-2 shadow-inner">
-									<Lock className="w-8 h-8 text-amber-600 dark:text-amber-500" />
+								<div className="w-16 h-16 bg-accent/15 rounded-2xl flex items-center justify-center mx-auto mb-2 shadow-inner">
+									<Lock className="w-8 h-8 text-accent" />
 								</div>
-								<h1 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">Đặt lại mật khẩu</h1>
-								<p className="text-sm font-medium text-gray-500 dark:text-gray-400">Hoàn thành 3 bước đơn giản dưới đây</p>
+								<h1 className="text-xl font-bold font-serif text-foreground">Đặt lại mật khẩu</h1>
+								<p className="text-sm font-medium text-muted-foreground">Hoàn thành 3 bước đơn giản dưới đây</p>
 							</div>
 
 							{/* Progress Steps */}
 							<div className="mb-10 space-y-5 px-2 animate-in fade-in zoom-in duration-500" style={{ animationDelay: '200ms' }}>
 								<StepHeader current={currentStep} number={1} title="Xác nhận Email" isCompleted={completedSteps[1]} />
-								<div className={`w-0.5 h-6 ml-[15px] rounded-full transition-colors ${completedSteps[1] ? 'bg-amber-500/50' : 'bg-gray-200 dark:bg-gray-700'}`}></div>
+								<div className={`w-0.5 h-6 ml-[15px] rounded-full transition-colors ${completedSteps[1] ? 'bg-accent/50' : 'bg-gray-200 dark:bg-gray-700'}`}></div>
 								<StepHeader current={currentStep} number={2} title="Xác thực Mã OTP" isCompleted={completedSteps[2]} />
-								<div className={`w-0.5 h-6 ml-[15px] rounded-full transition-colors ${completedSteps[2] ? 'bg-amber-500/50' : 'bg-gray-200 dark:bg-gray-700'}`}></div>
+								<div className={`w-0.5 h-6 ml-[15px] rounded-full transition-colors ${completedSteps[2] ? 'bg-accent/50' : 'bg-gray-200 dark:bg-gray-700'}`}></div>
 								<StepHeader current={currentStep} number={3} title="Đặt Mật khẩu Mới" isCompleted={false} />
 							</div>
 
@@ -284,14 +284,14 @@ export default function ForgotPasswordPage() {
 								{currentStep === 1 && (
 									<form className="space-y-6" onSubmit={handleEmailSubmit}>
 										<div className="space-y-3">
-											<Label htmlFor="email" className="text-gray-700 dark:text-gray-300 font-semibold ml-1">Email đã đăng ký</Label>
+											<Label htmlFor="email" className="text-foreground font-semibold ml-1">Email đã đăng ký</Label>
 											<div className="relative group">
-												<Mail className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 group-focus-within:text-amber-500 transition-colors" />
+												<Mail className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground group-focus-within:text-accent transition-colors" />
 												<Input
 													id="email"
 													type="email"
 													placeholder="you@example.com"
-													className="pl-11 h-12 rounded-xl bg-white/50 dark:bg-black/20 border-gray-200 dark:border-gray-700 focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:border-amber-500 transition-all font-medium"
+													className="pl-11 h-12 rounded-xl bg-card border-border focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:border-accent transition-all font-medium text-foreground"
 													value={email}
 													onChange={(e) => setEmail(e.target.value)}
 													autoFocus
@@ -299,14 +299,14 @@ export default function ForgotPasswordPage() {
 											</div>
 
 											{errorMessage && (
-												<div className="rounded-xl border border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-900/50 px-4 py-3 text-sm text-red-600 dark:text-red-400 font-medium flex items-start gap-2.5 shadow-sm animate-in zoom-in">
+												<div className="rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive font-medium flex items-start gap-2.5 shadow-sm animate-in zoom-in">
 													<AlertCircle className="h-5 w-5 mt-0.5 shrink-0" />
 													<span>{errorMessage}</span>
 												</div>
 											)}
 										</div>
 
-										<Button type="submit" className="w-full h-12 rounded-xl text-base font-bold text-white shadow-lg bg-amber-600 hover:bg-amber-700 active:translate-y-0 transition-all hover:-translate-y-0.5" disabled={isSubmitting}>
+										<Button type="submit" className="w-full h-12 rounded-xl text-base font-semibold text-primary-foreground shadow-md bg-primary hover:bg-accent active:translate-y-0 transition-all hover:-translate-y-0.5 hover:shadow-accent/20" disabled={isSubmitting}>
 											{isSubmitting ? "Đang gửi..." : "Gửi mã xác thực"}
 										</Button>
 									</form>
@@ -316,20 +316,20 @@ export default function ForgotPasswordPage() {
 								{currentStep === 2 && (
 									<form className="space-y-6 animate-in slide-in-from-right-4 zoom-in-95 duration-300" onSubmit={handleOtpSubmit}>
 										<div className="space-y-4">
-											<div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/50 rounded-xl p-4 text-sm text-amber-800 dark:text-blue-300">
+											<div className="bg-secondary border border-border rounded-xl p-4 text-sm text-foreground">
 												Mã OTP đã được gửi đến <strong>{userEmail}</strong>
 											</div>
 
 											<div className="space-y-3">
-												<Label htmlFor="otp" className="text-gray-700 dark:text-gray-300 font-semibold ml-1">Mã OTP (8 chữ số)</Label>
+												<Label htmlFor="otp" className="text-foreground font-semibold ml-1">Mã OTP (8 chữ số)</Label>
 												<div className="relative group">
-													<Shield className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 group-focus-within:text-amber-500 transition-colors" />
+													<Shield className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground group-focus-within:text-accent transition-colors" />
 													<Input
 														id="otp"
 														type="text"
 														placeholder="--------"
 														maxLength={8}
-														className="pl-12 h-14 rounded-xl text-center text-2xl tracking-[0.4em] font-mono bg-white/50 dark:bg-black/20 border-gray-200 dark:border-gray-700 focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:border-amber-500 transition-all"
+														className="pl-12 h-14 rounded-xl text-center text-2xl tracking-[0.4em] font-mono bg-card border-border focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:border-accent transition-all text-foreground"
 														value={otp}
 														onChange={(e) => {
 															const value = e.target.value.replace(/\D/g, "");
@@ -341,14 +341,14 @@ export default function ForgotPasswordPage() {
 											</div>
 
 											{errorMessage && (
-												<div className="rounded-xl border border-red-200 bg-red-50 dark:bg-red-900/20 px-4 py-3 text-sm text-red-600 dark:text-red-400 font-medium flex items-start gap-2.5 shadow-sm animate-in zoom-in">
+												<div className="rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive font-medium flex items-start gap-2.5 shadow-sm animate-in zoom-in">
 													<AlertCircle className="h-5 w-5 mt-0.5 shrink-0" />
 													<span>{errorMessage}</span>
 												</div>
 											)}
 										</div>
 
-										<Button type="submit" className="w-full h-12 rounded-xl text-base font-bold text-white shadow-lg bg-amber-600 hover:bg-amber-700 transition-all hover:-translate-y-0.5" disabled={isSubmitting || otp.length !== 8}>
+										<Button type="submit" className="w-full h-12 rounded-xl text-base font-semibold text-primary-foreground shadow-md bg-primary hover:bg-accent transition-all hover:-translate-y-0.5" disabled={isSubmitting || otp.length !== 8}>
 											{isSubmitting ? "Đang xác thực..." : "Xác thực OTP"}
 										</Button>
 									</form>
@@ -359,14 +359,14 @@ export default function ForgotPasswordPage() {
 									<form className="space-y-6 animate-in slide-in-from-right-4 zoom-in-95 duration-300" onSubmit={handlePasswordSubmit}>
 										<div className="space-y-4">
 											<div className="space-y-2">
-												<Label htmlFor="newPassword" className="text-gray-700 dark:text-gray-300 font-semibold ml-1">Mật khẩu mới</Label>
+												<Label htmlFor="newPassword" className="text-foreground font-semibold ml-1">Mật khẩu mới</Label>
 												<div className="relative group">
-													<Lock className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 group-focus-within:text-amber-500 transition-colors" />
+													<Lock className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground group-focus-within:text-accent transition-colors" />
 													<Input
 														id="newPassword"
 														type={showNewPassword ? "text" : "password"}
 														placeholder="••••••••"
-														className="pl-11 pr-12 h-12 rounded-xl bg-white/50 dark:bg-black/20 border-gray-200 dark:border-gray-700 focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:border-amber-500 transition-all font-medium"
+														className="pl-11 pr-12 h-12 rounded-xl bg-card border-border focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:border-accent transition-all font-medium text-foreground"
 														value={newPassword}
 														onChange={(e) => handlePasswordChange(e.target.value)}
 														autoFocus
@@ -374,21 +374,21 @@ export default function ForgotPasswordPage() {
 													<button
 														type="button"
 														onClick={() => setShowNewPassword(!showNewPassword)}
-														className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-1"
+														className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
 													>
 														{showNewPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
 													</button>
 												</div>
 
 												{newPassword && (
-													<div className="space-y-2 mt-3 p-3 rounded-xl bg-gray-50/50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800">
+													<div className="space-y-2 mt-3 p-3 rounded-xl bg-secondary/50 border border-border">
 														<div className="flex items-center justify-between text-xs">
-															<span className="text-gray-600 dark:text-gray-400 font-semibold">Độ mạnh:</span>
+															<span className="text-muted-foreground font-semibold">Độ mạnh:</span>
 															<span className={`font-bold ${
-																passwordStrength === 1 ? "text-red-500" :
-																passwordStrength === 2 ? "text-yellow-500" :
-																passwordStrength === 3 ? "text-amber-500" :
-																passwordStrength === 4 ? "text-green-500" : ""
+																passwordStrength === 1 ? "text-destructive" :
+																passwordStrength === 2 ? "text-amber-500" :
+																passwordStrength === 3 ? "text-primary" :
+																passwordStrength === 4 ? "text-emerald-500" : ""
 															}`}>
 																{getPasswordStrengthLabel(passwordStrength)}
 															</span>
@@ -399,26 +399,26 @@ export default function ForgotPasswordPage() {
 																	key={level}
 																	className={`flex-1 transition-all duration-300 rounded-full ${
 																		passwordStrength >= level
-																			? getPasswordStrengthColor(passwordStrength)
+																			? (passwordStrength === 1 ? "bg-destructive" : passwordStrength === 2 ? "bg-amber-500" : passwordStrength === 3 ? "bg-primary" : "bg-emerald-500")
 																			: "bg-gray-200 dark:bg-gray-700"
 																	}`}
 																/>
 															))}
 														</div>
-														<div className="text-[11px] text-gray-500 dark:text-gray-400 space-y-1 mt-2">
-															<p className={/[a-z]/.test(newPassword) ? "text-green-600 dark:text-green-500 font-medium" : ""}>
+														<div className="text-[11px] text-muted-foreground space-y-1 mt-2">
+															<p className={/[a-z]/.test(newPassword) ? "text-emerald-600 dark:text-emerald-500 font-medium" : ""}>
 																{/[a-z]/.test(newPassword) ? "✓" : "○"} Chữ thường (a-z)
 															</p>
-															<p className={/[A-Z]/.test(newPassword) ? "text-green-600 dark:text-green-500 font-medium" : ""}>
+															<p className={/[A-Z]/.test(newPassword) ? "text-emerald-600 dark:text-emerald-500 font-medium" : ""}>
 																{/[A-Z]/.test(newPassword) ? "✓" : "○"} Chữ hoa (A-Z)
 															</p>
-															<p className={/[0-9]/.test(newPassword) ? "text-green-600 dark:text-green-500 font-medium" : ""}>
+															<p className={/[0-9]/.test(newPassword) ? "text-emerald-600 dark:text-emerald-500 font-medium" : ""}>
 																{/[0-9]/.test(newPassword) ? "✓" : "○"} Số (0-9)
 															</p>
-															<p className={/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]/.test(newPassword) ? "text-green-600 dark:text-green-500 font-medium" : ""}>
+															<p className={/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]/.test(newPassword) ? "text-emerald-600 dark:text-emerald-500 font-medium" : ""}>
 																{/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]/.test(newPassword) ? "✓" : "○"} Ký tự đặc biệt
 															</p>
-															<p className={newPassword.length >= 8 && newPassword.length <= 20 ? "text-green-600 dark:text-green-500 font-medium" : ""}>
+															<p className={newPassword.length >= 8 && newPassword.length <= 20 ? "text-emerald-600 dark:text-emerald-500 font-medium" : ""}>
 																{newPassword.length >= 8 && newPassword.length <= 20 ? "✓" : "○"} Độ dài 8-20 ký tự
 															</p>
 														</div>
@@ -427,21 +427,21 @@ export default function ForgotPasswordPage() {
 											</div>
 
 											<div className="space-y-2">
-												<Label htmlFor="confirmPassword" className="text-gray-700 dark:text-gray-300 font-semibold ml-1">Xác nhận mật khẩu mới</Label>
+												<Label htmlFor="confirmPassword" className="text-foreground font-semibold ml-1">Xác nhận mật khẩu mới</Label>
 												<div className="relative group">
-													<Lock className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 group-focus-within:text-amber-500 transition-colors" />
+													<Lock className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground group-focus-within:text-accent transition-colors" />
 													<Input
 														id="confirmPassword"
 														type={showConfirmPassword ? "text" : "password"}
 														placeholder="••••••••"
-														className="pl-11 pr-12 h-12 rounded-xl bg-white/50 dark:bg-black/20 border-gray-200 dark:border-gray-700 focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:border-amber-500 transition-all font-medium"
+														className="pl-11 pr-12 h-12 rounded-xl bg-card border-border focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:border-accent transition-all font-medium text-foreground"
 														value={confirmPassword}
 														onChange={(e) => setConfirmPassword(e.target.value)}
 													/>
 													<button
 														type="button"
 														onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-														className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-1"
+														className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
 													>
 														{showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
 													</button>
@@ -449,25 +449,25 @@ export default function ForgotPasswordPage() {
 											</div>
 
 											{errorMessage && (
-												<div className="rounded-xl border border-red-200 bg-red-50 dark:bg-red-900/20 px-4 py-3 text-sm text-red-600 dark:text-red-400 font-medium flex items-start gap-2.5 shadow-sm animate-in zoom-in">
+												<div className="rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive font-medium flex items-start gap-2.5 shadow-sm animate-in zoom-in">
 													<AlertCircle className="h-5 w-5 mt-0.5 shrink-0" />
 													<span>{errorMessage}</span>
 												</div>
 											)}
 										</div>
 
-										<Button type="submit" className="w-full h-12 rounded-xl text-base font-bold text-white shadow-lg bg-amber-600 hover:bg-amber-700 transition-all hover:-translate-y-0.5" disabled={isSubmitting}>
+										<Button type="submit" className="w-full h-12 rounded-xl text-base font-semibold text-primary-foreground shadow-md bg-primary hover:bg-accent transition-all hover:-translate-y-0.5" disabled={isSubmitting}>
 											{isSubmitting ? "Đang cập nhật..." : "Lưu mật khẩu mới"}
 										</Button>
 									</form>
 								)}
 							</div>
 
-							<div className="mt-8 text-center text-sm font-medium text-gray-600 dark:text-gray-400 animate-in fade-in slide-in-from-bottom-2 duration-500" style={{ animationDelay: '400ms' }}>
+							<div className="mt-8 text-center text-sm font-medium text-muted-foreground animate-in fade-in slide-in-from-bottom-2 duration-500" style={{ animationDelay: '400ms' }}>
 								Bạn nhớ mật khẩu rồi?{" "}
 								<button
 									type="button"
-									className="text-primary font-bold hover:underline ml-1"
+									className="text-accent font-semibold hover:underline ml-1"
 									onClick={() => navigate(APP_ROUTES.LOGIN)}
 								>
 									Đăng nhập ngay

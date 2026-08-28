@@ -32,15 +32,15 @@ export default function FeaturedNews() {
 
   if (!featuredNews.length) return null;
   return (
-    <div className="py-8 md:py-12 lg:py-16 bg-white dark:bg-gray-950 overflow-hidden">
+    <div className="py-8 md:py-12 lg:py-16 bg-background overflow-hidden">
       <div className="w-full px-4 lg:px-6 xl:px-8">
-        <div className="relative bg-gradient-to-b from-background via-muted/20 to-background rounded-none sm:rounded-3xl py-12 md:py-16 px-4 sm:px-8 lg:px-12 w-full">
+        <div className="relative bg-card/40 border border-border/40 rounded-3xl py-12 md:py-16 px-4 sm:px-8 lg:px-12 w-full">
           {/* Decorative Background Elements */}
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 pointer-events-none sm:rounded-3xl" />
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-12">
           <div className="space-y-3">
             <div className="inline-block">
-              <h2 className="text-2xl md:text-3xl font-semibold text-amber-900 dark:text-amber-500" style={{ fontFamily: 'serif' }}>
+              <h2 className="text-2xl md:text-3xl font-bold font-serif text-primary">
                 Tin tức cà phê
               </h2>
               <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary/50 rounded-full mt-2" />
@@ -69,7 +69,7 @@ export default function FeaturedNews() {
               className="group"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <Card className="overflow-hidden h-full hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-border hover:border-primary/50 bg-card/50 backdrop-blur">
+              <Card className="overflow-hidden h-full hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border-border/60 hover:border-accent bg-card backdrop-blur shadow-sm">
                 <div className="relative h-56 overflow-hidden bg-gradient-to-br from-muted to-muted/50">
                   <img
                     src={item.thumbnail}
@@ -104,7 +104,7 @@ export default function FeaturedNews() {
                     </div>
                   </div>
 
-                  <h4 className="text-xl font-bold mb-3 line-clamp-2 min-h-[56px] group-hover:text-primary transition-colors duration-300 leading-tight">
+                  <h4 className="text-xl font-bold font-serif mb-3 line-clamp-2 min-h-[56px] group-hover:text-accent transition-colors duration-300 leading-tight">
                     {item.title}
                   </h4>
 
@@ -113,7 +113,7 @@ export default function FeaturedNews() {
                   </p>
 
                   <div className="pt-4 border-t border-border/50">
-                    <div className="flex items-center gap-2 text-primary font-semibold text-sm group-hover:gap-4 transition-all duration-300">
+                    <div className="flex items-center gap-2 text-accent font-semibold text-sm group-hover:gap-4 transition-all duration-300">
                       <span>Đọc thêm</span>
                       <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
                     </div>

@@ -149,18 +149,18 @@ export default function QuickViewModal({ product, isOpen, onClose, activeSale, i
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-[98vw] xl:max-w-7xl p-0 overflow-hidden bg-white dark:bg-gray-900 border-none rounded-none w-[95vw] sm:w-[90vw] md:w-[85vw] lg:w-[1000px] xl:w-[1200px] gap-0">
+      <DialogContent className="max-w-[98vw] xl:max-w-7xl p-0 overflow-hidden bg-card border border-border rounded-2xl w-[95vw] sm:w-[90vw] md:w-[85vw] lg:w-[1000px] xl:w-[1200px] gap-0">
         <div className="flex flex-col md:flex-row h-full max-h-[92vh] md:max-h-[85vh] w-full">
           {/* Left: Image Box */}
-          <div className="relative w-full md:w-1/2 lg:w-3/5 bg-gray-50 dark:bg-gray-950 flex flex-col items-center p-4 md:p-10 justify-center shrink-0 md:shrink border-b md:border-b-0 md:border-r border-gray-100 dark:border-gray-800">
+          <div className="relative w-full md:w-1/2 lg:w-3/5 bg-secondary flex flex-col items-center p-4 md:p-10 justify-center shrink-0 md:shrink border-b md:border-b-0 md:border-r border-border">
             {isFlashSale && (
-              <div className="absolute top-6 left-6 z-20 bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-none shadow-lg flex items-center gap-1.5">
+              <div className="absolute top-6 left-6 z-20 bg-accent text-accent-foreground text-xs font-bold px-3 py-1.5 rounded-md shadow-lg flex items-center gap-1.5 animate-pulse">
                 <Zap className="w-4 h-4 fill-current" /> Flash Sale -{flashSaleDiscount}%
               </div>
             )}
             
             <div 
-              className="w-full max-w-[200px] sm:max-w-[280px] md:max-w-[350px] lg:max-w-[450px] xl:max-w-[500px] mx-auto aspect-square flex items-center justify-center relative group bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-800 rounded-none overflow-hidden p-3 md:p-6 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] cursor-pointer"
+              className="w-full max-w-[200px] sm:max-w-[280px] md:max-w-[350px] lg:max-w-[450px] xl:max-w-[500px] mx-auto aspect-square flex items-center justify-center relative group bg-card border border-border rounded-2xl overflow-hidden p-3 md:p-6 shadow-sm cursor-pointer"
               onClick={() => {
                 onClose();
                 navigate(`/${product.slug || 'products/' + product.id}`);
@@ -202,11 +202,11 @@ export default function QuickViewModal({ product, isOpen, onClose, activeSale, i
                   <button
                     key={idx}
                     onClick={() => setActiveImageIndex(idx)}
-                    className={`shrink-0 w-12 h-12 md:w-16 md:h-16 rounded-none border-2 overflow-hidden transition-all duration-300 ${
-                      activeImageIndex === idx ? 'border-amber-500 scale-110 shadow-lg ring-2 ring-amber-500/20' : 'border-transparent opacity-60 hover:opacity-100'
+                    className={`shrink-0 w-12 h-12 md:w-16 md:h-16 rounded-xl border-2 overflow-hidden transition-all duration-300 ${
+                      activeImageIndex === idx ? 'border-accent scale-110 shadow-lg ring-2 ring-accent/20' : 'border-transparent opacity-60 hover:opacity-100'
                     }`}
                   >
-                    <div className="w-full h-full p-1 bg-white dark:bg-gray-800">
+                    <div className="w-full h-full p-1 bg-card">
                       <img src={img} alt="" className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal" />
                     </div>
                   </button>
@@ -216,21 +216,21 @@ export default function QuickViewModal({ product, isOpen, onClose, activeSale, i
           </div>
 
           {/* Right: Info Box */}
-          <div className="w-full md:w-1/2 lg:w-2/5 flex flex-col items-stretch flex-1 min-h-0 overflow-y-auto custom-scrollbar bg-white dark:bg-gray-900">
+          <div className="w-full md:w-1/2 lg:w-2/5 flex flex-col items-stretch flex-1 min-h-0 overflow-y-auto custom-scrollbar bg-card">
             <div className="p-5 md:p-8 flex-1 overflow-visible">
-              <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2" style={{ fontFamily: 'serif' }}>{product.name}</h2>
+              <h2 className="text-xl md:text-2xl font-bold font-serif text-foreground mb-2">{product.name}</h2>
               
               <div className="flex items-center gap-1.5 mb-4 opacity-80">
-                <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+                <Star className="w-4 h-4 fill-accent text-accent" />
                 <span className="text-sm font-semibold">{Number(product.rating) > 0 ? Number(product.rating).toFixed(1) : "Chưa có đánh giá"}</span>
               </div>
 
               <div className="flex items-end gap-3 mb-6">
-                <span className="text-2xl font-black text-amber-600">
+                <span className="text-2xl font-bold text-accent">
                   {currentPrice.toLocaleString("vi-VN")}đ
                 </span>
                 {isFlashSale && originalPrice > currentPrice && (
-                  <span className="text-sm text-gray-400 line-through font-medium mb-1">
+                  <span className="text-sm text-muted-foreground line-through font-medium mb-1">
                     {originalPrice.toLocaleString("vi-VN")}đ
                   </span>
                 )}
@@ -238,7 +238,7 @@ export default function QuickViewModal({ product, isOpen, onClose, activeSale, i
 
               {/* Sizes */}
               <div className="mb-6">
-                <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wider">Kích cỡ</h3>
+                <h3 className="text-sm font-bold text-foreground mb-3 uppercase tracking-wider">Kích cỡ</h3>
                 <div className="flex flex-wrap gap-2">
                   {product?.sizes?.map((size) => {
                     const btnPrice = Number(size.price);
@@ -248,11 +248,11 @@ export default function QuickViewModal({ product, isOpen, onClose, activeSale, i
                         key={size.id}
                         disabled={!isAvail}
                         onClick={() => setSelectedSize(size.id)}
-                        className={`min-w-[4rem] px-3 py-2 rounded-none border text-sm font-semibold transition-all
+                        className={`min-w-[4rem] px-3 py-2 rounded-full border text-sm font-semibold transition-all
                           ${selectedSize === size.id 
-                            ? "bg-amber-600 text-white border-amber-600 shadow-md" 
-                            : "bg-white text-gray-700 hover:border-amber-500 hover:text-amber-600"}
-                          ${!isAvail ? "opacity-40 cursor-not-allowed bg-gray-100" : ""}`}
+                            ? "bg-primary text-primary-foreground border-primary shadow-sm" 
+                            : "bg-card text-foreground border-border hover:border-accent hover:text-accent"}
+                          ${!isAvail ? "opacity-40 cursor-not-allowed bg-secondary" : ""}`}
                       >
                         {size.size}
                       </button>
@@ -263,26 +263,26 @@ export default function QuickViewModal({ product, isOpen, onClose, activeSale, i
 
               {/* Toppings */}
               {availableToppings && availableToppings.length > 0 && (
-                <div className="mb-6 rounded-none border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden shadow-sm transition-all duration-300">
+                <div className="mb-6 rounded-2xl border border-border bg-card overflow-hidden shadow-sm transition-all duration-300">
                   <div 
-                    className="px-5 py-4 flex justify-between items-center cursor-pointer bg-gray-50/80 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    className="px-5 py-4 flex justify-between items-center cursor-pointer bg-secondary hover:bg-secondary/80 transition-colors"
                     onClick={() => setIsToppingExpanded(!isToppingExpanded)}
                   >
-                    <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2">
+                    <h3 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
                        Thêm Topping
                        {selectedToppings.length > 0 && !isToppingExpanded && (
-                         <span className="text-[11px] bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400 px-2.5 py-0.5 rounded-none font-bold shadow-sm">
+                         <span className="text-[11px] bg-accent/15 text-accent px-2.5 py-0.5 rounded-md font-bold shadow-sm">
                            {selectedToppings.length} đã chọn
                          </span>
                        )}
                     </h3>
-                    <div className="text-gray-500 hover:text-amber-600 transition-colors bg-white dark:bg-gray-800 rounded-none p-1 shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div className="text-muted-foreground hover:text-accent transition-colors bg-card rounded-md p-1 shadow-sm border border-border">
                       {isToppingExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                     </div>
                   </div>
 
                   {isToppingExpanded && (
-                    <div className="p-5 max-h-[260px] overflow-y-auto custom-scrollbar border-t border-gray-100 dark:border-gray-800">
+                    <div className="p-5 max-h-[260px] overflow-y-auto custom-scrollbar border-t border-border">
                       <div className="space-y-4">
                         {availableToppings.map((topping) => {
                           const selected = isToppingSelected(topping.id);
@@ -293,10 +293,10 @@ export default function QuickViewModal({ product, isOpen, onClose, activeSale, i
                                   type="checkbox" 
                                   checked={selected}
                                   onChange={() => toggleTopping(topping)}
-                                  className="w-4 h-4 text-amber-600 focus:ring-amber-500 rounded-none border-gray-300 cursor-pointer"
+                                  className="w-4 h-4 text-accent focus:ring-accent rounded-md border-border cursor-pointer"
                                 />
                                 <span className="text-sm font-medium flex-1">{topping.name}</span>
-                                <span className="text-sm text-gray-500 font-medium">+{(Number(topping.price)).toLocaleString("vi-VN")}đ</span>
+                                <span className="text-sm text-accent font-semibold">+{(Number(topping.price)).toLocaleString("vi-VN")}đ</span>
                               </label>
                             </div>
                           )
@@ -306,12 +306,12 @@ export default function QuickViewModal({ product, isOpen, onClose, activeSale, i
                   )}
 
                   {!isToppingExpanded && selectedToppings.length > 0 && (
-                    <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-amber-50/40 dark:bg-amber-900/10 transition-all duration-300 relative overflow-hidden">
+                    <div className="p-4 border-t border-border bg-secondary transition-all duration-300 relative overflow-hidden">
                       <div className="flex justify-between items-center mb-3">
-                        <span className="text-xs font-bold text-gray-500 dark:text-gray-400">ĐÃ CHỌN</span>
+                        <span className="text-xs font-bold text-muted-foreground">ĐÃ CHỌN</span>
                         <button 
                           onClick={(e) => { e.stopPropagation(); setSelectedToppings([]); }}
-                          className="text-xs text-red-500 hover:text-red-600 font-bold transition-colors uppercase"
+                          className="text-xs text-destructive hover:text-destructive/80 font-bold transition-colors uppercase"
                         >
                           Xóa tất cả
                         </button>
@@ -319,18 +319,18 @@ export default function QuickViewModal({ product, isOpen, onClose, activeSale, i
                       <div className="flex flex-col gap-2.5 max-h-[200px] overflow-y-auto custom-scrollbar pr-2">
                         {selectedToppings.map(t => (
                           <div key={t.topping_id} className="flex justify-between items-center text-[13px] group">
-                            <span className="font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                              <div className="w-1.5 h-1.5 rounded-none bg-amber-500 shadow-sm"></div>
+                            <span className="font-semibold text-foreground flex items-center gap-2">
+                              <div className="w-1.5 h-1.5 rounded-full bg-accent shadow-sm"></div>
                               {t.name}
                             </span>
                             <div className="flex items-center gap-3">
-                              <span className="text-gray-500 font-medium">+{t.price.toLocaleString("vi-VN")}đ</span>
+                              <span className="text-accent font-semibold">+{t.price.toLocaleString("vi-VN")}đ</span>
                               <button 
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   setSelectedToppings(prev => prev.filter(item => item.topping_id !== t.topping_id));
                                 }}
-                                className="text-gray-400 hover:text-red-500 transition-colors bg-white dark:bg-gray-800 rounded-none p-0.5 shadow-sm border border-gray-100 dark:border-gray-700"
+                                className="text-gray-400 hover:text-destructive transition-colors bg-card rounded-md p-0.5 shadow-sm border border-border"
                                 title="Xóa topping"
                               >
                                 <X className="w-3.5 h-3.5" />
@@ -346,24 +346,24 @@ export default function QuickViewModal({ product, isOpen, onClose, activeSale, i
 
               {/* Quantity */}
               <div className="mb-6 flex items-center justify-between">
-                <span className="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider">Số lượng</span>
-                <div className="flex items-center gap-1 bg-gray-50 dark:bg-gray-800 rounded-none p-1 border">
-                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-8 h-8 flex items-center justify-center rounded-none hover:bg-white dark:hover:bg-gray-700 shadow-sm"><Minus className="w-4 h-4 text-gray-600" /></button>
+                <span className="text-sm font-bold text-foreground uppercase tracking-wider">Số lượng</span>
+                <div className="flex items-center gap-1 bg-secondary rounded-lg p-1 border border-border">
+                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-card shadow-sm transition-colors"><Minus className="w-4 h-4 text-foreground" /></button>
                   <span className="w-10 text-center text-sm font-bold">{quantity}</span>
-                  <button onClick={() => setQuantity(quantity + 1)} className="w-8 h-8 flex items-center justify-center rounded-none hover:bg-white dark:hover:bg-gray-700 shadow-sm"><Plus className="w-4 h-4 text-gray-600" /></button>
+                  <button onClick={() => setQuantity(quantity + 1)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-card shadow-sm transition-colors"><Plus className="w-4 h-4 text-foreground" /></button>
                 </div>
               </div>
             </div>
 
             {/* Sticky Bottom Actions */}
-            <div className="sticky bottom-0 z-10 bg-white dark:bg-gray-900 border-t p-4 md:p-6 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.05)]">
+            <div className="sticky bottom-0 z-10 bg-card border-t border-border p-4 md:p-6 shadow-sm">
               {isStoreOpen ? (
-                <Button onClick={handleAddToCart} className="w-full bg-amber-600 hover:bg-amber-700 text-white h-12 md:h-14 rounded-none text-base font-bold shadow-lg shadow-amber-600/30">
+                <Button onClick={handleAddToCart} className="w-full bg-primary hover:bg-accent text-primary-foreground h-12 md:h-14 rounded-xl text-base font-bold shadow-md shadow-primary/20 transition-all">
                   <ShoppingCart className="w-5 h-5 md:w-6 md:h-6 mr-2" />
                   Thêm vào giỏ hàng • {totalPrice > 0 ? totalPrice.toLocaleString("vi-VN") : 0}đ
                 </Button>
               ) : (
-                <div className="text-center p-3 bg-red-50 text-red-600 rounded-none font-bold border border-red-100">
+                <div className="text-center p-3 bg-destructive/10 text-destructive rounded-xl font-bold border border-destructive/20">
                   {nextOpenMessage}
                 </div>
               )}

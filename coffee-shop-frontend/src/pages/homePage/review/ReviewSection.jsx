@@ -57,8 +57,8 @@ export default function ReviewSection() {
     const imgs = typeof review.images === 'string' ? JSON.parse(review.images || "[]") : (review.images || []);
 
     return (
-      <div className="bg-[#FAF9F6] dark:bg-[#252220] rounded-2xl p-8 relative shadow-sm border border-transparent hover:border-amber-200 hover:shadow-md transition-all flex flex-col h-full mx-1 mt-1">
-        <Quote className="absolute top-6 right-6 w-10 h-10 text-amber-900/5 rotate-180" />
+      <div className="bg-card border border-border rounded-2xl p-8 relative shadow-sm hover:border-accent/40 hover:shadow-md transition-all flex flex-col h-full mx-1 mt-1">
+        <Quote className="absolute top-6 right-6 w-10 h-10 text-accent/15 rotate-180" />
 
         <div className="flex items-center gap-4 mb-5">
           <div className={`w-12 h-12 ${avatarColor} text-white rounded-full flex items-center justify-center font-bold text-lg shrink-0 shadow-sm`}>
@@ -92,7 +92,7 @@ export default function ReviewSection() {
               const isVideo = img.url?.match(/\.(mp4|webm|ogg)$/i) || img.url?.includes("video/upload");
               if (isVideo) {
                 return (
-                  <button key={idx} onClick={() => setExpandedImage({ images: imgs, index: idx })} className="flex-1 rounded-xl overflow-hidden shadow-sm border border-amber-100 bg-black relative group cursor-zoom-in">
+                  <button key={idx} onClick={() => setExpandedImage({ images: imgs, index: idx })} className="flex-1 rounded-xl overflow-hidden shadow-sm border border-border bg-black relative group cursor-zoom-in">
                     <video src={img.url} className="w-full h-full object-cover pointer-events-none" />
                     <div className="absolute inset-0 bg-black/10 flex items-center justify-center group-hover:bg-black/30 transition-colors pointer-events-none">
                       <span className="w-0 h-0 border-t-[5px] border-t-transparent border-l-[8px] border-l-white border-b-[5px] border-b-transparent ml-0.5 shadow-sm" />
@@ -101,13 +101,13 @@ export default function ReviewSection() {
                 );
               }
               return (
-                <button key={idx} onClick={() => setExpandedImage({ images: imgs, index: idx })} className="flex-1 rounded-xl overflow-hidden shadow-sm border border-amber-100 block hover:opacity-90 transition-opacity relative group cursor-zoom-in">
+                <button key={idx} onClick={() => setExpandedImage({ images: imgs, index: idx })} className="flex-1 rounded-xl overflow-hidden shadow-sm border border-border block hover:opacity-90 transition-opacity relative group cursor-zoom-in">
                   <img src={img.url} alt={`Review ${idx}`} className="w-full h-full object-cover pointer-events-none" loading="lazy" />
                 </button>
               );
             })
           ) : (
-            <div className="w-full h-full rounded-xl overflow-hidden shadow-sm border border-amber-100">
+            <div className="w-full h-full rounded-xl overflow-hidden shadow-sm border border-border">
               <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&q=80" alt="Review default" className="w-full h-full object-cover opacity-80 filter brightness-90" loading="lazy" />
             </div>
           )}
@@ -117,11 +117,11 @@ export default function ReviewSection() {
   };
 
   return (
-    <section className="py-8 md:py-12 lg:py-16 bg-white dark:bg-gray-950 overflow-hidden">
+    <section className="py-8 md:py-12 lg:py-16 bg-background overflow-hidden">
       <div className="w-full px-4 lg:px-6 xl:px-8">
-        <div className="bg-[#EFE8D8] dark:bg-[#1f1b1a] rounded-none sm:rounded-3xl py-12 md:py-16 px-4 sm:px-8 lg:px-12 w-full">
+        <div className="bg-card/40 border border-border/40 rounded-3xl py-12 md:py-16 px-4 sm:px-8 lg:px-12 w-full">
         <div className="text-center pb-8">
-          <h2 className="text-2xl md:text-3xl font-semibold text-amber-900 dark:text-amber-500" style={{ fontFamily: 'serif' }}>
+          <h2 className="text-2xl md:text-3xl font-bold font-serif text-primary">
             Khách hàng nói gì
           </h2>
           <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base mt-4">
@@ -140,7 +140,7 @@ export default function ReviewSection() {
             pagination={{
               clickable: true,
               bulletClass: "swiper-pagination-bullet bg-gray-400 opacity-50 w-2.5 h-2.5 mx-1.5 rounded-full inline-block cursor-pointer transition-all duration-300",
-              bulletActiveClass: "swiper-pagination-bullet-active !bg-amber-700 !opacity-100 !w-6",
+              bulletActiveClass: "swiper-pagination-bullet-active !bg-accent !opacity-100 !w-6",
             }}
             breakpoints={{
               640: {
@@ -164,7 +164,7 @@ export default function ReviewSection() {
           <div className="text-center mt-6">
             <button
               onClick={() => setShowAll(true)}
-              className="px-8 py-3 bg-white dark:bg-gray-800 border border-amber-600/30 text-amber-700 dark:text-amber-500 rounded-full font-semibold hover:bg-amber-600 hover:text-white dark:hover:bg-amber-600 dark:hover:text-white transition-all shadow-sm"
+              className="px-8 py-3 bg-card border border-border text-foreground rounded-full font-semibold hover:bg-primary hover:text-primary-foreground transition-all shadow-sm"
             >
               Xem tất cả đánh giá ({reviews.length})
             </button>
@@ -173,14 +173,14 @@ export default function ReviewSection() {
 
         {showAll && (
           <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-4 sm:p-6 backdrop-blur-sm">
-            <div className="bg-[#EFE8D8] dark:bg-[#1f1b1a] w-full max-w-6xl max-h-[90vh] rounded-3xl flex flex-col overflow-hidden shadow-2xl relative">
-              <div className="p-5 border-b border-amber-900/10 dark:border-gray-800 flex justify-between items-center bg-white/50 dark:bg-black/20">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100" style={{ fontFamily: 'serif' }}>
+            <div className="bg-card w-full max-w-6xl max-h-[90vh] rounded-3xl flex flex-col overflow-hidden shadow-2xl relative border border-border">
+              <div className="p-5 border-b border-border flex justify-between items-center bg-card">
+                <h3 className="text-xl font-bold font-serif text-foreground">
                   Tất cả đánh giá ({reviews.length})
                 </h3>
                 <button
                   onClick={() => setShowAll(false)}
-                  className="p-2 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-full hover:bg-red-500 hover:text-white dark:hover:bg-red-500 dark:hover:text-white transition-all shadow-sm"
+                  className="p-2 bg-secondary text-foreground rounded-full hover:bg-destructive hover:text-white transition-all shadow-sm"
                 >
                   <X className="w-5 h-5" />
                 </button>

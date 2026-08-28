@@ -171,8 +171,8 @@ export default function LoginPage() {
 		<div className="min-h-screen bg-background">
 			<div className="relative min-h-screen overflow-hidden">
 				<div className="pointer-events-none absolute inset-0">
-					<div className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-amber-400/20 dark:bg-amber-600/10 blur-[100px]" />
-					<div className="absolute -bottom-24 right-0 h-96 w-96 rounded-full bg-orange-400/20 dark:bg-orange-600/10 blur-[120px]" />
+					<div className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-accent/15 blur-[100px]" />
+					<div className="absolute -bottom-24 right-0 h-96 w-96 rounded-full bg-primary/10 blur-[120px]" />
 				</div>
 
 				<button
@@ -196,28 +196,29 @@ export default function LoginPage() {
 
 						<div className="relative z-10 max-w-md space-y-6">
 							<div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-5 py-2 text-sm text-white shadow-lg">
-								<Coffee className="h-4 w-4 text-amber-400 animate-pulse" />
-								<span className="font-medium tracking-wide">Đăng nhập dành cho mọi người</span>
+								<Coffee className="h-4 w-4 text-accent animate-pulse" />
+								<span className="font-medium tracking-wide font-sans">Đăng nhập dành cho mọi người</span>
 							</div>
 							<div className="space-y-4">
-								<h1 className="text-4xl font-extrabold text-white lg:text-6xl leading-tight drop-shadow-md">
+								<h1 className="text-4xl font-bold font-serif text-white lg:text-6xl leading-tight drop-shadow-md">
 									{storeName}
 								</h1>
-								<p className="text-base font-medium text-gray-200 drop-shadow-sm leading-relaxed">
+								<p className="text-base font-medium text-gray-200 drop-shadow-sm leading-relaxed font-sans">
 									Khám phá thế giới cà phê đầy hương vị. Đặt món nhanh, tích điểm thưởng và quản lý đơn hàng ngay hôm nay.
 								</p>
 							</div>
 							<div className="grid gap-4 text-sm text-gray-200 mt-8">
+								{/* bullet list items */}
 								{[
 									"Đặt món nhanh, theo dõi trạng thái đơn hàng",
 									"Tích điểm thành viên và nhận ưu đãi cá nhân hóa",
 									"Quản lý cửa hàng mượt mà cho đội ngũ nhân viên"
 								].map((text, idx) => (
 									<div key={idx} className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md px-5 py-3.5 shadow-sm transition-all hover:bg-white/10">
-										<div className="w-8 h-8 rounded-full bg-amber-400/20 flex items-center justify-center shrink-0">
-											<span className="h-2 w-2 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.6)]" />
+										<div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center shrink-0">
+											<span className="h-2 w-2 rounded-full bg-accent" />
 										</div>
-										<span className="font-medium">{text}</span>
+										<span className="font-medium font-sans">{text}</span>
 									</div>
 								))}
 							</div>
@@ -226,27 +227,27 @@ export default function LoginPage() {
 
 					{/* Cột phải: Form đăng nhập (Glassmorphism) */}
 					<div className="flex items-center justify-center p-6 sm:p-8 lg:p-12 relative z-10">
-						<div className="w-full max-w-[420px] rounded-[28px] border border-white/50 dark:border-gray-800/80 bg-white/70 dark:bg-gray-900/70 backdrop-blur-2xl p-8 sm:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.5)] animate-in fade-in zoom-in-[0.98] duration-700">
+						<div className="w-full max-w-[420px] rounded-2xl border border-border bg-card/85 backdrop-blur-2xl p-8 sm:p-10 shadow-sm animate-in fade-in zoom-in-[0.98] duration-700">
 							<div className="mb-8 space-y-2 text-center animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both" style={{ animationDelay: '100ms' }}>
-								<div className="w-16 h-16 bg-amber-100 dark:bg-amber-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner rotate-3 transition-transform hover:rotate-6">
-									<Coffee className="w-8 h-8 text-amber-600 dark:text-amber-500" />
+								<div className="w-16 h-16 bg-accent/15 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner rotate-3 transition-transform hover:rotate-6">
+									<Coffee className="w-8 h-8 text-accent" />
 								</div>
-								<h2 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">Đăng nhập</h2>
-								<p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+								<h2 className="text-xl font-bold font-serif text-foreground">Đăng nhập</h2>
+								<p className="text-sm font-medium text-muted-foreground">
 									Trải nghiệm hành trình cà phê tuyệt đỉnh
 								</p>
 							</div>
 
 							<form className="space-y-6" onSubmit={handleSubmit}>
 								<div className="space-y-2.5 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both" style={{ animationDelay: '200ms' }}>
-									<Label htmlFor="identifier" className="text-gray-700 dark:text-gray-300 font-semibold ml-1">Email hoặc tên đăng nhập</Label>
+									<Label htmlFor="identifier" className="text-foreground font-semibold ml-1">Email hoặc tên đăng nhập</Label>
 									<div className="relative group">
-										<Mail className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 group-focus-within:text-amber-500 transition-colors" />
+										<Mail className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground group-focus-within:text-accent transition-colors" />
 										<Input
 											id="identifier"
 											type="text"
 											placeholder="ban@coffeeshop.com"
-											className="pl-11 pr-10 h-12 rounded-xl bg-white/50 dark:bg-black/20 border-gray-200 dark:border-gray-700 focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:border-amber-500 transition-all font-medium"
+											className="pl-11 pr-10 h-12 rounded-xl bg-card border-border focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:border-accent transition-all font-medium text-foreground"
 											autoComplete="username"
 											autoFocus
 											value={identifier}
@@ -266,14 +267,14 @@ export default function LoginPage() {
 								</div>
 
 								<div className="space-y-2.5 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both" style={{ animationDelay: '300ms' }}>
-									<Label htmlFor="password" className="text-gray-700 dark:text-gray-300 font-semibold ml-1">Mật khẩu</Label>
+									<Label htmlFor="password" className="text-foreground font-semibold ml-1">Mật khẩu</Label>
 									<div className="relative group">
-										<Lock className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 group-focus-within:text-amber-500 transition-colors" />
+										<Lock className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground group-focus-within:text-accent transition-colors" />
 										<Input
 											id="password"
 											type={showPassword ? "text" : "password"}
 											placeholder="••••••••"
-											className="pl-11 pr-12 h-12 rounded-xl bg-white/50 dark:bg-black/20 border-gray-200 dark:border-gray-700 focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:border-amber-500 transition-all font-medium"
+											className="pl-11 pr-12 h-12 rounded-xl bg-card border-border focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:border-accent transition-all font-medium text-foreground"
 											autoComplete="current-password"
 											value={password}
 											onChange={(event) => setPassword(event.target.value)}
@@ -292,7 +293,7 @@ export default function LoginPage() {
 										</button>
 									</div>
 									{capsLockActive && (
-										<div className="flex items-center gap-1.5 mt-1.5 ml-1 text-amber-600 dark:text-amber-500 text-xs font-semibold animate-in fade-in zoom-in">
+										<div className="flex items-center gap-1.5 mt-1.5 ml-1 text-accent text-xs font-semibold animate-in fade-in zoom-in">
 											<AlertTriangle className="w-3.5 h-3.5" />
 											<span>Caps Lock đang bật</span>
 										</div>
@@ -300,18 +301,18 @@ export default function LoginPage() {
 								</div>
 
 								<div className="flex items-center justify-between text-sm animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both" style={{ animationDelay: '400ms' }}>
-									<Label htmlFor="remember" className="flex items-center gap-2 cursor-pointer text-gray-600 dark:text-gray-400 font-medium">
+									<Label htmlFor="remember" className="flex items-center gap-2 cursor-pointer text-muted-foreground font-medium">
 										<Checkbox
 											id="remember"
 											checked={remember}
 											onCheckedChange={(checked) => setRemember(Boolean(checked))}
-											className="data-[state=checked]:bg-amber-500 data-[state=checked]:border-amber-500 rounded-md w-5 h-5"
+											className="data-[state=checked]:bg-accent data-[state=checked]:border-accent rounded-md w-5 h-5"
 										/>
 										Ghi nhớ đăng nhập
 									</Label>
 									<button
 										type="button"
-										className="text-amber-600 dark:text-amber-500 font-bold hover:underline transition-all hover:text-amber-700"
+										className="text-accent font-semibold hover:underline transition-colors hover:text-accent/80"
 										onClick={() => navigate(APP_ROUTES.FORGOT_PASSWORD)}
 									>
 										Quên mật khẩu?
@@ -319,7 +320,7 @@ export default function LoginPage() {
 								</div>
 
 								{errorMessage ? (
-									<div className="rounded-xl border border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-900/50 px-4 py-3 text-sm text-red-600 dark:text-red-400 font-medium whitespace-pre-line flex items-start gap-2.5 shadow-sm animate-in fade-in slide-in-from-top-2">
+									<div className="rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive font-medium whitespace-pre-line flex items-start gap-2.5 shadow-sm animate-in fade-in slide-in-from-top-2">
 										<AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
 										<span>{errorMessage}</span>
 									</div>
@@ -328,7 +329,7 @@ export default function LoginPage() {
 								<div className="animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both" style={{ animationDelay: '500ms' }}>
 									<Button
 										type="submit"
-										className="w-full h-12 rounded-xl text-base font-bold text-white shadow-lg bg-amber-600 hover:bg-amber-700 dark:hover:bg-amber-600/90 hover:shadow-amber-600/30 transition-all hover:-translate-y-0.5 active:translate-y-0"
+										className="w-full h-12 rounded-xl text-base font-semibold text-primary-foreground shadow-md bg-primary hover:bg-accent hover:shadow-accent/20 transition-all hover:-translate-y-0.5 active:translate-y-0"
 										disabled={isSubmitting}
 									>
 										{isSubmitting ? "Đang xử lý..." : "Đăng nhập ngay"}
@@ -339,11 +340,11 @@ export default function LoginPage() {
 							<div className="mt-8 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both" style={{ animationDelay: '600ms' }}>
 								<GoogleButton />
 
-								<div className="mt-8 text-center text-sm font-medium text-gray-600 dark:text-gray-400">
+								<div className="mt-8 text-center text-sm font-medium text-muted-foreground">
 									Chưa có tài khoản?{" "}
 									<button
 										type="button"
-										className="text-amber-600 dark:text-amber-500 font-bold hover:underline ml-1"
+										className="text-accent font-semibold hover:underline ml-1"
 										onClick={() => navigate(APP_ROUTES.REGISTER)}
 									>
 										Tạo tài khoản mới
