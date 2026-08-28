@@ -199,11 +199,54 @@ export default function MyOrderDetailPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
-
-        <div className="flex-1 flex items-center justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-amber-600" />
-        </div>
-
+        <section className="flex-1 w-full px-4 sm:px-6 lg:px-8 py-10">
+          <div className="w-full mx-auto animate-pulse">
+            {/* Back button skeleton */}
+            <div className="h-9 w-36 bg-secondary/60 rounded-lg mb-6" />
+            <div className="border border-border rounded-2xl bg-card p-5 sm:p-8 shadow-sm space-y-10">
+              {/* Timeline skeleton */}
+              <div className="flex items-center justify-between max-w-3xl mx-auto px-2 pt-2">
+                {[1, 2, 3, 4].map((_, i) => (
+                  <div key={i} className="flex flex-col items-center flex-1 gap-2">
+                    <div className="w-10 h-10 rounded-full bg-secondary/60" />
+                    <div className="h-3 w-16 bg-secondary/50 rounded" />
+                  </div>
+                ))}
+              </div>
+              {/* Info rows */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 border-t border-border pt-8">
+                <div className="lg:col-span-7 space-y-4">
+                  <div className="h-6 w-40 bg-secondary/60 rounded mb-2" />
+                  {[1, 2, 3, 4].map((_, i) => (
+                    <div key={i} className="flex justify-between py-2 border-b border-border/50">
+                      <div className="h-4 w-1/4 bg-secondary/50 rounded" />
+                      <div className="h-4 w-1/3 bg-secondary/50 rounded" />
+                    </div>
+                  ))}
+                </div>
+                <div className="lg:col-span-5 space-y-4">
+                  <div className="h-6 w-32 bg-secondary/60 rounded mb-2" />
+                  <div className="flex items-center gap-4 p-4 rounded-xl border border-border">
+                    <div className="w-16 h-16 rounded-xl bg-secondary/60 flex-shrink-0" />
+                    <div className="flex-1 space-y-2">
+                      <div className="h-4 w-2/3 bg-secondary/60 rounded" />
+                      <div className="h-3 w-1/3 bg-secondary/50 rounded" />
+                    </div>
+                    <div className="h-5 w-16 bg-secondary/60 rounded" />
+                  </div>
+                  <div className="space-y-3 pt-2">
+                    {[1, 2, 3].map((_, i) => (
+                      <div key={i} className="flex justify-between">
+                        <div className="h-4 w-1/4 bg-secondary/50 rounded" />
+                        <div className="h-4 w-1/5 bg-secondary/50 rounded" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     );
   }

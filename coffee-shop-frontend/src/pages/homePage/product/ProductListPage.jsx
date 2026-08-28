@@ -48,6 +48,7 @@ export default function ProductListPage({
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const sidebarRef = useRef(null);
+  const sentinelRef = useRef(null);
   const { isOpen: isStoreOpen, nextOpenMessage } = useStoreHours();
   const { addItem } = useCartStore();
   const [addedCartItem, setAddedCartItem] = useState(null);
@@ -366,11 +367,26 @@ export default function ProductListPage({
 
   const handlePageChange = (nextPage) => {
     if (nextPage < 1 || nextPage > totalPages) return;
-
-    updateQuery({
-      page: nextPage,
-    });
+    updateQuery({ page: nextPage });
   };
+
+  // Infinite scroll: observe sentinel to trigger next page
+  useEffect(() => {
+    if (page >= totalPages || loading || effectiveLoading) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          handlePageChange(page + 1);
+        }
+      },
+      { rootMargin: "300px" }
+    );
+
+    const el = sentinelRef.current;
+    if (el) observer.observe(el);
+    return () => { if (el) observer.unobserve(el); };
+  }, [page, totalPages, loading, effectiveLoading]);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -827,22 +843,31 @@ export default function ProductListPage({
                   })}
                 </div>
 
+                {/* Infinite scroll sentinel */}
                 {page < totalPages && (
-                  <div className="flex justify-center mt-12 mb-6">
-                    <Button
-                      className="bg-transparent border-2 border-primary text-primary hover:bg-secondary hover:border-accent hover:text-accent rounded-full px-8 py-6 text-base font-bold shadow-sm transition-all hover:scale-105"
-                      onClick={() => handlePageChange(page + 1)}
-                      disabled={loading}
-                    >
-                      {loading ? (
-                        <>
-                          <Loader2 className="w-5 h-5 mr-2 animate-spin" /> Đang
-                          tải...
-                        </>
-                      ) : (
-                        "Xem thêm món..."
-                      )}
-                    </Button>
+                  <div ref={sentinelRef} className="h-2" aria-hidden="true" />
+                )}
+
+                {/* Loading more skeleton */}
+                {loading && page > 1 && (
+                  <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                      <div key={i} className="rounded-2xl border border-border/50 bg-card p-4 animate-pulse space-y-3">
+                        <div className="h-44 w-full bg-secondary/50 rounded-xl" />
+                        <div className="h-4 w-3/4 bg-secondary/60 rounded" />
+                        <div className="h-3 w-1/2 bg-secondary/50 rounded" />
+                        <div className="h-8 w-full bg-secondary/40 rounded-lg" />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* End of feed */}
+                {page >= totalPages && accumulatedProducts.length > 0 && !effectiveLoading && (
+                  <div className="mt-12 flex flex-col items-center gap-2 text-muted-foreground text-sm">
+                    <div className="w-16 h-px bg-border" />
+                    <span>Bạn đã xem hết tất cả sản phẩm</span>
+                    <div className="w-16 h-px bg-border" />
                   </div>
                 )}
               </>

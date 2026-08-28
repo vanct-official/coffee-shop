@@ -1461,9 +1461,20 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
 
           <div className="px-4">
             {reviewLoading ? (
-              <div className="flex items-center justify-center py-10 text-gray-500">
-                <Loader2 className="w-6 h-6 animate-spin mr-2" />
-                Đang tải đánh giá...
+              <div className="flex flex-col gap-5 animate-pulse">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="flex gap-4 p-4 border border-border rounded-xl bg-card/50">
+                    <div className="w-10 h-10 rounded-full bg-secondary/60 flex-shrink-0" />
+                    <div className="flex-1 space-y-2">
+                      <div className="h-4 w-1/4 bg-secondary/60 rounded" />
+                      <div className="flex gap-1">
+                        {[1,2,3,4,5].map(s => <div key={s} className="w-3 h-3 bg-secondary/50 rounded" />)}
+                      </div>
+                      <div className="h-3 w-full bg-secondary/40 rounded" />
+                      <div className="h-3 w-3/4 bg-secondary/40 rounded" />
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : filteredReviews.length === 0 ? (
               <div className="text-sm text-center text-gray-500">
@@ -1674,8 +1685,15 @@ export default function ProductDetailPage({ productIdOverride, initialProductDat
           </div>
 
           {relatedLoading ? (
-            <div className="flex justify-center py-10">
-              <Loader2 className="w-8 h-8 animate-spin text-accent" />
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 animate-pulse pb-10">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="rounded-2xl border border-border/50 bg-card p-4 space-y-3">
+                  <div className="h-40 w-full bg-secondary/50 rounded-xl" />
+                  <div className="h-4 w-3/4 bg-secondary/60 rounded" />
+                  <div className="h-3 w-1/2 bg-secondary/50 rounded" />
+                  <div className="h-8 w-full bg-secondary/40 rounded-lg" />
+                </div>
+              ))}
             </div>
           ) : relatedProducts.length === 0 ? (
             <div className="text-sm text-center text-gray-500">

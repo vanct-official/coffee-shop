@@ -1,12 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Loader2,
   ShoppingBag,
   Eye,
   RotateCcw,
-  ChevronLeft,
-  ChevronRight,
   Clock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -36,10 +34,11 @@ export default function MyOrderOnlinePage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [buyAgainLoadingId, setBuyAgainLoadingId] = useState(null);
-  const [page, setPage] = useState(1);
+  const [displayCount, setDisplayCount] = useState(PAGE_SIZE);
   const [activeStatus, setActiveStatus] = useState(STATUS_TABS[0]);
   const [activeSale, setActiveSale] = useState(null);
   const { isOpen } = useStoreHours();
+  const sentinelRef = useRef(null);
 
   useEffect(() => {
     flashSaleService
@@ -103,24 +102,29 @@ export default function MyOrderOnlinePage() {
     }, {});
   }, [orders]);
 
-  const totalPages = useMemo(() => {
-    return Math.max(1, Math.ceil(filteredOrders.length / PAGE_SIZE));
-  }, [filteredOrders]);
+  const visibleOrders = useMemo(() => {
+    return filteredOrders.slice(0, displayCount);
+  }, [filteredOrders, displayCount]);
 
-  const paginatedOrders = useMemo(() => {
-    const start = (page - 1) * PAGE_SIZE;
-    const end = start + PAGE_SIZE;
-    return filteredOrders.slice(start, end);
-  }, [filteredOrders, page]);
+  const hasMore = displayCount < filteredOrders.length;
 
   useEffect(() => {
-    if (page > totalPages) {
-      setPage(totalPages);
-    }
-  }, [page, totalPages]);
+    if (!hasMore) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setDisplayCount((prev) => prev + PAGE_SIZE);
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    const el = sentinelRef.current;
+    if (el) observer.observe(el);
+    return () => { if (el) observer.unobserve(el); };
+  }, [hasMore, filteredOrders]);
 
   useEffect(() => {
-    setPage(1);
+    setDisplayCount(PAGE_SIZE);
   }, [activeStatus]);
 
   const getStatusLabel = (status) => {
@@ -200,50 +204,6 @@ export default function MyOrderOnlinePage() {
     }
   };
 
-  const renderPagination = () => {
-    if (filteredOrders.length <= PAGE_SIZE) return null;
-
-    const pages = [];
-    for (let i = 1; i <= totalPages; i += 1) {
-      pages.push(i);
-    }
-
-    return (
-      <div className="mt-8 flex items-center justify-center gap-2 flex-wrap">
-        <Button
-          variant="outline"
-          onClick={() => setPage((prev) => Math.max(1, prev - 1))}
-          disabled={page === 1}
-        >
-          <ChevronLeft className="w-4 h-4 mr-1" />
-          Trước
-        </Button>
-
-        {pages.map((item) => (
-          <button
-            key={item}
-            type="button"
-            onClick={() => setPage(item)}
-            className={`min-w-10 h-10 px-3 rounded-lg border text-sm font-medium transition ${page === item
-              ? "bg-amber-600 text-white border-amber-600"
-              : "bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-amber-500"
-              }`}
-          >
-            {item}
-          </button>
-        ))}
-
-        <Button
-          variant="outline"
-          onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
-          disabled={page === totalPages}
-        >
-          Sau
-          <ChevronRight className="w-4 h-4 ml-1" />
-        </Button>
-      </div>
-    );
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
@@ -263,8 +223,23 @@ export default function MyOrderOnlinePage() {
           </div>
 
           {loading ? (
-            <div className="flex items-center justify-center py-20">
-              <Loader2 className="w-8 h-8 animate-spin text-amber-600" />
+            <div className="space-y-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="border border-border rounded-2xl p-5 bg-card shadow-sm animate-pulse flex flex-col sm:flex-row gap-5 items-center sm:items-start justify-between">
+                  <div className="flex items-start gap-4 flex-1 w-full">
+                    <div className="w-20 h-20 rounded-full bg-secondary/60 flex-shrink-0" />
+                    <div className="flex-1 space-y-3 mt-1">
+                      <div className="h-5 w-2/3 bg-secondary/60 rounded" />
+                      <div className="h-4 w-1/3 bg-secondary/60 rounded" />
+                      <div className="h-3 w-1/2 bg-secondary/60 rounded" />
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-3 w-full sm:w-auto">
+                    <div className="h-6 w-20 bg-secondary/60 rounded-full" />
+                    <div className="h-6 w-24 bg-secondary/60 rounded" />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : orders.length === 0 ? (
             <div className="text-center py-16 border rounded-2xl bg-gray-50 dark:bg-gray-950">
@@ -303,136 +278,150 @@ export default function MyOrderOnlinePage() {
                   </p>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  {paginatedOrders.map((order) => (
-                    <div
-                      key={order.id}
-                      className="border border-gray-200 dark:border-gray-800 hover:border-amber-500/40 transition-colors rounded-[1.5rem] p-5 sm:p-6 bg-white dark:bg-gray-900 shadow-sm relative overflow-hidden group"
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6">
-                        <div className="flex items-start gap-4 sm:gap-5 flex-1">
-                          {/* Avatar Group */}
-                          {Array.isArray(order.items) && order.items.length > 0 && (
-                            <div className="flex -space-x-4 flex-shrink-0">
-                              {order.items.slice(0, 3).map((item, idx) => {
-                                const isFlashSale = activeSale?.product_ids?.includes(Number(item.product_id || item.id));
-                                return (
-                                  <div key={idx} className="relative" style={{ zIndex: 3 - idx }}>
-                                    <img
-                                      src={item.image_url || "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085"}
-                                      alt={item.name}
-                                      className="w-[4.5rem] h-[4.5rem] md:w-20 md:h-20 rounded-full border-[3px] border-white dark:border-gray-900 object-cover bg-gray-50 dark:bg-gray-800 shadow-sm transition-transform duration-300 group-hover:-translate-y-1"
-                                    />
-                                    {isFlashSale && (
-                                      <span className="absolute -top-1 -right-2 bg-red-500 text-white text-[8px] font-bold px-1 py-0.5 rounded-sm shadow-sm whitespace-nowrap z-10 transition-transform duration-300 group-hover:-translate-y-1">
-                                        -{activeSale.discount_percent}%
-                                      </span>
-                                    )}
+                <>
+                  <div className="space-y-4">
+                    {visibleOrders.map((order) => (
+                      <div
+                        key={order.id}
+                        className="border border-gray-200 dark:border-gray-800 hover:border-amber-500/40 transition-colors rounded-[1.5rem] p-5 sm:p-6 bg-white dark:bg-gray-900 shadow-sm relative overflow-hidden group"
+                      >
+                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6">
+                          <div className="flex items-start gap-4 sm:gap-5 flex-1">
+                            {/* Avatar Group */}
+                            {Array.isArray(order.items) && order.items.length > 0 && (
+                              <div className="flex -space-x-4 flex-shrink-0">
+                                {order.items.slice(0, 3).map((item, idx) => {
+                                  const isFlashSale = activeSale?.product_ids?.includes(Number(item.product_id || item.id));
+                                  return (
+                                    <div key={idx} className="relative" style={{ zIndex: 3 - idx }}>
+                                      <img
+                                        src={item.image_url || "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085"}
+                                        alt={item.name}
+                                        className="w-[4.5rem] h-[4.5rem] md:w-20 md:h-20 rounded-full border-[3px] border-white dark:border-gray-900 object-cover bg-gray-50 dark:bg-gray-800 shadow-sm transition-transform duration-300 group-hover:-translate-y-1"
+                                      />
+                                      {isFlashSale && (
+                                        <span className="absolute -top-1 -right-2 bg-red-500 text-white text-[8px] font-bold px-1 py-0.5 rounded-sm shadow-sm whitespace-nowrap z-10 transition-transform duration-300 group-hover:-translate-y-1">
+                                          -{activeSale.discount_percent}%
+                                        </span>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                                {order.items.length > 3 && (
+                                  <div
+                                    className="w-[4.5rem] h-[4.5rem] md:w-20 md:h-20 rounded-full border-[3px] border-white dark:border-gray-900 bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-sm font-bold text-gray-500 shadow-sm"
+                                    style={{ zIndex: 0 }}
+                                  >
+                                    +{order.items.length - 3}
                                   </div>
-                                );
-                              })}
-                              {order.items.length > 3 && (
-                                <div
-                                  className="w-[4.5rem] h-[4.5rem] md:w-20 md:h-20 rounded-full border-[3px] border-white dark:border-gray-900 bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-sm font-bold text-gray-500 shadow-sm"
-                                  style={{ zIndex: 0 }}
-                                >
-                                  +{order.items.length - 3}
+                                )}
+                              </div>
+                            )}
+
+                            <div className="flex-1 mt-1">
+                              <p className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100 leading-tight line-clamp-2 transition-colors group-hover:text-amber-600" style={{ fontFamily: 'serif' }}>
+                                {Array.isArray(order.items) && order.items.length > 0
+                                  ? `${order.items[0].name}${order.items.length > 1 ? ` và ${order.items.length - 1} sản phẩm khác` : ""}`
+                                  : "Đơn hàng trực tuyến"}
+                              </p>
+
+                              <div className="mt-3 flex flex-col gap-2 text-sm text-gray-500 dark:text-gray-400 font-medium">
+                                <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                                  <div className="flex items-center gap-1.5">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-amber-500 opacity-60"></div>
+                                    {order.order_type === "delivery"
+                                      ? "Giao hàng"
+                                      : order.order_type === "takeaway"
+                                        ? "Mang đi"
+                                        : "Tại bàn"}
+                                  </div>
+                                  <div className="flex items-center gap-1.5">
+                                    <div className={`w-1.5 h-1.5 rounded-full ${Number(order.is_paid) === 1 ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                                    {Number(order.is_paid) === 1
+                                      ? <span className="text-green-600 dark:text-green-500">Đã thanh toán</span>
+                                      : <span className="opacity-70">Chưa thanh toán</span>}
+                                  </div>
                                 </div>
-                              )}
+                                <div className="flex items-center gap-1.5 text-xs opacity-70">
+                                  <Clock className="w-3.5 h-3.5" />
+                                  {order.created_at
+                                    ? new Date(order.created_at).toLocaleString("vi-VN", { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short', year: 'numeric' })
+                                    : "--"}
+                                </div>
+                              </div>
                             </div>
-                          )}
+                          </div>
 
-                          <div className="flex-1 mt-1">
-                            <p className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100 leading-tight line-clamp-2 transition-colors group-hover:text-amber-600" style={{ fontFamily: 'serif' }}>
-                              {Array.isArray(order.items) && order.items.length > 0
-                                ? `${order.items[0].name}${order.items.length > 1 ? ` và ${order.items.length - 1} sản phẩm khác` : ""}`
-                                : "Đơn hàng trực tuyến"}
-                            </p>
+                          <div className="flex flex-col sm:items-end justify-between items-start gap-4 border-t border-gray-100 dark:border-gray-800 sm:border-0 pt-4 sm:pt-0 min-w-[140px]">
+                            <div className="flex items-center justify-between w-full sm:justify-end">
+                              <span
+                                className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold shadow-sm ${getStatusClass(
+                                  order.status
+                                )}`}
+                              >
+                                {getStatusLabel(order.status)}
+                              </span>
+                            </div>
 
-                            <div className="mt-3 flex flex-col gap-2 text-sm text-gray-500 dark:text-gray-400 font-medium">
-                              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                                <div className="flex items-center gap-1.5">
-                                  <div className="w-1.5 h-1.5 rounded-full bg-amber-500 opacity-60"></div>
-                                  {order.order_type === "delivery"
-                                    ? "Giao hàng"
-                                    : order.order_type === "takeaway"
-                                      ? "Mang đi"
-                                      : "Tại bàn"}
-                                </div>
-                                <div className="flex items-center gap-1.5">
-                                  <div className={`w-1.5 h-1.5 rounded-full ${Number(order.is_paid) === 1 ? 'bg-green-500' : 'bg-gray-300'}`}></div>
-                                  {Number(order.is_paid) === 1
-                                    ? <span className="text-green-600 dark:text-green-500">Đã thanh toán</span>
-                                    : <span className="opacity-70">Chưa thanh toán</span>}
-                                </div>
-                              </div>
-                              <div className="flex items-center gap-1.5 text-xs opacity-70">
-                                <Clock className="w-3.5 h-3.5" />
-                                {order.created_at
-                                  ? new Date(order.created_at).toLocaleString("vi-VN", { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short', year: 'numeric' })
-                                  : "--"}
-                              </div>
+                            <div className="flex flex-row sm:flex-col sm:text-right items-end justify-between w-full sm:w-auto mt-auto gap-2">
+                              <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold hidden sm:block">Tổng tiền</p>
+                              <p className="text-xl font-black text-amber-600 leading-none">
+                                {Number(order.total_amount || 0).toLocaleString(
+                                  "vi-VN"
+                                )}
+                                đ
+                              </p>
                             </div>
                           </div>
                         </div>
 
-                        <div className="flex flex-col sm:items-end justify-between items-start gap-4 border-t border-gray-100 dark:border-gray-800 sm:border-0 pt-4 sm:pt-0 min-w-[140px]">
-                          <div className="flex items-center justify-between w-full sm:justify-end">
-                            <span
-                              className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold shadow-sm ${getStatusClass(
-                                order.status
-                              )}`}
-                            >
-                              {getStatusLabel(order.status)}
-                            </span>
-                          </div>
+                        <div className="mt-5 flex gap-3 flex-wrap">
+                          <Button
+                            variant="outline"
+                            onClick={() => navigate(`/my-orders/${order.id}`)}
+                          >
+                            <Eye className="w-4 h-4 mr-2" />
+                            Xem chi tiết
+                          </Button>
 
-                          <div className="flex flex-row sm:flex-col sm:text-right items-end justify-between w-full sm:w-auto mt-auto gap-2">
-                            <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold hidden sm:block">Tổng tiền</p>
-                            <p className="text-xl font-black text-amber-600 leading-none">
-                              {Number(order.total_amount || 0).toLocaleString(
-                                "vi-VN"
-                              )}
-                              đ
-                            </p>
-                          </div>
+                          <Button
+                            onClick={() => onBuyAgain(order.id)}
+                            disabled={buyAgainLoadingId === order.id || !isOpen}
+                            className={`text-white ${!isOpen ? "bg-gray-400 cursor-not-allowed" : "bg-amber-600 hover:bg-amber-700"}`}
+                            title={!isOpen ? "Cửa hàng đang đóng cửa" : ""}
+                          >
+                            {buyAgainLoadingId === order.id ? (
+                              <>
+                                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                Đang thêm...
+                              </>
+                            ) : (
+                              <>
+                                <RotateCcw className="w-4 h-4 mr-2" />
+                                {isOpen ? "Mua lại" : "Đã đóng cửa"}
+                              </>
+                            )}
+                          </Button>
                         </div>
                       </div>
+                    ))}
+                  </div>
 
-                      <div className="mt-5 flex gap-3 flex-wrap">
-                        <Button
-                          variant="outline"
-                          onClick={() => navigate(`/my-orders/${order.id}`)}
-                        >
-                          <Eye className="w-4 h-4 mr-2" />
-                          Xem chi tiết
-                        </Button>
+                  {/* Infinite scroll sentinel */}
+                  {hasMore && (
+                    <div ref={sentinelRef} className="h-2" aria-hidden="true" />
+                  )}
 
-                        <Button
-                          onClick={() => onBuyAgain(order.id)}
-                          disabled={buyAgainLoadingId === order.id || !isOpen}
-                          className={`text-white ${!isOpen ? "bg-gray-400 cursor-not-allowed" : "bg-amber-600 hover:bg-amber-700"}`}
-                          title={!isOpen ? "Cửa hàng đang đóng cửa" : ""}
-                        >
-                          {buyAgainLoadingId === order.id ? (
-                            <>
-                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                              Đang thêm...
-                            </>
-                          ) : (
-                            <>
-                              <RotateCcw className="w-4 h-4 mr-2" />
-                              {isOpen ? "Mua lại" : "Đã đóng cửa"}
-                            </>
-                          )}
-                        </Button>
-                      </div>
+                  {/* End of list */}
+                  {!hasMore && filteredOrders.length > 0 && (
+                    <div className="mt-8 flex flex-col items-center gap-2 text-gray-400 dark:text-gray-600 text-sm">
+                      <div className="w-16 h-px bg-gray-200 dark:bg-gray-800" />
+                      <span>Bạn đã xem hết tất cả đơn hàng</span>
+                      <div className="w-16 h-px bg-gray-200 dark:bg-gray-800" />
                     </div>
-                  ))}
-                </div>
+                  )}
+                </>
               )}
-
-              {renderPagination()}
             </>
           )}
         </div>

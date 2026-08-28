@@ -17,12 +17,26 @@ export default function FeaturedNews() {
 
   if (loading) {
     return (
-      <div className="bg-gradient-to-b from-background to-muted/30 py-8 md:py-12 lg:py-16">
-        <div className="w-full w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
-          <div className="flex items-center justify-center py-12">
-            <div className="text-center space-y-4">
-              <Loader2 className="h-10 w-10 animate-spin text-primary mx-auto" />
-              <p className="text-muted-foreground">Đang tải tin tức...</p>
+      <div className="py-8 md:py-12 lg:py-16 bg-background">
+        <div className="w-full px-4 lg:px-6 xl:px-8">
+          <div className="relative bg-card/40 border border-border/40 rounded-3xl py-12 md:py-16 px-4 sm:px-8 lg:px-12 w-full">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-12 animate-pulse">
+              <div className="space-y-3">
+                <div className="h-8 w-48 bg-secondary rounded" />
+                <div className="h-4 w-64 bg-secondary rounded" />
+              </div>
+              <div className="h-10 w-28 bg-secondary rounded-xl" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="rounded-2xl border border-border/50 bg-card p-5 animate-pulse space-y-4">
+                  <div className="h-48 w-full bg-secondary/50 rounded-xl" />
+                  <div className="h-3 w-1/4 bg-secondary/50 rounded" />
+                  <div className="h-6 w-3/4 bg-secondary/50 rounded" />
+                  <div className="h-4 w-full bg-secondary/50 rounded" />
+                  <div className="h-3 w-1/3 bg-secondary/50 rounded" />
+                </div>
+              ))}
             </div>
           </div>
         </div>

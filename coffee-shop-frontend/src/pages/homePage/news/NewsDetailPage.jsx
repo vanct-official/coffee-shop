@@ -92,8 +92,30 @@ export default function NewsDetailPage() {
             {/* Main Content */}
             <div className="flex-1 min-w-0">
               {loading ? (
-                <div className="flex items-center justify-center min-h-[50vh]">
-                  <Loader2 className="h-10 w-10 animate-spin text-amber-600 mx-auto" />
+                <div className="space-y-8 animate-pulse">
+                  {/* Title */}
+                  <div className="space-y-3">
+                    <div className="h-7 w-3/4 bg-secondary/60 rounded" />
+                    <div className="h-7 w-1/2 bg-secondary/60 rounded" />
+                  </div>
+                  {/* Meta */}
+                  <div className="flex gap-4">
+                    <div className="h-8 w-32 bg-secondary/50 rounded-full" />
+                    <div className="h-8 w-24 bg-secondary/50 rounded-full" />
+                  </div>
+                  {/* Hero image */}
+                  <div className="w-full aspect-video bg-secondary/50 rounded-xl" />
+                  {/* Body paragraphs */}
+                  <div className="space-y-3">
+                    {[1, 0.9, 0.95, 0.8, 0.85, 0.7].map((w, i) => (
+                      <div key={i} className="h-4 bg-secondary/40 rounded" style={{ width: `${w * 100}%` }} />
+                    ))}
+                  </div>
+                  <div className="space-y-3">
+                    {[0.95, 0.88, 0.92, 0.75].map((w, i) => (
+                      <div key={i} className="h-4 bg-secondary/40 rounded" style={{ width: `${w * 100}%` }} />
+                    ))}
+                  </div>
                 </div>
               ) : (
               <article className="space-y-8">

@@ -174,11 +174,19 @@ export default function BestSellerSection({
           </div>
 
           {isCurrentlyLoading && (
-            <div className="flex items-center justify-center py-20">
-              <div className="flex flex-col items-center gap-4">
-                <Loader2 className="h-10 w-10 animate-spin text-accent" />
-                <p className="text-muted-foreground">Đang tải sản phẩm...</p>
-              </div>
+            <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="flex h-full flex-col overflow-hidden rounded-2xl bg-card border border-border/50 p-5 animate-pulse">
+                  <div className="relative h-48 w-full bg-secondary/50 rounded-xl mb-4" />
+                  <div className="h-3 w-1/3 bg-secondary/50 rounded mb-2" />
+                  <div className="h-5 w-3/4 bg-secondary/50 rounded mb-3" />
+                  <div className="h-4 w-1/2 bg-secondary/50 rounded mb-6" />
+                  <div className="flex justify-between items-end mt-auto pt-1">
+                    <div className="h-6 w-1/3 bg-secondary/50 rounded" />
+                    <div className="h-8 w-8 bg-secondary/50 rounded-lg" />
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 

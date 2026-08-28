@@ -299,13 +299,26 @@ function Footer() {
       </div>
 
       <div className="border-t border-border/60">
-        <div className="w-full px-4 lg:px-6 xl:px-8 py-5">
+        <div className="w-full px-4 lg:px-6 xl:px-8 py-5 space-y-2">
           <p className="text-center text-xs text-muted-foreground dark:text-gray-400">
             © {new Date().getFullYear()} Coffee Shop. Tất cả quyền được bảo lưu.
+          </p>
+          <p className="text-center text-xs text-muted-foreground dark:text-gray-400">
+            Sản phẩm của đồ án tốt nghiệp, thực hiện bởi <a href="https://github.com/vanct-official" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:text-accent transition-colors">Chu Thế Văn</a> và các thành viên khác.
+          </p>
+          <p className="text-center text-xs">
+            <Link
+              to="/about-us"
+              className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-accent transition-colors font-medium"
+            >
+              
+              Giới thiệu về dự án
+            </Link>
           </p>
         </div>
       </div>
     </footer>
+
   );
 }
 
