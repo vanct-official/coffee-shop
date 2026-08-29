@@ -124,8 +124,8 @@ class QrOrderService {
         quantity: Number(i.quantity),
         price: Number(i.price),
       })),
-      returnUrl: process.env.PAYOS_QR_RETURN_URL || "http://localhost:5173/order/payment-success",
-      cancelUrl: process.env.PAYOS_QR_CANCEL_URL || "http://localhost:5173/order/payment-cancel",
+      returnUrl: (process.env.CLIENT_URL || 'http://localhost:5173') + "/order/payment-success?success=" + orderId,
+      cancelUrl: (process.env.CLIENT_URL || 'http://localhost:5173') + "/order/payment-cancel?cancel=" + orderId,
     };
 
     const paymentLinkResponse = await payOS.paymentRequests.create(body);

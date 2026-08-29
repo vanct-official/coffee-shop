@@ -118,52 +118,110 @@ export default function AdminToppings() {
       </div>
 
       {/* ===== TABLE ===== */}
-      <div className='bg-card rounded-xl border border-border'>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-center w-[60px]">STT</TableHead>
-              <TableHead className="min-w-[180px]">Tên topping</TableHead>
-              <TableHead className="text-center min-w-[120px]">Áp dụng</TableHead>
-              <TableHead className="text-center min-w-[130px]">Giá</TableHead>
-              <TableHead className="text-center min-w-[140px]">Hành động</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {loading && (
+      <div className='bg-card rounded-xl border border-border overflow-hidden shadow-xs'>
+        {/* Desktop Table View (hidden md:block) */}
+        <div className="hidden md:block overflow-x-auto">
+          <Table>
+            <TableHeader>
               <TableRow>
-                <TableCell colSpan={5} className='text-center py-6'>Đang tải...</TableCell>
+                <TableHead className="text-center w-[60px]">STT</TableHead>
+                <TableHead className="min-w-[180px]">Tên topping</TableHead>
+                <TableHead className="text-center min-w-[120px]">Áp dụng</TableHead>
+                <TableHead className="text-center min-w-[130px]">Giá</TableHead>
+                <TableHead className="text-center min-w-[140px]">Hành động</TableHead>
               </TableRow>
-            )}
-            {!loading && filteredToppings.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={5} className='text-center py-6'>Không có topping nào</TableCell>
-              </TableRow>
-            )}
-            {!loading && currentToppings.map((topping, idx) => (
-              <TableRow key={topping.id}>
-                <TableCell className="text-center font-medium">{(currentPage - 1) * PAGE_SIZE + idx + 1}</TableCell>
-                <TableCell>{topping.name}</TableCell>
-                <TableCell className="text-center">
-                  <Badge variant={topping.category_ids && topping.category_ids.length > 0 ? 'secondary' : 'outline'}>
-                    {topping.category_ids ? (typeof topping.category_ids === 'string' ? JSON.parse(topping.category_ids).length : topping.category_ids.length) || 0 : 0} danh mục
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-center">{Number(topping.price).toLocaleString('vi-VN')}đ</TableCell>
-                <TableCell>
-                  <div className='flex items-center justify-center gap-1'>
-                    <Button variant='ghost' size='sm' className='cursor-pointer' title="Chỉnh sửa" onClick={() => openModal('update', topping)}>
-                      <Edit className='w-4 h-4' />
-                    </Button>
-                    <Button variant='ghost' size='sm' className='text-destructive cursor-pointer hover:text-red-600' title="Xóa" onClick={() => openModal('delete', topping)}>
-                      <Trash2 className='w-4 h-4' />
-                    </Button>
+            </TableHeader>
+            <TableBody>
+              {loading && (
+                <TableRow>
+                  <TableCell colSpan={5} className='text-center py-6'>Đang tải...</TableCell>
+                </TableRow>
+              )}
+              {!loading && filteredToppings.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} className='text-center py-6'>Không có topping nào</TableCell>
+                </TableRow>
+              )}
+              {!loading && currentToppings.map((topping, idx) => (
+                <TableRow key={topping.id}>
+                  <TableCell className="text-center font-medium">{(currentPage - 1) * PAGE_SIZE + idx + 1}</TableCell>
+                  <TableCell>{topping.name}</TableCell>
+                  <TableCell className="text-center">
+                    <Badge variant={topping.category_ids && topping.category_ids.length > 0 ? 'secondary' : 'outline'}>
+                      {topping.category_ids ? (typeof topping.category_ids === 'string' ? JSON.parse(topping.category_ids).length : topping.category_ids.length) || 0 : 0} danh mục
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-center font-semibold text-primary">{Number(topping.price).toLocaleString('vi-VN')}đ</TableCell>
+                  <TableCell>
+                    <div className='flex items-center justify-center gap-1'>
+                      <Button variant='ghost' size='sm' className='cursor-pointer' title="Chỉnh sửa" onClick={() => openModal('update', topping)}>
+                        <Edit className='w-4 h-4' />
+                      </Button>
+                      <Button variant='ghost' size='sm' className='text-destructive cursor-pointer hover:text-red-600' title="Xóa" onClick={() => openModal('delete', topping)}>
+                        <Trash2 className='w-4 h-4' />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+
+        {/* Mobile Card List View (md:hidden) */}
+        <div className="md:hidden divide-y divide-border/60">
+          {loading && (
+            <div className="p-6 text-center text-muted-foreground text-sm">Đang tải...</div>
+          )}
+          {!loading && filteredToppings.length === 0 && (
+            <div className="p-6 text-center text-muted-foreground text-sm">Không có topping nào</div>
+          )}
+          {!loading && currentToppings.map((topping, idx) => {
+            const catCount = topping.category_ids
+              ? (typeof topping.category_ids === 'string' ? JSON.parse(topping.category_ids).length : topping.category_ids.length) || 0
+              : 0;
+
+            return (
+              <div key={`mob-top-${topping.id}`} className="p-4 space-y-2.5 bg-card">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold text-muted-foreground">#{(currentPage - 1) * PAGE_SIZE + idx + 1}</span>
+                      <h4 className="font-bold text-sm text-foreground">{topping.name}</h4>
+                    </div>
+                    <Badge variant={catCount > 0 ? 'secondary' : 'outline'} className="text-[11px] mt-1">
+                      Áp dụng: {catCount} danh mục
+                    </Badge>
                   </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                  <span className="text-sm font-bold text-primary whitespace-nowrap">
+                    {Number(topping.price).toLocaleString('vi-VN')}đ
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-end gap-2 pt-1">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 text-xs gap-1"
+                    onClick={() => openModal('update', topping)}
+                  >
+                    <Edit className="w-3.5 h-3.5" />
+                    Sửa
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive gap-1"
+                    onClick={() => openModal('delete', topping)}
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    Xóa
+                  </Button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <PaginationControl

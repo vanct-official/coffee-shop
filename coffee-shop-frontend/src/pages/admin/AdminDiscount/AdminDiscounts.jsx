@@ -246,117 +246,207 @@ export default function AdminDiscounts() {
         )}
 
         {!isLoading && (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="text-center w-[60px]">STT</TableHead>
-                <TableHead className="min-w-[180px]">Mã giảm giá</TableHead>
-                <TableHead className="text-center min-w-[100px]">%</TableHead>
-                <TableHead className="text-center min-w-[130px]">
-                  Đơn tối thiểu
-                </TableHead>
-                <TableHead className="text-center min-w-[130px]">
-                  Giảm tối đa
-                </TableHead>
-                <TableHead className="text-center min-w-[120px]">
-                  Sử dụng
-                </TableHead>
-                <TableHead className="text-center min-w-[120px]">
-                  Trạng thái
-                </TableHead>
-                <TableHead className="text-center min-w-[140px]">
-                  Hành động
-                </TableHead>
-              </TableRow>
-            </TableHeader>
+          <>
+            {/* Desktop Table View (hidden md:block) */}
+            <div className="hidden md:block overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-center w-[60px]">STT</TableHead>
+                    <TableHead className="min-w-[180px]">Mã giảm giá</TableHead>
+                    <TableHead className="text-center min-w-[100px]">%</TableHead>
+                    <TableHead className="text-center min-w-[130px]">
+                      Đơn tối thiểu
+                    </TableHead>
+                    <TableHead className="text-center min-w-[130px]">
+                      Giảm tối đa
+                    </TableHead>
+                    <TableHead className="text-center min-w-[120px]">
+                      Sử dụng
+                    </TableHead>
+                    <TableHead className="text-center min-w-[120px]">
+                      Trạng thái
+                    </TableHead>
+                    <TableHead className="text-center min-w-[140px]">
+                      Hành động
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
 
-            <TableBody>
+                <TableBody>
+                  {data.length === 0 ? (
+                    <TableRow>
+                      <TableCell
+                        colSpan={9}
+                        className="text-center py-8 text-muted-foreground"
+                      >
+                        Không có mã giảm giá nào
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    data.map((item, index) => {
+                      const status = getStatusInfo(item);
+                      const stt = (page - 1) * PAGE_SIZE + index + 1;
+                      return (
+                        <TableRow key={item.id}>
+                          <TableCell className="text-center font-medium">
+                            {stt}
+                          </TableCell>
+                          <TableCell>
+                            <div className="font-mono font-medium">{item.code}</div>
+                          </TableCell>
+
+                          <TableCell className="text-center font-bold text-primary">
+                            {Number(item.percentage || 0)}%
+                          </TableCell>
+
+                          <TableCell className="text-center">
+                            {formatMoney(item.min_order_amount)}
+                          </TableCell>
+
+                          <TableCell className="text-center">
+                            {formatMoney(item.max_discount_amount)}
+                          </TableCell>
+
+                          <TableCell className="text-center">
+                            {Number(item.used_count || 0)} /{" "}
+                            {item.usage_limit == null
+                              ? "∞"
+                              : Number(item.usage_limit)}
+                          </TableCell>
+
+                          <TableCell className="text-center">
+                            <Badge
+                              variant={status.variant}
+                              className="inline-flex min-w-[110px] justify-center"
+                            >
+                              {status.text}
+                            </Badge>
+                          </TableCell>
+
+                          <TableCell>
+                            <div className="flex items-center justify-center gap-1">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  setSelectedDiscountId(item.id);
+                                  setIsModalOpen(true);
+                                }}
+                                title="Chỉnh sửa"
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleDeleteClick(item.id)}
+                                disabled={loadingId === item.id}
+                                title="Xóa"
+                                className="hover:text-red-600"
+                              >
+                                {loadingId === item.id ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                  <Trash2 className="h-4 w-4" />
+                                )}
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+
+            {/* Mobile Card List View (md:hidden) */}
+            <div className="md:hidden divide-y divide-border/60">
               {data.length === 0 ? (
-                <TableRow>
-                  <TableCell
-                    colSpan={9}
-                    className="text-center py-8 text-muted-foreground"
-                  >
-                    Không có mã giảm giá nào
-                  </TableCell>
-                </TableRow>
+                <div className="p-6 text-center text-muted-foreground text-sm">
+                  Không có mã giảm giá nào
+                </div>
               ) : (
                 data.map((item, index) => {
                   const status = getStatusInfo(item);
                   const stt = (page - 1) * PAGE_SIZE + index + 1;
+
                   return (
-                    <TableRow key={item.id}>
-                      <TableCell className="text-center font-medium">
-                        {stt}
-                      </TableCell>
-                      <TableCell>
-                        <div className="font-mono font-medium">{item.code}</div>
-                      </TableCell>
+                    <div key={`mob-disc-${item.id}`} className="p-4 space-y-3 bg-card">
+                      {/* Top row: Code + % + Status */}
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-semibold text-muted-foreground">#{stt}</span>
+                            <span className="font-mono font-bold text-sm bg-primary/10 text-primary px-2 py-0.5 rounded">
+                              {item.code}
+                            </span>
+                            <span className="text-sm font-bold text-foreground">
+                              -{Number(item.percentage || 0)}%
+                            </span>
+                          </div>
+                        </div>
 
-                      <TableCell className="text-center">
-                        {Number(item.percentage || 0)}%
-                      </TableCell>
-
-                      <TableCell className="text-center">
-                        {formatMoney(item.min_order_amount)}
-                      </TableCell>
-
-                      <TableCell className="text-center">
-                        {formatMoney(item.max_discount_amount)}
-                      </TableCell>
-
-                      <TableCell className="text-center">
-                        {Number(item.used_count || 0)} /{" "}
-                        {item.usage_limit == null
-                          ? "∞"
-                          : Number(item.usage_limit)}
-                      </TableCell>
-
-                      <TableCell className="text-center">
-                        <Badge
-                          variant={status.variant}
-                          className="inline-flex min-w-[110px] justify-center"
-                        >
+                        <Badge variant={status.variant} className="text-[11px]">
                           {status.text}
                         </Badge>
-                      </TableCell>
+                      </div>
 
-                      <TableCell>
-                        <div className="flex items-center justify-center gap-1">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => {
-                              setSelectedDiscountId(item.id);
-                              setIsModalOpen(true);
-                            }}
-                            title="Chỉnh sửa"
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeleteClick(item.id)}
-                            disabled={loadingId === item.id}
-                            title="Xóa"
-                            className="hover:text-red-600"
-                          >
-                            {loadingId === item.id ? (
-                              <Loader2 className="h-4 w-4 animate-spin" />
-                            ) : (
-                              <Trash2 className="h-4 w-4" />
-                            )}
-                          </Button>
+                      {/* Details Grid */}
+                      <div className="grid grid-cols-2 gap-2 text-xs bg-muted/30 p-2.5 rounded-lg border border-border/40">
+                        <div>
+                          <span className="text-muted-foreground">Đơn tối thiểu:</span>
+                          <p className="font-medium text-foreground mt-0.5">{formatMoney(item.min_order_amount)}</p>
                         </div>
-                      </TableCell>
-                    </TableRow>
+                        <div>
+                          <span className="text-muted-foreground">Giảm tối đa:</span>
+                          <p className="font-medium text-foreground mt-0.5">{formatMoney(item.max_discount_amount)}</p>
+                        </div>
+                        <div className="col-span-2 pt-1 border-t border-border/40 flex justify-between">
+                          <span className="text-muted-foreground">Đã dùng:</span>
+                          <span className="font-semibold text-foreground">
+                            {Number(item.used_count || 0)} / {item.usage_limit == null ? "Không giới hạn" : Number(item.usage_limit)}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="flex items-center justify-end gap-2 pt-1 border-t border-border/40">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-8 text-xs gap-1"
+                          onClick={() => {
+                            setSelectedDiscountId(item.id);
+                            setIsModalOpen(true);
+                          }}
+                        >
+                          <Edit className="w-3.5 h-3.5" />
+                          Sửa
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive gap-1"
+                          onClick={() => handleDeleteClick(item.id)}
+                          disabled={loadingId === item.id}
+                        >
+                          {loadingId === item.id ? (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          ) : (
+                            <Trash2 className="w-3.5 h-3.5" />
+                          )}
+                          Xóa
+                        </Button>
+                      </div>
+                    </div>
                   );
                 })
               )}
-            </TableBody>
-          </Table>
+            </div>
+          </>
         )}
       </div>
 

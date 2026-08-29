@@ -5,6 +5,7 @@ import ingredientService from '../../../services/ingredientService';
 import useFetch from '../../../hooks/useFetch';
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
+import { Badge } from '../../../components/ui/badge';
 import {
   Table,
   TableBody,
@@ -127,77 +128,134 @@ export default function AdminIngredients() {
       )}
 
       {/* ===== TABLE ===== */}
-      <div className='bg-card rounded-xl border border-border'>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-center w-[60px]">STT</TableHead>
-              <TableHead className="min-w-[180px]">Tên nguyên liệu</TableHead>
-              <TableHead className="text-center min-w-[130px]">Loại đơn vị</TableHead>
-              <TableHead className="text-center min-w-[120px]">Đơn vị</TableHead>
-              <TableHead className="text-center min-w-[140px]">Hành động</TableHead>
-            </TableRow>
-          </TableHeader>
-
-          <TableBody>
-            {loading && (
+      <div className='bg-card rounded-xl border border-border overflow-hidden shadow-xs'>
+        {/* Desktop Table View (hidden md:block) */}
+        <div className="hidden md:block overflow-x-auto">
+          <Table>
+            <TableHeader>
               <TableRow>
-                <TableCell colSpan={5} className='text-center py-6'>
-                  Đang tải...
-                </TableCell>
+                <TableHead className="text-center w-[60px]">STT</TableHead>
+                <TableHead className="min-w-[180px]">Tên nguyên liệu</TableHead>
+                <TableHead className="text-center min-w-[130px]">Loại đơn vị</TableHead>
+                <TableHead className="text-center min-w-[120px]">Đơn vị</TableHead>
+                <TableHead className="text-center min-w-[140px]">Hành động</TableHead>
               </TableRow>
-            )}
+            </TableHeader>
 
-            {!loading && filteredIngredients.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={5} className='text-center py-6'>
-                  Không có nguyên liệu nào
-                </TableCell>
-              </TableRow>
-            )}
-
-            {!loading &&
-              paginatedIngredients.map((ingredient, index) => (
-                <TableRow key={ingredient.id}>
-                  <TableCell className="text-center font-medium">
-                    {(currentPage - 1) * ITEMS_PER_PAGE + index + 1}
-                  </TableCell>
-                  <TableCell>
-                    <div className='font-medium'>{ingredient.name}</div>
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <div className='text-muted-foreground'>{ingredient.unit_type}</div>
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <div className='text-muted-foreground'>{ingredient.unit}</div>
-                  </TableCell>
-                  <TableCell>
-                    <div className='flex items-center justify-center gap-1'>
-                      <Button
-                        variant='ghost'
-                        className={'cursor-pointer'}
-                        size='sm'
-                        title="Chỉnh sửa"
-                        onClick={() => openModal('update', ingredient)}
-                      >
-                        <Edit className='w-4 h-4' />
-                      </Button>
-
-                      <Button
-                        variant='ghost'
-                        size='sm'
-                        className='text-destructive hover:text-red-600 cursor-pointer'
-                        title="Xóa"
-                        onClick={() => openModal('delete', ingredient)}
-                      >
-                        <Trash2 className='w-4 h-4' />
-                      </Button>
-                    </div>
+            <TableBody>
+              {loading && (
+                <TableRow>
+                  <TableCell colSpan={5} className='text-center py-6'>
+                    Đang tải...
                   </TableCell>
                 </TableRow>
-              ))}
-          </TableBody>
-        </Table>
+              )}
+
+              {!loading && filteredIngredients.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} className='text-center py-6'>
+                    Không có nguyên liệu nào
+                  </TableCell>
+                </TableRow>
+              )}
+
+              {!loading &&
+                paginatedIngredients.map((ingredient, index) => (
+                  <TableRow key={ingredient.id}>
+                    <TableCell className="text-center font-medium">
+                      {(currentPage - 1) * ITEMS_PER_PAGE + index + 1}
+                    </TableCell>
+                    <TableCell>
+                      <div className='font-medium'>{ingredient.name}</div>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <Badge variant="outline">{ingredient.unit_type}</Badge>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <div className='text-muted-foreground font-medium'>{ingredient.unit}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div className='flex items-center justify-center gap-1'>
+                        <Button
+                          variant='ghost'
+                          className={'cursor-pointer'}
+                          size='sm'
+                          title="Chỉnh sửa"
+                          onClick={() => openModal('update', ingredient)}
+                        >
+                          <Edit className='w-4 h-4' />
+                        </Button>
+
+                        <Button
+                          variant='ghost'
+                          size='sm'
+                          className='text-destructive hover:text-red-600 cursor-pointer'
+                          title="Xóa"
+                          onClick={() => openModal('delete', ingredient)}
+                        >
+                          <Trash2 className='w-4 h-4' />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </div>
+
+        {/* Mobile Card List View (md:hidden) */}
+        <div className="md:hidden divide-y divide-border/60">
+          {loading && (
+            <div className="p-6 text-center text-muted-foreground text-sm">Đang tải...</div>
+          )}
+          {!loading && filteredIngredients.length === 0 && (
+            <div className="p-6 text-center text-muted-foreground text-sm">Không có nguyên liệu nào</div>
+          )}
+          {!loading &&
+            paginatedIngredients.map((ingredient, index) => (
+              <div key={`mob-ing-${ingredient.id}`} className="p-4 space-y-2.5 bg-card">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold text-muted-foreground">
+                        #{(currentPage - 1) * ITEMS_PER_PAGE + index + 1}
+                      </span>
+                      <h4 className="font-bold text-sm text-foreground">{ingredient.name}</h4>
+                    </div>
+                    <div className="flex items-center gap-2 mt-1">
+                      <Badge variant="secondary" className="text-[11px]">
+                        {ingredient.unit_type}
+                      </Badge>
+                      <span className="text-xs text-muted-foreground">
+                        Đơn vị: <strong className="text-foreground">{ingredient.unit}</strong>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-end gap-2 pt-1 border-t border-border/40">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 text-xs gap-1"
+                    onClick={() => openModal('update', ingredient)}
+                  >
+                    <Edit className="w-3.5 h-3.5" />
+                    Sửa
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive gap-1"
+                    onClick={() => openModal('delete', ingredient)}
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    Xóa
+                  </Button>
+                </div>
+              </div>
+            ))}
+        </div>
       </div>
 
       {/* ===== PAGINATION ===== */}

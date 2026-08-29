@@ -436,7 +436,8 @@ export default function AdminOrders() {
           </div>
         ) : (
           <div className="rounded-2xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-            <div className="overflow-x-auto">
+            {/* Desktop Table View (hidden md:block) */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="min-w-full text-sm">
                 <thead className="bg-muted border-b border-border">
                   <tr>
@@ -554,6 +555,102 @@ export default function AdminOrders() {
                   })}
                 </tbody>
               </table>
+            </div>
+
+            {/* Mobile Card List View (md:hidden) */}
+            <div className="md:hidden divide-y divide-border/60">
+              {orders.map((order) => {
+                const statusInfo = getStatusInfo(order.status);
+                const typeInfo = getOrderTypeInfo(order.order_type);
+                const items = Array.isArray(order.items) ? order.items : [];
+                const itemCount = items.length;
+                const itemPreview = items
+                  .slice(0, 2)
+                  .map((item) => item.product?.name || "Sản phẩm")
+                  .join(", ");
+                const customerName =
+                  order.receiver_name ||
+                  order.user?.full_name ||
+                  order.user?.name ||
+                  "Khách lẻ";
+
+                return (
+                  <div key={`mob-order-${order.id}`} className="p-4 space-y-3 bg-card">
+                    {/* Header: ID + Time + Badges */}
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono font-bold text-xs bg-muted px-2 py-0.5 rounded text-foreground">
+                            #{String(order.id).padStart(5, "0")}
+                          </span>
+                          <Badge variant="outline" className={`text-[10px] py-0 px-2 font-medium ${typeInfo.color}`}>
+                            {typeInfo.label}
+                          </Badge>
+                        </div>
+                        <p className="text-[11px] text-muted-foreground mt-1">
+                          {new Date(order.created_at).toLocaleString("vi-VN", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                          })}
+                        </p>
+                      </div>
+
+                      <Badge
+                        variant="outline"
+                        className={`text-[11px] font-medium shrink-0 inline-flex items-center ${statusInfo.color}`}
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-current mr-1 shrink-0 opacity-75" />
+                        {statusInfo.label}
+                      </Badge>
+                    </div>
+
+                    {/* Customer & Items Info */}
+                    <div className="grid grid-cols-1 gap-1.5 text-xs bg-muted/30 p-2.5 rounded-xl border border-border/40">
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Khách hàng:</span>
+                        <span className="font-semibold text-foreground">
+                          {customerName} {order.receiver_phone ? `(${order.receiver_phone})` : ""}
+                        </span>
+                      </div>
+                      <div className="flex items-start justify-between gap-2">
+                        <span className="text-muted-foreground shrink-0">Món ({itemCount}):</span>
+                        <span className="font-medium text-foreground text-right truncate">
+                          {itemPreview || "Không có sản phẩm"}{itemCount > 2 ? ` +${itemCount - 2}` : ""}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between pt-1 border-t border-border/40">
+                        <span className="text-muted-foreground font-medium">Tổng tiền:</span>
+                        <span className="text-sm font-bold text-primary">
+                          {Number(order.total_amount || 0).toLocaleString("vi-VN")}đ
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Cancel reason banner if cancelled */}
+                    {String(order.status).toLowerCase() === "cancelled" && order.cancel_reason && (
+                      <p className="text-xs text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-950/40 border border-red-100 dark:border-red-900/40 rounded-lg p-2 leading-relaxed">
+                        <span className="font-semibold">Lý do hủy:</span> {formatCancelReason(order.cancel_reason)}
+                      </p>
+                    )}
+
+                    {/* Action button */}
+                    <div className="pt-1">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full h-8 text-xs gap-1.5"
+                        onClick={() => setSelectedOrder(order)}
+                      >
+                        <Eye className="w-3.5 h-3.5" />
+                        Xem chi tiết đơn hàng
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}

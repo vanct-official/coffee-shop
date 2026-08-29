@@ -142,8 +142,8 @@ class TakeawayService {
         quantity: Number(i.quantity),
         price: Number(i.price),
       })),
-      returnUrl: returnUrl || process.env.PAYOS_RETURN_TAKEAWAY_ORDER_URL,
-      cancelUrl: cancelUrl || process.env.PAYOS_CANCEL_TAKEAWAY_ORDER_URL,
+      returnUrl: returnUrl || (process.env.CLIENT_URL || 'http://localhost:5173') + "/staff/takeaway?success=" + orderId,
+      cancelUrl: cancelUrl || (process.env.CLIENT_URL || 'http://localhost:5173') + "/staff/takeaway?cancel=" + orderId,
     };
 
     const paymentLinkResponse = await payOS.paymentRequests.create(body);

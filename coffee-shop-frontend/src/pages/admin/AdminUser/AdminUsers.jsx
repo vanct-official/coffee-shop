@@ -413,8 +413,9 @@ export default function AdminUsers() {
             </Select>
           </div>
 
-          <div className="bg-card rounded-xl border border-border overflow-hidden">
-            <div className="overflow-x-auto">
+          <div className="bg-card rounded-xl border border-border overflow-hidden shadow-xs">
+            {/* Desktop Table View (hidden md:block) */}
+            <div className="hidden md:block overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -498,6 +499,89 @@ export default function AdminUsers() {
                   )}
                 </TableBody>
               </Table>
+            </div>
+
+            {/* Mobile Card List View (md:hidden) */}
+            <div className="md:hidden divide-y divide-border/60">
+              {paginatedUsers.length === 0 ? (
+                <div className="text-center py-8 text-muted-foreground text-sm">
+                  Không tìm thấy người dùng nào
+                </div>
+              ) : (
+                paginatedUsers.map((user, index) => {
+                  const roleInfo = getRoleInfo(user.role_id);
+                  const fullName = `${user.first_name} ${user.last_name}`;
+                  const stt = (currentPage - 1) * USERS_PER_PAGE + index + 1;
+
+                  return (
+                    <div key={`mob-user-${user.id}`} className="p-4 space-y-3 bg-card">
+                      {/* Top row: Avatar + Name + Role */}
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-center gap-3">
+                          <Avatar className="w-10 h-10">
+                            <AvatarFallback className="font-bold text-sm">
+                              {user.last_name ? user.last_name[0].toUpperCase() : 'U'}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-semibold text-muted-foreground">#{stt}</span>
+                              <h4 className="font-bold text-sm text-foreground leading-tight">{fullName}</h4>
+                            </div>
+                            <p className="text-xs text-muted-foreground">@{user.username}</p>
+                          </div>
+                        </div>
+
+                        <Badge variant="secondary" className={`text-[11px] ${roleInfo.className}`}>
+                          {roleInfo.label}
+                        </Badge>
+                      </div>
+
+                      {/* Contact Info */}
+                      <div className="grid grid-cols-1 gap-1 text-xs text-muted-foreground bg-muted/30 p-2.5 rounded-lg">
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground/70">Email:</span>
+                          <span className="font-medium text-foreground truncate max-w-[200px]">{user.email || '—'}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground/70">Điện thoại:</span>
+                          <span className="font-medium text-foreground">{user.phone || '—'}</span>
+                        </div>
+                      </div>
+
+                      {/* Bottom action row: Status Switch + Face ID */}
+                      <div className="flex items-center justify-between pt-1">
+                        <div className="flex items-center gap-2">
+                          <Switch
+                            id={`mob-switch-${user.id}`}
+                            checked={user.isActive === 1}
+                            onCheckedChange={() => handleStatusToggle(user)}
+                          />
+                          <label htmlFor={`mob-switch-${user.id}`} className="text-xs font-medium cursor-pointer">
+                            {user.isActive === 1 ? 'Hoạt động' : 'Tạm khóa'}
+                          </label>
+                        </div>
+
+                        {user.role_id !== 4 && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-8 text-xs gap-1.5"
+                            onClick={() => handleFaceRegistrationClick(user)}
+                            disabled={user.isActive === 0}
+                          >
+                            <Camera className="h-3.5 w-3.5 text-green-600" />
+                            {user.aws_face_id ? "Cập nhật FaceID" : "Đăng ký FaceID"}
+                            {user.aws_face_id && (
+                              <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                            )}
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })
+              )}
             </div>
           </div>
 

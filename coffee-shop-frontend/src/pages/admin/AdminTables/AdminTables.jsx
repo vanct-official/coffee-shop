@@ -372,22 +372,170 @@ export default function AdminTables() {
               <Loader2 className="w-8 h-8 animate-spin text-primary" />
               <p className="text-muted-foreground">Đang tải...</p>
             </div>
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6">
-              {paginatedTables.length > 0 ? (
-                paginatedTables.map((table) => (
+          ) : paginatedTables.length > 0 ? (
+            <>
+              {/* Mobile Card List (md:hidden) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:hidden gap-3.5 col-span-full">
+                {paginatedTables.map((table) => (
+                  <Card
+                    key={`mobile-${table.id}`}
+                    className="p-4 flex flex-col justify-between gap-3 bg-card border border-border shadow-xs rounded-xl relative overflow-hidden"
+                  >
+                    {/* Status Top Strip */}
+                    <div
+                      className={`absolute top-0 left-0 w-full h-1 ${
+                        table.status === "available"
+                          ? "bg-green-500"
+                          : table.status === "occupied"
+                            ? "bg-blue-500"
+                            : "bg-amber-500"
+                      }`}
+                    />
+
+                    {/* Table Info Header */}
+                    <div className="flex items-center justify-between gap-2 pt-1">
+                      <div className="flex items-center gap-2.5">
+                        <div
+                          className={`w-11 h-11 rounded-xl flex items-center justify-center font-black text-sm ${
+                            table.status === "available"
+                              ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
+                              : table.status === "occupied"
+                                ? "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+                                : "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300"
+                          }`}
+                        >
+                          {table.code?.replace("TB-", "")}
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-sm text-foreground">
+                            Bàn {table.code}
+                          </h4>
+                          <p className="text-xs text-muted-foreground">
+                            {table.area_name}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Status Badge */}
+                      <div
+                        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-semibold ${
+                          table.status === "available"
+                            ? "bg-green-50 text-green-700 border-green-200 dark:bg-green-950/50 dark:text-green-300 dark:border-green-800"
+                            : table.status === "occupied"
+                              ? "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/50 dark:text-blue-300 dark:border-blue-800"
+                              : "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/50 dark:text-amber-300 dark:border-amber-800"
+                        }`}
+                      >
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full animate-pulse ${
+                            table.status === "available"
+                              ? "bg-green-500"
+                              : table.status === "occupied"
+                                ? "bg-blue-500"
+                                : "bg-amber-500"
+                          }`}
+                        />
+                        {table.status === "available"
+                          ? "Trống"
+                          : table.status === "occupied"
+                            ? "Có khách"
+                            : "Đã đặt"}
+                      </div>
+                    </div>
+
+                    {/* Staff Status Actions (if applicable) */}
+                    {isStaff && (
+                      <div className="flex gap-2 w-full pt-1">
+                        {table.status === "available" && (
+                          <Button
+                            size="sm"
+                            className="w-full text-xs h-8"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleStatusChange(table, "occupied");
+                            }}
+                          >
+                            Chuyển có khách
+                          </Button>
+                        )}
+                        {table.status === "reserved" && (
+                          <Button
+                            size="sm"
+                            className="w-full text-xs h-8"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleStatusChange(table, "occupied");
+                            }}
+                          >
+                            Chuyển có khách
+                          </Button>
+                        )}
+                        {table.status === "occupied" && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="w-full text-xs h-8"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleStatusChange(table, "available");
+                            }}
+                          >
+                            Chuyển bàn trống
+                          </Button>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Action Buttons Toolbar for Mobile */}
+                    <div className="flex items-center justify-between gap-1.5 pt-2 border-t border-border/60">
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        className="flex-1 text-xs h-8 gap-1.5"
+                        onClick={() => handleViewQR(table)}
+                      >
+                        <QrCode className="w-3.5 h-3.5" />
+                        Mã QR
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="flex-1 text-xs h-8 gap-1.5"
+                        onClick={() => handleEditTable(table)}
+                      >
+                        <Edit className="w-3.5 h-3.5" />
+                        Sửa
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-xs h-8 px-2.5 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                        onClick={() => handleDeleteTableClick(table)}
+                        title="Xóa bàn"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </Button>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+
+              {/* Desktop Grid (hidden md:grid) */}
+              <div className="hidden md:grid md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 col-span-full">
+                {paginatedTables.map((table) => (
                   <Card
                     key={table.id}
                     className="relative group p-6 flex flex-col items-center justify-center gap-4 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl bg-card border-border/50 hover:border-primary/50 cursor-default overflow-hidden"
                   >
                     {/* Status Indicator Bar */}
                     <div
-                      className={`absolute top-0 left-0 w-full h-1 ${table.status === "available"
+                      className={`absolute top-0 left-0 w-full h-1 ${
+                        table.status === "available"
                           ? "bg-green-500"
                           : table.status === "occupied"
                             ? "bg-blue-500"
                             : "bg-amber-500"
-                        }`}
+                      }`}
                     />
 
                     {/* Actions Overlay */}
@@ -397,14 +545,16 @@ export default function AdminTables() {
                         variant="secondary"
                         className="h-8 w-8 shadow-sm"
                         onClick={() => handleViewQR(table)}
+                        title="Xem mã QR"
                       >
-                        <QrCode  className="w-4 h-4" />
+                        <QrCode className="w-4 h-4" />
                       </Button>
                       <Button
                         size="icon"
                         variant="secondary"
                         className="h-8 w-8 shadow-sm"
                         onClick={() => handleEditTable(table)}
+                        title="Sửa bàn"
                       >
                         <TableIcon className="w-4 h-4" />
                       </Button>
@@ -413,6 +563,7 @@ export default function AdminTables() {
                         variant="secondary"
                         className="h-8 w-8 text-destructive shadow-sm"
                         onClick={() => handleDeleteTableClick(table)}
+                        title="Xóa bàn"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -420,20 +571,22 @@ export default function AdminTables() {
 
                     {/* Table Identity */}
                     <div
-                      className={`min-w-[4rem] h-16 px-4 rounded-2xl flex flex-col items-center justify-center transition-colors duration-300 ${table.status === "available"
+                      className={`min-w-[4rem] h-16 px-4 rounded-2xl flex flex-col items-center justify-center transition-colors duration-300 ${
+                        table.status === "available"
                           ? "bg-green-50"
                           : table.status === "occupied"
                             ? "bg-blue-50"
                             : "bg-amber-50"
-                        }`}
+                      }`}
                     >
                       <span
-                        className={`text-xl font-black tracking-tighter whitespace-nowrap ${table.status === "available"
+                        className={`text-xl font-black tracking-tighter whitespace-nowrap ${
+                          table.status === "available"
                             ? "text-green-700"
                             : table.status === "occupied"
                               ? "text-blue-700"
                               : "text-amber-700"
-                          }`}
+                        }`}
                       >
                         {table.code?.replace("TB-", "")}
                       </span>
@@ -450,20 +603,22 @@ export default function AdminTables() {
 
                     {/* Status Badge */}
                     <div
-                      className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-[10px] font-bold uppercase tracking-wider ${table.status === "available"
+                      className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-[10px] font-bold uppercase tracking-wider ${
+                        table.status === "available"
                           ? "bg-green-50 text-green-700 border-green-200"
                           : table.status === "occupied"
                             ? "bg-blue-50 text-blue-700 border-blue-200"
                             : "bg-amber-50 text-amber-700 border-amber-200"
-                        }`}
+                      }`}
                     >
                       <span
-                        className={`w-1.5 h-1.5 rounded-full animate-pulse ${table.status === "available"
+                        className={`w-1.5 h-1.5 rounded-full animate-pulse ${
+                          table.status === "available"
                             ? "bg-green-500"
                             : table.status === "occupied"
                               ? "bg-blue-500"
                               : "bg-amber-500"
-                          }`}
+                        }`}
                       />
                       {table.status === "available"
                         ? "Trống"
@@ -476,18 +631,15 @@ export default function AdminTables() {
                     {isStaff && (
                       <div className="flex gap-2 w-full justify-center mt-2 z-10 transition-all duration-300">
                         {table.status === "available" && (
-                          <>
-                            <Button
-                              size="sm"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleStatusChange(table, "occupied");
-                              }}
-                            >
-                              Có khách
-                            </Button>
-                            {/* <Button size="sm" variant="outline" onClick={(e) => { e.stopPropagation(); handleReserveTable(table); }}>Đã đặt</Button> */}
-                          </>
+                          <Button
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleStatusChange(table, "occupied");
+                            }}
+                          >
+                            Có khách
+                          </Button>
                         )}
                         {table.status === "reserved" && (
                           <Button
@@ -515,25 +667,25 @@ export default function AdminTables() {
                       </div>
                     )}
                   </Card>
-                ))
-              ) : (
-                <div className="col-span-full p-20 text-center flex flex-col items-center gap-4 bg-muted/30 rounded-3xl border-2 border-dashed">
-                  <TableIcon className="w-12 h-12 text-muted-foreground/30" />
-                  <p className="text-muted-foreground font-medium text-lg">
-                    Không tìm thấy bàn nào phù hợp
-                  </p>
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setSearchTerm("");
-                      setSelectedAreaId("all");
-                      setSelectedStatus("all");
-                    }}
-                  >
-                    Xóa bộ lọc
-                  </Button>
-                </div>
-              )}
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="col-span-full p-20 text-center flex flex-col items-center gap-4 bg-muted/30 rounded-3xl border-2 border-dashed">
+              <TableIcon className="w-12 h-12 text-muted-foreground/30" />
+              <p className="text-muted-foreground font-medium text-lg">
+                Không tìm thấy bàn nào phù hợp
+              </p>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setSearchTerm("");
+                  setSelectedAreaId("all");
+                  setSelectedStatus("all");
+                }}
+              >
+                Xóa bộ lọc
+              </Button>
             </div>
           )}
 

@@ -210,153 +210,258 @@ export default function AdminProducts() {
         )}
       </div>
 
-      <div className='bg-card rounded-xl border border-border'>
+      <div className='bg-card rounded-xl border border-border overflow-hidden shadow-xs'>
         {error && (
           <div className='px-4 py-3 text-sm text-red-600 border-b border-red-200 bg-red-50'>
             Không thể tải danh sách sản phẩm. Vui lòng thử lại.
           </div>
         )}
 
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-center w-[60px]">STT</TableHead>
-              <TableHead className="min-w-[200px]">Sản phẩm</TableHead>
-              <TableHead className="text-center min-w-[100px]">Mã code</TableHead>
-              <TableHead className="text-center min-w-[120px]">Danh mục</TableHead>
-              <TableHead className="min-w-[130px]">Kích cỡ & Giá</TableHead>
-              <TableHead className="text-center min-w-[120px]">Trạng thái</TableHead>
-              <TableHead className="text-center min-w-[200px]">Hành động</TableHead>
-            </TableRow>
-          </TableHeader>
-
-          <TableBody>
-            {loading && (
+        {/* Desktop Table View (hidden md:block) */}
+        <div className="hidden md:block overflow-x-auto">
+          <Table>
+            <TableHeader>
               <TableRow>
-                <TableCell colSpan={7} className='text-center py-6'>
-                  Đang tải...
-                </TableCell>
+                <TableHead className="text-center w-[60px]">STT</TableHead>
+                <TableHead className="min-w-[200px]">Sản phẩm</TableHead>
+                <TableHead className="text-center min-w-[100px]">Mã code</TableHead>
+                <TableHead className="text-center min-w-[120px]">Danh mục</TableHead>
+                <TableHead className="min-w-[130px]">Kích cỡ & Giá</TableHead>
+                <TableHead className="text-center min-w-[120px]">Trạng thái</TableHead>
+                <TableHead className="text-center min-w-[200px]">Hành động</TableHead>
               </TableRow>
-            )}
+            </TableHeader>
 
-            {!loading && filteredProducts.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={7} className='text-center py-6'>
-                  Không có sản phẩm nào
-                </TableCell>
-              </TableRow>
-            )}
+            <TableBody>
+              {loading && (
+                <TableRow>
+                  <TableCell colSpan={7} className='text-center py-6'>
+                    Đang tải...
+                  </TableCell>
+                </TableRow>
+              )}
 
-            {!loading &&
-              filteredProducts.map((product, index) => {
-                const category = categories.find(
-                  (c) => Number(c.id) === Number(product.category_id),
-                );
+              {!loading && filteredProducts.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={7} className='text-center py-6'>
+                    Không có sản phẩm nào
+                  </TableCell>
+                </TableRow>
+              )}
 
-                return (
-                  <TableRow key={product.id}>
-                    {/* STT */}
-                    <TableCell className="text-center font-medium">
-                      {(currentPage - 1) * PAGE_SIZE + index + 1}
-                    </TableCell>
+              {!loading &&
+                filteredProducts.map((product, index) => {
+                  const category = categories.find(
+                    (c) => Number(c.id) === Number(product.category_id),
+                  );
 
-                    {/* PRODUCT */}
-                    <TableCell>
-                      <div className='flex items-center gap-3'>
-                        <img
-                          src={getThumbnail(product)}
-                          alt={product.name}
-                          className='w-20 h-20 rounded-xl object-cover bg-secondary shadow-sm border'
-                        />
-                        <div>
-                          <div className='text-sm font-medium'>
-                            {product.name}
+                  return (
+                    <TableRow key={product.id}>
+                      {/* STT */}
+                      <TableCell className="text-center font-medium">
+                        {(currentPage - 1) * PAGE_SIZE + index + 1}
+                      </TableCell>
+
+                      {/* PRODUCT */}
+                      <TableCell>
+                        <div className='flex items-center gap-3'>
+                          <img
+                            src={getThumbnail(product)}
+                            alt={product.name}
+                            className='w-20 h-20 rounded-xl object-cover bg-secondary shadow-sm border'
+                          />
+                          <div>
+                            <div className='text-sm font-medium'>
+                              {product.name}
+                            </div>
                           </div>
                         </div>
+                      </TableCell>
+
+                      {/* CODE */}
+                      <TableCell className="text-center">
+                        <Badge variant='secondary' className='font-mono'>
+                          {product.code || 'N/A'}
+                        </Badge>
+                      </TableCell>
+
+                      {/* CATEGORY */}
+                      <TableCell className="text-center">
+                        <Badge variant='secondary'>
+                          {category?.name || 'Không có'}
+                        </Badge>
+                      </TableCell>
+
+                      {/* SIZE */}
+                      <TableCell>{formatSizes(product.sizes)}</TableCell>
+
+                      {/* STATUS */}
+                      <TableCell className="text-center">
+                        <Badge
+                          className={
+                            product.status === 'available'
+                              ? 'bg-green-500/10 text-green-700 border-green-500/20'
+                              : 'bg-red-500/10 text-red-700 border-red-500/20'
+                          }
+                        >
+                          {product.status === 'available'
+                            ? 'Đang bán'
+                            : 'Ngừng bán'}
+                        </Badge>
+                      </TableCell>
+
+                      {/* ACTION */}
+                      <TableCell>
+                        <div className='flex items-center justify-center gap-1'>
+                          <Button
+                            variant='outline'
+                            size='sm'
+                            className='cursor-pointer'
+                            title="Thêm công thức"
+                            onClick={() => openModal('recipe', product)}
+                          >
+                            Thêm CT
+                          </Button>
+
+                          <Button
+                            variant='secondary'
+                            size='sm'
+                            className='cursor-pointer'
+                            title="Xem công thức"
+                            onClick={() => openModal('view-recipe', product)}
+                          >
+                            Xem CT
+                          </Button>
+
+                          <Button
+                            variant='ghost'
+                            size='sm'
+                            className='cursor-pointer'
+                            title="Chỉnh sửa"
+                            onClick={() => openModal('update', product)}
+                          >
+                            <Edit className='w-4 h-4' />
+                          </Button>
+
+                          <Button
+                            variant='ghost'
+                            size='sm'
+                            className='text-destructive hover:text-red-600 cursor-pointer'
+                            title="Xóa"
+                            onClick={() => openModal('delete', product)}
+                          >
+                            <Trash2 className='w-4 h-4' />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </div>
+
+        {/* Mobile Card List View (md:hidden) */}
+        <div className="md:hidden divide-y divide-border/60">
+          {loading && (
+            <div className="p-6 text-center text-muted-foreground text-sm">Đang tải...</div>
+          )}
+          {!loading && filteredProducts.length === 0 && (
+            <div className="p-6 text-center text-muted-foreground text-sm">Không có sản phẩm nào</div>
+          )}
+          {!loading &&
+            filteredProducts.map((product, index) => {
+              const category = categories.find(
+                (c) => Number(c.id) === Number(product.category_id),
+              );
+
+              return (
+                <div key={`mob-prod-${product.id}`} className="p-4 space-y-3 bg-card">
+                  {/* Top row: Image + Info */}
+                  <div className="flex items-start gap-3">
+                    <img
+                      src={getThumbnail(product)}
+                      alt={product.name}
+                      className="w-16 h-16 rounded-xl object-cover bg-secondary shadow-xs border flex-shrink-0"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-start justify-between gap-1">
+                        <div className="flex items-center gap-1.5 min-w-0">
+                          <span className="text-xs font-semibold text-muted-foreground">#{(currentPage - 1) * PAGE_SIZE + index + 1}</span>
+                          <h4 className="font-bold text-sm text-foreground truncate">{product.name}</h4>
+                        </div>
+                        <Badge
+                          className={`text-[10px] px-2 py-0.5 flex-shrink-0 ${
+                            product.status === 'available'
+                              ? 'bg-green-500/10 text-green-700 border-green-500/20'
+                              : 'bg-red-500/10 text-red-700 border-red-500/20'
+                          }`}
+                        >
+                          {product.status === 'available' ? 'Đang bán' : 'Ngừng bán'}
+                        </Badge>
                       </div>
-                    </TableCell>
 
-                    {/* CODE */}
-                    <TableCell className="text-center">
-                      <Badge variant='secondary' className='font-mono'>
-                        {product.code || 'N/A'}
-                      </Badge>
-                    </TableCell>
+                      <div className="flex flex-wrap items-center gap-1.5 mt-1">
+                        <span className="text-[11px] font-mono bg-muted px-1.5 py-0.5 rounded text-muted-foreground">
+                          {product.code || 'N/A'}
+                        </span>
+                        <span className="text-[11px] text-muted-foreground">
+                          {category?.name || 'Chưa phân loại'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
 
-                    {/* CATEGORY */}
-                    <TableCell className="text-center">
-                      <Badge variant='secondary'>
-                        {category?.name || 'Không có'}
-                      </Badge>
-                    </TableCell>
+                  {/* Size & Prices */}
+                  <div className="text-xs bg-muted/40 p-2.5 rounded-lg">
+                    <span className="text-muted-foreground font-medium mr-1.5">Size & Giá:</span>
+                    <span className="text-foreground">{formatSizes(product.sizes)}</span>
+                  </div>
 
-                    {/* SIZE */}
-                    <TableCell>{formatSizes(product.sizes)}</TableCell>
-
-                    {/* STATUS */}
-                    <TableCell className="text-center">
-                      <Badge
-                        className={
-                          product.status === 'available'
-                            ? 'bg-green-500/10 text-green-700 border-green-500/20'
-                            : 'bg-red-500/10 text-red-700 border-red-500/20'
-                        }
+                  {/* Actions buttons */}
+                  <div className="flex flex-wrap items-center justify-between gap-1.5 pt-1 border-t border-border/40">
+                    <div className="flex gap-1.5 flex-1">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex-1 text-[11px] h-8 px-2"
+                        onClick={() => openModal('recipe', product)}
                       >
-                        {product.status === 'available'
-                          ? 'Đang bán'
-                          : 'Ngừng bán'}
-                      </Badge>
-                    </TableCell>
-
-                    {/* ACTION */}
-                    <TableCell>
-                      <div className='flex items-center justify-center gap-1'>
-                        <Button
-                          variant='outline'
-                          size='sm'
-                          className='cursor-pointer'
-                          title="Thêm công thức"
-                          onClick={() => openModal('recipe', product)}
-                        >
-                          Thêm CT
-                        </Button>
-
-                        <Button
-                          variant='secondary'
-                          size='sm'
-                          className='cursor-pointer'
-                          title="Xem công thức"
-                          onClick={() => openModal('view-recipe', product)}
-                        >
-                          Xem CT
-                        </Button>
-
-                        <Button
-                          variant='ghost'
-                          size='sm'
-                          className='cursor-pointer'
-                          title="Chỉnh sửa"
-                          onClick={() => openModal('update', product)}
-                        >
-                          <Edit className='w-4 h-4' />
-                        </Button>
-
-                        <Button
-                          variant='ghost'
-                          size='sm'
-                          className='text-destructive hover:text-red-600 cursor-pointer'
-                          title="Xóa"
-                          onClick={() => openModal('delete', product)}
-                        >
-                          <Trash2 className='w-4 h-4' />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
+                        Thêm CT
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        className="flex-1 text-[11px] h-8 px-2"
+                        onClick={() => openModal('view-recipe', product)}
+                      >
+                        Xem CT
+                      </Button>
+                    </div>
+                    <div className="flex gap-1">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 text-xs gap-1"
+                        onClick={() => openModal('update', product)}
+                      >
+                        <Edit className="w-3.5 h-3.5" />
+                        Sửa
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive px-2.5"
+                        onClick={() => openModal('delete', product)}
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+        </div>
       </div>
 
       <PaginationControl

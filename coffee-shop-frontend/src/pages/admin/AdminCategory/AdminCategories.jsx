@@ -145,91 +145,158 @@ export default function AdminCategories() {
 
       {/* ===== TABLE ===== */}
 
-      <div className='bg-card rounded-xl border border-border'>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-center w-[60px]">STT</TableHead>
-              <TableHead className="min-w-[180px]">Tên danh mục</TableHead>
-              <TableHead className="text-center min-w-[120px]">Mã Code</TableHead>
-              <TableHead className="text-center min-w-[120px]">Hình ảnh</TableHead>
-              <TableHead className="text-center min-w-[140px]">Hành động</TableHead>
-            </TableRow>
-          </TableHeader>
-
-          <TableBody>
-            {loading && (
+      {/* ===== TABLE ===== */}
+      <div className='bg-card rounded-xl border border-border overflow-hidden shadow-xs'>
+        {/* Desktop Table View (hidden md:block) */}
+        <div className="hidden md:block overflow-x-auto">
+          <Table>
+            <TableHeader>
               <TableRow>
-                <TableCell colSpan={5} className='text-center py-6'>
-                  Đang tải...
-                </TableCell>
+                <TableHead className="text-center w-[60px]">STT</TableHead>
+                <TableHead className="min-w-[180px]">Tên danh mục</TableHead>
+                <TableHead className="text-center min-w-[120px]">Mã Code</TableHead>
+                <TableHead className="text-center min-w-[120px]">Hình ảnh</TableHead>
+                <TableHead className="text-center min-w-[140px]">Hành động</TableHead>
               </TableRow>
-            )}
+            </TableHeader>
 
-            {!loading && filteredCategories.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={5} className='text-center py-6'>
-                  Không có danh mục nào
-                </TableCell>
-              </TableRow>
-            )}
-
-            {!loading &&
-              paginatedCategories.map((category, index) => (
-                <TableRow key={category.id}>
-                  <TableCell className="text-center font-medium">
-                    {(currentPage - 1) * itemsPerPage + index + 1}
-                  </TableCell>
-
-                  <TableCell>
-                    <div className='font-medium'>{category.name}</div>
-                  </TableCell>
-
-                  <TableCell className="text-center">
-                    <div className='font-medium'>{category.code}</div>
-                  </TableCell>
-
-                  <TableCell className="text-center">
-                    {category.image_url ? (
-                      <img
-                        src={category.image_url}
-                        alt={category.name}
-                        className='w-12 h-12 object-cover rounded-md mx-auto'
-                      />
-                    ) : (
-                      <span className='text-muted-foreground text-sm'>
-                        Không có ảnh
-                      </span>
-                    )}
-                  </TableCell>
-
-                  <TableCell>
-                    <div className='flex items-center justify-center gap-1'>
-                      <Button
-                        variant='ghost'
-                        className={'cursor-pointer'}
-                        size='sm'
-                        title="Chỉnh sửa"
-                        onClick={() => openModal('update', category)}
-                      >
-                        <Edit className='w-4 h-4' />
-                      </Button>
-
-                      <Button
-                        variant='ghost'
-                        size='sm'
-                        className='text-destructive hover:text-red-600 cursor-pointer'
-                        title="Xóa"
-                        onClick={() => openModal('delete', category)}
-                      >
-                        <Trash2 className='w-4 h-4' />
-                      </Button>
-                    </div>
+            <TableBody>
+              {loading && (
+                <TableRow>
+                  <TableCell colSpan={5} className='text-center py-6'>
+                    Đang tải...
                   </TableCell>
                 </TableRow>
-              ))}
-          </TableBody>
-        </Table>
+              )}
+
+              {!loading && filteredCategories.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} className='text-center py-6'>
+                    Không có danh mục nào
+                  </TableCell>
+                </TableRow>
+              )}
+
+              {!loading &&
+                paginatedCategories.map((category, index) => (
+                  <TableRow key={category.id}>
+                    <TableCell className="text-center font-medium">
+                      {(currentPage - 1) * itemsPerPage + index + 1}
+                    </TableCell>
+
+                    <TableCell>
+                      <div className='font-medium'>{category.name}</div>
+                    </TableCell>
+
+                    <TableCell className="text-center">
+                      <div className='font-medium font-mono'>{category.code}</div>
+                    </TableCell>
+
+                    <TableCell className="text-center">
+                      {category.image_url ? (
+                        <img
+                          src={category.image_url}
+                          alt={category.name}
+                          className='w-12 h-12 object-cover rounded-md mx-auto shadow-xs border'
+                        />
+                      ) : (
+                        <span className='text-muted-foreground text-sm'>
+                          Không có ảnh
+                        </span>
+                      )}
+                    </TableCell>
+
+                    <TableCell>
+                      <div className='flex items-center justify-center gap-1'>
+                        <Button
+                          variant='ghost'
+                          className={'cursor-pointer'}
+                          size='sm'
+                          title="Chỉnh sửa"
+                          onClick={() => openModal('update', category)}
+                        >
+                          <Edit className='w-4 h-4' />
+                        </Button>
+
+                        <Button
+                          variant='ghost'
+                          size='sm'
+                          className='text-destructive hover:text-red-600 cursor-pointer'
+                          title="Xóa"
+                          onClick={() => openModal('delete', category)}
+                        >
+                          <Trash2 className='w-4 h-4' />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </div>
+
+        {/* Mobile Card List View (md:hidden) */}
+        <div className="md:hidden divide-y divide-border/60">
+          {loading && (
+            <div className="p-6 text-center text-muted-foreground text-sm">Đang tải...</div>
+          )}
+          {!loading && filteredCategories.length === 0 && (
+            <div className="p-6 text-center text-muted-foreground text-sm">Không có danh mục nào</div>
+          )}
+          {!loading &&
+            paginatedCategories.map((category, index) => (
+              <div key={`mob-cat-${category.id}`} className="p-4 space-y-3 bg-card">
+                <div className="flex items-start gap-3">
+                  {category.image_url ? (
+                    <img
+                      src={category.image_url}
+                      alt={category.name}
+                      className="w-14 h-14 object-cover rounded-xl shadow-xs border flex-shrink-0"
+                    />
+                  ) : (
+                    <div className="w-14 h-14 rounded-xl bg-muted flex items-center justify-center text-muted-foreground text-xs flex-shrink-0 font-medium border">
+                      No img
+                    </div>
+                  )}
+
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold text-muted-foreground">
+                        #{(currentPage - 1) * itemsPerPage + index + 1}
+                      </span>
+                      <h4 className="font-bold text-sm text-foreground truncate">{category.name}</h4>
+                    </div>
+                    <div className="mt-1">
+                      <span className="text-xs font-mono bg-muted px-2 py-0.5 rounded text-muted-foreground">
+                        {category.code || 'N/A'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-end gap-2 pt-1 border-t border-border/40">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 text-xs gap-1"
+                    onClick={() => openModal('update', category)}
+                  >
+                    <Edit className="w-3.5 h-3.5" />
+                    Sửa
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive gap-1"
+                    onClick={() => openModal('delete', category)}
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    Xóa
+                  </Button>
+                </div>
+              </div>
+            ))}
+        </div>
       </div>
 
       {/* ===== PAGINATION ===== */}

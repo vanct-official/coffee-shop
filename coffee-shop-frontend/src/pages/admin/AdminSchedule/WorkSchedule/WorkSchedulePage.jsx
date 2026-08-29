@@ -198,68 +198,192 @@ function WeekView({ weekStart, employees, onRemove }) {
   const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
   const todayStr = toStr(new Date());
 
+  // Aggregate day-by-day data for mobile cards
+  const daysData = days.map((d, i) => {
+    const str = toStr(d);
+    const isToday = str === todayStr;
+    // Collect all employee shifts on this day
+    const dayShifts = [];
+    employees.forEach((emp) => {
+      const shifts = emp.schedule[str] || [];
+      shifts.forEach((s) => {
+        dayShifts.push({
+          ...s,
+          empName: emp.name,
+          empRole: emp.role,
+          userId: emp.user_id,
+        });
+      });
+    });
+
+    return {
+      date: d,
+      dateStr: str,
+      label: DAY_LABELS[i],
+      isToday,
+      shifts: dayShifts,
+    };
+  });
+
   return (
-    <div className="rounded-xl border overflow-auto">
-      <table className="w-full min-w-[700px] text-sm border-collapse">
-        <thead>
-          <tr className="bg-muted/50">
-            <th className="text-left px-4 py-3 font-medium text-muted-foreground w-40 border-r">Nhân viên</th>
-            {days.map((d, i) => {
-              const str = toStr(d);
-              const isToday = str === todayStr;
-              return (
-                <th key={str} className={`text-center px-2 py-2.5 font-medium min-w-[100px] ${isToday ? 'bg-primary/5' : ''}`}>
-                  <div className={`text-xs ${isToday ? 'text-primary font-semibold' : 'text-muted-foreground'}`}>
-                    {DAY_LABELS[i]}
-                  </div>
-                  <div className={`text-base font-bold mt-0.5 ${isToday ? 'text-primary' : ''}`}>
-                    {d.getDate()}
-                  </div>
-                  <div className="text-[11px] opacity-50">Th{d.getMonth() + 1}</div>
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
-        <tbody>
-          {employees.length === 0 ? (
-            <tr>
-              <td colSpan={8} className="text-center py-12 text-muted-foreground text-sm">
-                Chưa có lịch phân ca trong tuần này.
-              </td>
-            </tr>
-          ) : (
-            employees.map((emp, idx) => (
-              <tr key={emp.user_id} className={`border-t ${idx % 2 === 0 ? '' : 'bg-muted/10'}`}>
-                <td className="px-4 py-3 border-r">
-                  <div className="flex items-center gap-2">
-                    <Avatar name={emp.name} size="md" />
-                    <div>
-                      <p className="font-medium text-xs leading-tight">{emp.name}</p>
-                      <p className="text-[11px] text-muted-foreground">{emp.role}</p>
+    <div className="space-y-4">
+      {/* Desktop Table View (hidden md:block) */}
+      <div className="hidden md:block rounded-xl border overflow-auto bg-card shadow-xs">
+        <table className="w-full min-w-[700px] text-sm border-collapse">
+          <thead>
+            <tr className="bg-muted/50">
+              <th className="text-left px-4 py-3 font-medium text-muted-foreground w-40 border-r">Nhân viên</th>
+              {days.map((d, i) => {
+                const str = toStr(d);
+                const isToday = str === todayStr;
+                return (
+                  <th key={str} className={`text-center px-2 py-2.5 font-medium min-w-[100px] ${isToday ? 'bg-primary/5' : ''}`}>
+                    <div className={`text-xs ${isToday ? 'text-primary font-semibold' : 'text-muted-foreground'}`}>
+                      {DAY_LABELS[i]}
                     </div>
-                  </div>
+                    <div className={`text-base font-bold mt-0.5 ${isToday ? 'text-primary' : ''}`}>
+                      {d.getDate()}
+                    </div>
+                    <div className="text-[11px] opacity-50">Th{d.getMonth() + 1}</div>
+                  </th>
+                );
+              })}
+            </tr>
+          </thead>
+          <tbody>
+            {employees.length === 0 ? (
+              <tr>
+                <td colSpan={8} className="text-center py-12 text-muted-foreground text-sm">
+                  Chưa có lịch phân ca trong tuần này.
                 </td>
-                {days.map((d) => {
-                  const str = toStr(d);
-                  const shifts = emp.schedule[str] || [];
-                  return (
-                    <td key={str} className={`px-1.5 py-2 align-top border-r last:border-r-0 ${toStr(d) === todayStr ? 'bg-primary/5' : ''}`}>
-                      {shifts.length === 0 ? (
-                        <span className="flex justify-center text-muted-foreground/20 text-lg">–</span>
-                      ) : (
-                        <div className="space-y-1">
-                          {shifts.map((s) => <ShiftChip key={s.registration_id} shift={s} compact onRemove={onRemove ? (shift) => onRemove({ ...shift, empName: emp.name }) : undefined} />)}
-                        </div>
-                      )}
-                    </td>
-                  );
-                })}
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : (
+              employees.map((emp, idx) => (
+                <tr key={emp.user_id} className={`border-t ${idx % 2 === 0 ? '' : 'bg-muted/10'}`}>
+                  <td className="px-4 py-3 border-r">
+                    <div className="flex items-center gap-2">
+                      <Avatar name={emp.name} size="md" />
+                      <div>
+                        <p className="font-medium text-xs leading-tight">{emp.name}</p>
+                        <p className="text-[11px] text-muted-foreground">{emp.role}</p>
+                      </div>
+                    </div>
+                  </td>
+                  {days.map((d) => {
+                    const str = toStr(d);
+                    const shifts = emp.schedule[str] || [];
+                    return (
+                      <td key={str} className={`px-1.5 py-2 align-top border-r last:border-r-0 ${toStr(d) === todayStr ? 'bg-primary/5' : ''}`}>
+                        {shifts.length === 0 ? (
+                          <span className="flex justify-center text-muted-foreground/20 text-lg">–</span>
+                        ) : (
+                          <div className="space-y-1">
+                            {shifts.map((s) => (
+                              <ShiftChip
+                                key={s.registration_id}
+                                shift={s}
+                                compact
+                                onRemove={onRemove ? (shift) => onRemove({ ...shift, empName: emp.name }) : undefined}
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile Day-by-Day Card View (md:hidden) */}
+      <div className="md:hidden space-y-3">
+        {daysData.map((item) => {
+          const dayTitle = item.date.toLocaleDateString('vi-VN', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'numeric',
+          });
+
+          return (
+            <div
+              key={item.dateStr}
+              className={`rounded-xl border bg-card p-4 space-y-3 transition-all ${
+                item.isToday ? 'border-primary/50 ring-1 ring-primary/20 shadow-xs' : 'border-border'
+              }`}
+            >
+              {/* Day Card Header */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div
+                    className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold ${
+                      item.isToday ? 'bg-primary text-white' : 'bg-muted text-foreground'
+                    }`}
+                  >
+                    {item.label}
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-sm capitalize">{dayTitle}</h4>
+                  </div>
+                </div>
+
+                <span
+                  className={`text-[11px] font-medium px-2.5 py-0.5 rounded-full ${
+                    item.shifts.length > 0
+                      ? 'bg-primary/10 text-primary'
+                      : 'bg-muted text-muted-foreground'
+                  }`}
+                >
+                  {item.shifts.length > 0 ? `${item.shifts.length} ca trực` : 'Trống'}
+                </span>
+              </div>
+
+              {/* Day Shifts / Employees */}
+              {item.shifts.length === 0 ? (
+                <p className="text-xs text-muted-foreground italic py-1 text-center bg-muted/20 rounded-lg">
+                  Chưa có nhân viên nào phân ca ngày này
+                </p>
+              ) : (
+                <div className="grid grid-cols-1 gap-2 pt-1">
+                  {item.shifts.map((s) => {
+                    const c = getColor(s.color);
+                    return (
+                      <div
+                        key={s.registration_id}
+                        className={`flex items-center justify-between p-2.5 rounded-xl border ${c.bg} border-current/10`}
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <Avatar name={s.empName} size="sm" />
+                          <div className="min-w-0">
+                            <p className={`text-xs font-bold truncate ${c.text}`}>{s.empName}</p>
+                            <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                              <span className="font-medium">{s.template_name}</span>
+                              <span>·</span>
+                              <span>{fmtTime(s.start_time)} – {fmtTime(s.end_time)}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {onRemove && (
+                          <button
+                            onClick={() => onRemove({ ...s, empName: s.empName })}
+                            className="p-1.5 rounded-lg bg-white/80 dark:bg-black/30 hover:bg-red-50 hover:text-red-600 text-muted-foreground transition-colors ml-2 flex-shrink-0"
+                            title="Xóa khỏi ca"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -559,29 +683,31 @@ export default function WorkSchedulePage() {
       />
 
       {/* Toolbar */}
-      <div className="flex items-center justify-between flex-wrap gap-3">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         {/* Navigation */}
-        <div className="flex items-center gap-2">
-          <button onClick={() => go(-1)} className="p-2 rounded-lg border hover:bg-secondary transition-colors">
+        <div className="flex items-center justify-between sm:justify-start gap-2 bg-card p-1 sm:p-0 rounded-xl border sm:border-0">
+          <button onClick={() => go(-1)} className="p-2 rounded-lg border hover:bg-secondary transition-colors" title="Lùi lại">
             <ChevronLeft className="w-4 h-4" />
           </button>
-          <span className="text-sm font-semibold min-w-[180px] text-center">{headerLabel()}</span>
-          <button onClick={() => go(1)} className="p-2 rounded-lg border hover:bg-secondary transition-colors">
+          <span className="text-xs sm:text-sm font-semibold flex-1 sm:min-w-[180px] text-center">{headerLabel()}</span>
+          <button onClick={() => go(1)} className="p-2 rounded-lg border hover:bg-secondary transition-colors" title="Tiếp theo">
             <ChevronRight className="w-4 h-4" />
           </button>
-          <button onClick={goToday} className="px-3 py-1.5 text-sm rounded-lg border hover:bg-secondary transition-colors font-medium">
+          <button onClick={goToday} className="px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm rounded-lg border hover:bg-secondary transition-colors font-medium">
             Hôm nay
           </button>
         </div>
 
         {/* View switcher + Action buttons */}
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => setShowSingle(true)} className="gap-1.5 text-xs h-8">
-            <UserPlus className="w-3.5 h-3.5" /> Gán 1 người
-          </Button>
-          <Button size="sm" onClick={() => setShowBulk(true)} className="gap-1.5 text-xs h-8">
-            <Users className="w-3.5 h-3.5" /> Gán hàng loạt
-          </Button>
+        <div className="flex flex-wrap items-center justify-between sm:justify-end gap-2">
+          <div className="flex items-center gap-1.5 flex-1 sm:flex-initial">
+            <Button variant="outline" size="sm" onClick={() => setShowSingle(true)} className="flex-1 sm:flex-initial gap-1 text-[11px] sm:text-xs h-8">
+              <UserPlus className="w-3.5 h-3.5" /> Gán 1
+            </Button>
+            <Button size="sm" onClick={() => setShowBulk(true)} className="flex-1 sm:flex-initial gap-1 text-[11px] sm:text-xs h-8">
+              <Users className="w-3.5 h-3.5" /> Hàng loạt
+            </Button>
+          </div>
           <div className="flex gap-1 p-1 bg-muted rounded-xl">
             {[
               { key: 'day', label: 'Ngày' },
@@ -591,7 +717,7 @@ export default function WorkSchedulePage() {
               <button
                 key={key}
                 onClick={() => setViewMode(key)}
-                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all
+                className={`px-3 sm:px-4 py-1 rounded-lg text-xs sm:text-sm font-medium transition-all
                   ${viewMode === key ? 'bg-background shadow text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 {label}
