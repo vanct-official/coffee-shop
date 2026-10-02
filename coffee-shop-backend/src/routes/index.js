@@ -187,17 +187,17 @@ router.get("/", (req, res) => {
       discounts: {
         getAll: "GET /api/discounts?page=1&limit=10&code=&status= (Manager)",
         /*
-        - http://localhost:5000/api/discounts
-        - http://localhost:5000/api/discounts?page=1&limit=10
-        - http://localhost:5000/api/discounts?page=1&limit=10&code=WELCOME10&status=active
+        - http://localhost:50000/api/discounts
+        - http://localhost:50000/api/discounts?page=1&limit=10
+        - http://localhost:50000/api/discounts?page=1&limit=10&code=WELCOME10&status=active
         */
         getById: "GET /api/discounts/:id (Manager)",
         /*  
-        - http://localhost:5000/api/discounts/{id}
+        - http://localhost:50000/api/discounts/{id}
         */
         create: "POST /api/discounts (Manager)",
         /*
-        - http://localhost:5000/api/discounts
+        - http://localhost:50000/api/discounts
         {
           "code": "SUMMER2026",
           "description": "Giảm giá mùa hè",
@@ -212,7 +212,7 @@ router.get("/", (req, res) => {
         */
         update: "PUT /api/discounts/:id (Manager)",
         /*
-        - http://localhost:5000/api/discounts/{id}
+        - http://localhost:50000/api/discounts/{id}
         {
         "description": "Giảm giá mùa hè cập nhật",
         "percentage": 15
@@ -226,24 +226,24 @@ router.get("/", (req, res) => {
       news: {
         getAll: "GET /api/news?page=1&limit=6",
         /*
-        - http://localhost:5000/api/news
-        - http://localhost:5000/api/news?page=1&limit=5
+        - http://localhost:50000/api/news
+        - http://localhost:50000/api/news?page=1&limit=5
         */
         getDetail: "GET /api/news/:slug",
         /*
-        - http://localhost:5000/api/news/chill-he-cung-coffee
+        - http://localhost:50000/api/news/chill-he-cung-coffee
         */
         getFeatured: "GET /api/news/featured",
         /*
-        - http://localhost:5000/api/news/featured
+        - http://localhost:50000/api/news/featured
         */
         getRelated: "GET /api/news/related?tag=&excludeId=",
         /*
-        - http://localhost:5000/api/news/related?tag=Tips&excludeId=
+        - http://localhost:50000/api/news/related?tag=Tips&excludeId=
         */
         create: "POST /api/news (Manager, multipart/form-data)",
         /*
-        - http://localhost:5000/api/news
+        - http://localhost:50000/api/news
         đổi const news = await NewsService.createNews(data, req.user.id);
         thành const news = await NewsService.createNews(data, 1);
         {
@@ -257,16 +257,16 @@ router.get("/", (req, res) => {
         */
         getAllAdmin: "GET /api/news/admin?page=1&limit=10&keyword= (Manager)",
         /*
-        http://localhost:5000/api/news/admin?page=1&limit=10
-        http://localhost:5000/api/news/admin?page=1&limit=10&keyword=coffee
+        http://localhost:50000/api/news/admin?page=1&limit=10
+        http://localhost:50000/api/news/admin?page=1&limit=10&keyword=coffee
         */
         getById: "GET /api/news/admin/:id (Manager)",
         /*
-        http://localhost:5000/api/news/admin/2
+        http://localhost:50000/api/news/admin/2
         */
         update: "PUT /api/news/:id (Manager, multipart/form-data)",
         /*
-      - http://localhost:5000/api/news/63
+      - http://localhost:50000/api/news/63
         {
         "title": "Khuyến mãi cà phê mùa hè CẬP NHẬT",
         "summary": "Ưu đãi đặc biệt dành cho khách hàng trong tháng này CẬP NHẬT",
@@ -278,11 +278,11 @@ router.get("/", (req, res) => {
         */
         delete: "DELETE /api/news/:id (Manager)",
         /*
-        http://localhost:5000/api/news/63
+        http://localhost:50000/api/news/63
         */
         aiSuggestByTitle: "POST /api/news/ai/suggest-by-title (Manager)",
         /*
-        http://localhost:5000/api/news/ai/suggest-by-title
+        http://localhost:50000/api/news/ai/suggest-by-title
         {
         "title": "Khuyến mãi cà phê mùa hè dành cho khách hàng thân thiết"
         }
@@ -290,7 +290,7 @@ router.get("/", (req, res) => {
         */
         aiSuggestBySummary: "POST /api/news/ai/suggest-by-summary (Manager)",
         /*
-      - http://localhost:5000/api/news/ai/suggest-by-summary
+      - http://localhost:50000/api/news/ai/suggest-by-summary
         {
         "title": "Khuyến mãi cà phê mùa hè dành cho khách hàng thân thiết",
         "summary": "Chương trình ưu đãi dành cho khách hàng yêu thích cà phê trong mùa hè này."
@@ -300,24 +300,24 @@ router.get("/", (req, res) => {
       banners: {
         getActive: "GET /api/banners/active",
         /*
-        http://localhost:5000/api/banners/active
+        http://localhost:50000/api/banners/active
         */
         getActiveList: "GET /api/banners/active-list",
         /*
-        http://localhost:5000/api/banners/active-list
+        http://localhost:50000/api/banners/active-list
         */
         getAllAdmin:
           "GET /api/banners/admin?page=1&limit=5&keyword=&status= (Manager)",
         /*
-        http://localhost:5000/api/banners/admin
-        http://localhost:5000/api/banners/admin?page=1&limit=5
-        http://localhost:5000/api/banners/admin?page=1&limit=5&keyword=khuyen mai
-        http://localhost:5000/api/banners/admin?page=1&limit=5&status=active
-        http://localhost:5000/api/banners/admin?page=1&limit=5&keyword=khuyen mai&status=active
+        http://localhost:50000/api/banners/admin
+        http://localhost:50000/api/banners/admin?page=1&limit=5
+        http://localhost:50000/api/banners/admin?page=1&limit=5&keyword=khuyen mai
+        http://localhost:50000/api/banners/admin?page=1&limit=5&status=active
+        http://localhost:50000/api/banners/admin?page=1&limit=5&keyword=khuyen mai&status=active
         */
         create: "POST /api/banners/admin (Manager, multipart/form-data)",
         /*
-        http://localhost:5000/api/banners/admin
+        http://localhost:50000/api/banners/admin
         {
         "title": "Khuyến mãi mùa hè",
         "subtitle": "Giảm giá đồ uống cho khách hàng trong tháng này",
@@ -333,7 +333,7 @@ router.get("/", (req, res) => {
         */
         update: "PUT /api/banners/admin/:id (Manager, multipart/form-data)",
         /*
-        http://localhost:5000/api/banners/admin/59
+        http://localhost:50000/api/banners/admin/59
         {
         "title": "Khuyến mãi mùa hè cập nhật",
         "subtitle": "Giảm giá đồ uống cho khách hàng trong tháng này cập nhật",
@@ -347,13 +347,13 @@ router.get("/", (req, res) => {
         */
         delete: "DELETE /api/banners/admin/:id (Manager)",
         /*
-        http://localhost:5000/api/banners/admin/59
+        http://localhost:50000/api/banners/admin/59
         */
       },
       "order-online": {
         checkout: "POST /api/order-online/checkout",
         /*
-        http://localhost:5000/api/order-online/checkout
+        http://localhost:50000/api/order-online/checkout
         takeaway
         {
         "order_type": "takeaway",
@@ -379,8 +379,8 @@ router.get("/", (req, res) => {
         */
         getMyOrders: "GET /api/order-online/my-orders (Authenticated)",
         /*
-        http://localhost:5000/api/order-online/my-orders
-        LẤY TOKEN: http://localhost:5000/api/auth/login
+        http://localhost:50000/api/order-online/my-orders
+        LẤY TOKEN: http://localhost:50000/api/auth/login
           {
             "identifier": "admin@gmail.com",
             "password": "admin123"
@@ -389,7 +389,7 @@ router.get("/", (req, res) => {
         */
         getMyOrderDetail: "GET /api/order-online/my-orders/:id (Authenticated)",
         /*
-        http://localhost:5000/api/order-online/my-orders/35
+        http://localhost:50000/api/order-online/my-orders/35
         login cus: {
           "identifier": "cus1@gmail.com",
           "password": "admin123"
@@ -398,7 +398,7 @@ router.get("/", (req, res) => {
         */
         payosReturn: "POST /api/order-online/payos-return",
         /*
-        http://localhost:5000/api/order-online/payos-return
+        http://localhost:50000/api/order-online/payos-return
         {
         "orderCode": "123456",
         "payosId": "PAYOS_ABC_999",
@@ -409,18 +409,18 @@ router.get("/", (req, res) => {
       reviews: {
         getByProduct: "GET /api/reviews/product/:productId",
         /*
-        http://localhost:5000/api/reviews/product/12
+        http://localhost:50000/api/reviews/product/12
         -> Lấy danh sách đánh giá của sản phẩm
         */
 
         getMyReview: "GET /api/reviews/me/:productId (Authenticated)",
         /*
-        http://localhost:5000/api/reviews/me/1
+        http://localhost:50000/api/reviews/me/1
 
         Lấy review của chính user cho sản phẩm.
 
         Cần token:
-        http://localhost:5000/api/auth/login
+        http://localhost:50000/api/auth/login
         {
         "identifier": "cus1@gmail.com",
         "password": "admin123"
@@ -428,7 +428,7 @@ router.get("/", (req, res) => {
         */
         createOrUpdate: "POST /api/reviews (Authenticated)",
         /*
-        http://localhost:5000/api/reviews
+        http://localhost:50000/api/reviews
 
         {
           "product_id": 1,
@@ -443,9 +443,9 @@ router.get("/", (req, res) => {
 
         getAllAdmin: "GET /api/reviews?page=1&limit=7&keyword= (Authenticated)",
         /*
-        http://localhost:5000/api/reviews
-        http://localhost:5000/api/reviews?page=1&limit=7
-        http://localhost:5000/api/reviews?page=1&limit=7&keyword=coffee
+        http://localhost:50000/api/reviews
+        http://localhost:50000/api/reviews?page=1&limit=7
+        http://localhost:50000/api/reviews?page=1&limit=7&keyword=coffee
 
         -> Lấy danh sách tất cả review (admin quản lý)
         -> Search theo:

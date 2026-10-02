@@ -69,11 +69,11 @@ npm run dev
 npm start
 ```
 
-Server sẽ chạy tại: `http://localhost:5000`
+Server sẽ chạy tại: `http://localhost:50000`
 
 ## 📚 API Documentation
 
-Truy cập `http://localhost:5000/api` để xem danh sách endpoints.
+Truy cập `http://localhost:50000/api` để xem danh sách endpoints.
 
 ### Authentication Endpoints
 

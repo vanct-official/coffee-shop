@@ -11,13 +11,18 @@ const { payOS } = require("./src/config/payos");
 const { startPayosPendingTimeoutJob } = require("./src/jobs/payosPendingTimeoutJob");
 const { startAttendanceJob } = require("./src/jobs/attendanceJob");
 
-const PORT = env.PORT || 5000;
+const PORT = env.PORT || 50000;
 
 const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: [env.CLIENT_URL, env.CLIENT_URL.replace(':3000', ':5173')],
+    origin: Array.from(new Set([
+      env.CLIENT_URL,
+      env.CLIENT_URL ? env.CLIENT_URL.replace(':3000', ':51730') : null,
+      'http://localhost:51730',
+      'http://localhost:3000'
+    ].filter(Boolean))),
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   },

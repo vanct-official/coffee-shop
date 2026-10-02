@@ -6,7 +6,7 @@ const getStoredToken = () =>
   sessionStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
 
 const axiosClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:50000/api',
   headers: {
     'Content-Type': 'application/json',
   },

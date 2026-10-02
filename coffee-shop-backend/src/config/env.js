@@ -3,8 +3,8 @@ require('dotenv').config();
 module.exports = {
   // Server
   NODE_ENV: process.env.NODE_ENV || 'development',
-  PORT: process.env.PORT || 5000,
-  API_URL: process.env.API_URL || `http://localhost:${process.env.PORT || 5000}`,
+  PORT: process.env.PORT || 50000,
+  API_URL: process.env.API_URL || `http://localhost:${process.env.PORT || 50000}`,
 
   // Database
   DB_HOST: process.env.DB_HOST || '127.0.0.1',
@@ -26,8 +26,8 @@ module.exports = {
   PAYOS_CLIENT_ID: process.env.PAYOS_CLIENT_ID || '',
   PAYOS_API_KEY: process.env.PAYOS_API_KEY || '',
   PAYOS_CHECKSUM_KEY: process.env.PAYOS_CHECKSUM_KEY || '',
-  PAYOS_RETURN_URL: `${process.env.CLIENT_URL || 'http://localhost:5173'}/payment-result`,
-  PAYOS_CANCEL_URL: `${process.env.CLIENT_URL || 'http://localhost:5173'}/payment-result?cancel=true`,
+  PAYOS_RETURN_URL: `${process.env.CLIENT_URL || 'http://localhost:51730'}/payment-result`,
+  PAYOS_CANCEL_URL: `${process.env.CLIENT_URL || 'http://localhost:51730'}/payment-result?cancel=true`,
 
   // Email/SMTP
   SMTP_HOST: process.env.SMTP_HOST || 'smtp.gmail.com',

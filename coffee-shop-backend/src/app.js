@@ -24,7 +24,12 @@ app.use(helmet({
 // CORS configuration
 app.use(
   cors({
-    origin: [env.CLIENT_URL, env.CLIENT_URL.replace(':3000', ':5173')],
+    origin: Array.from(new Set([
+      env.CLIENT_URL,
+      env.CLIENT_URL ? env.CLIENT_URL.replace(':3000', ':51730') : null,
+      'http://localhost:51730',
+      'http://localhost:3000'
+    ].filter(Boolean))),
     credentials: true,
   })
 );

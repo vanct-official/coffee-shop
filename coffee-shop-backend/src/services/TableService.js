@@ -351,7 +351,7 @@ class TableService {
     const tableId = result.insertId;
 
     // Tạo URL QR code
-    const url = `${process.env.CLIENT_URL || 'http://localhost:5173'}/order?table=${tableId}`;
+    const url = `${process.env.CLIENT_URL || 'http://localhost:51730'}/order?table=${tableId}`;
     const qrBase64 = await generateQrCode(url);
 
     // Update lại trường qrUrl
@@ -373,7 +373,7 @@ class TableService {
     const table = await this.getTableById(tableId);
     if (!table) throw new Error('Bàn không tồn tại');
     // Tạo URL QR code (có thể sửa lại domain cho đúng frontend)
-    const url = `${process.env.CLIENT_URL || 'http://localhost:5173'}/order?table=${table.id}`;
+    const url = `${process.env.CLIENT_URL || 'http://localhost:51730'}/order?table=${table.id}`;
     // Sinh QR code base64
     const generateQrCode = require('../utils/generateQrCode');
     const qrBase64 = await generateQrCode(url);
