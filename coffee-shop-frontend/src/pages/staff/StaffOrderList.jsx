@@ -51,6 +51,7 @@ import authenticationService from "@/services/authenticationService";
 import takeawayService from "@/services/takeAwayService";
 import BaristaViewRecipe from "../barista/BaristaOrder/BaristaViewRecipe";
 import { PrintableReceipt } from "./PrintableReceipt";
+import BaristaWindowView from "./BaristaWindowView";
 
 const STAFF_TAB_STATUSES = ["pending", "management", "served", "completed", "cancelled", "barista-window"];
 
@@ -1051,7 +1052,7 @@ export function OrderDelivery() {
   };
 
   return (
-    <div className={`h-full flex flex-col overflow-hidden pt-0 ${activeStatus === 'barista-window' ? 'px-2 pb-2 sm:px-4 sm:pb-4' : 'px-4 pb-4 sm:px-6 sm:pb-6 lg:px-8 lg:pb-8'}`}>
+    <div className={`h-full flex flex-col overflow-hidden pt-0 ${activeStatus === 'barista-window' ? 'p-0' : 'px-4 pb-4 sm:px-6 sm:pb-6 lg:px-8 lg:pb-8'}`}>
       {/* {activeStatus !== "barista-window" && (
         <div className="flex-shrink-0">
           <h1 className="text-2xl font-bold">Danh sách đơn hàng</h1>
@@ -1163,110 +1164,18 @@ export function OrderDelivery() {
       )}
 
       {activeStatus === "barista-window" ? (
-        <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", gap: "16px" }}>
-          <div className="flex-shrink-0 bg-white dark:bg-slate-900 border-2 border-primary/20 rounded-2xl py-6 px-10 shadow-sm flex items-center justify-center">
-            <h2 className="text-3xl font-black tracking-[0.2em] text-primary dark:text-primary uppercase">
-              DANH SÁCH ĐƠN PHA CHẾ
-            </h2>
-          </div>
-
-          <div
-            className="flex gap-8"
-            style={{ flex: 1, minHeight: 0 }}
-          >
-            {/* COLUMN LEFT: Đơn mới */}
-            <div
-              style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", height: "100%" }}
-              className="bg-primary/5 dark:bg-primary/10 rounded-[2.5rem] border-2 border-primary/20 p-6 overflow-hidden"
-            >
-              <div className="flex-shrink-0 mb-6 flex justify-center">
-                <div className="bg-primary border-2 border-primary/30 px-12 py-3 rounded-full shadow-md">
-                  <span className="text-lg font-bold text-white tracking-wide uppercase">Đơn mới</span>
-                </div>
-              </div>
-
-              <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }} className="pr-2 custom-scrollbar space-y-4">
-                {orders.filter(o => String(o.status || "").toLowerCase() === 'preparing').length > 0 ? (
-                  orders.filter(o => String(o.status || "").toLowerCase() === 'preparing').map((order) => (
-                    <Card
-                      key={order.id}
-                      className="rounded-2xl border-2 border-primary/20 dark:border-primary/30 bg-white dark:bg-slate-900 hover:shadow-lg hover:border-primary/50 transition-all cursor-pointer group"
-                      onClick={() => {
-                        setSelectedOrder(order);
-                        setIsDetailOpen(true);
-                      }}
-                    >
-                      <CardContent className="p-5 flex items-center justify-between gap-4">
-                        <div className="flex flex-col gap-1">
-                          <span className="text-xl font-black text-primary italic">Đơn #{order.id}</span>
-                          <span className="text-sm font-medium text-slate-500 flex items-center gap-1">
-                            <Clock className="w-3.5 h-3.5" />
-                            {getRelativeTimeLabel(order.created_at)}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg font-bold text-slate-600 dark:text-slate-300">{money(order.total_amount)}</span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))
-                ) : (
-                  <div className="h-full flex flex-col items-center justify-center text-slate-400 gap-2 opacity-50">
-                    <Coffee className="h-10 w-10" />
-                    <p className="font-medium">Chưa có đơn hàng mới</p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* COLUMN RIGHT: Đã xong */}
-            <div
-              style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", height: "100%" }}
-              className="bg-primary/5 dark:bg-primary/10 rounded-[2.5rem] border-2 border-primary/20 p-6 overflow-hidden"
-            >
-              <div className="flex-shrink-0 mb-6 flex justify-center">
-                <div className="bg-primary/90 border-2 border-primary/30 px-12 py-3 rounded-full shadow-md">
-                  <span className="text-lg font-bold text-white tracking-wide uppercase">Đã xong</span>
-                </div>
-              </div>
-
-              <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }} className="pr-2 custom-scrollbar space-y-4">
-                {orders.filter(o => String(o.status || "").toLowerCase() === 'completed').length > 0 ? (
-                  orders.filter(o => String(o.status || "").toLowerCase() === 'completed')
-                    .sort((a, b) => b.id - a.id)
-                    .map((order) => (
-                      <Card
-                        key={order.id}
-                        className="rounded-2xl border-2 border-emerald-500/20 dark:border-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-900/10 hover:shadow-lg transition-all cursor-pointer group"
-                        onClick={() => {
-                          setSelectedOrder(order);
-                          setIsDetailOpen(true);
-                        }}
-                      >
-                        <CardContent className="p-5 flex items-center justify-between gap-4">
-                          <div className="flex flex-col gap-1">
-                            <span className="text-xl font-black text-emerald-700 dark:text-emerald-400 italic">Đơn #{order.id}</span>
-                            <span className="text-sm font-medium text-slate-500 flex items-center gap-1">
-                              <Clock className="w-3.5 h-3.5" />
-                              {getRelativeTimeLabel(order.created_at)}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2 text-emerald-600 font-bold">
-                            <CheckCircle className="w-6 h-6" />
-                            <span>Hoàn tất</span>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))
-                ) : (
-                  <div className="h-full flex flex-col items-center justify-center text-slate-400 gap-2 opacity-50">
-                    <CheckCircle className="h-10 w-10" />
-                    <p className="font-medium">Chưa có đơn hoàn thành</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+        <div className="flex-1 min-h-0 w-full overflow-hidden flex flex-col">
+          <BaristaWindowView
+            orders={orders}
+            loading={loading}
+            loadOrders={loadOrders}
+            onStatusChange={handleStatusChange}
+            onViewRecipe={setViewRecipeItem}
+            onSelectOrder={(order) => {
+              setSelectedOrder(order);
+              setIsDetailOpen(true);
+            }}
+          />
         </div>
       ) : ["pending", "cancelled"].includes(activeStatus) ? (
         <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
@@ -1503,66 +1412,117 @@ export function OrderDelivery() {
             </p>
           ) : selectedOrder ? (
             activeStatus === "barista-window" ? (
-              <div className="flex flex-col gap-4 font-sans text-slate-800">
-                <h3 className="text-xl font-bold mb-2">Đơn #{selectedOrder.id}</h3>
+              <div className="flex flex-col gap-5 text-foreground font-sans">
+                <div className="flex items-center justify-between pb-3 border-b border-border">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                      <Coffee className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-black italic tracking-tight">ĐƠN HÀNG #{selectedOrder.id}</h3>
+                      <p className="text-xs text-muted-foreground">
+                        Đặt lúc: {new Date(selectedOrder.created_at).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+                      </p>
+                    </div>
+                  </div>
+                  <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300 border-amber-300 font-bold px-3 py-1 uppercase">
+                    {selectedOrder.order_type || "Pha chế"}
+                  </Badge>
+                </div>
 
-                <div className="flex flex-col gap-4 max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar">
+                <div className="flex flex-col gap-3 max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar">
                   {selectedOrder.items && selectedOrder.items.length > 0 ? (
                     selectedOrder.items.map((item, idx) => (
-                      <div key={idx} className="border-2 border-slate-700 bg-white p-4 flex flex-col gap-2 shadow-sm">
-                        <div className="flex justify-between font-bold text-lg">
-                          <span>{item.name || item.productName || item.product_name}</span>
-                          <span>Size {item.size}</span>
+                      <div
+                        key={idx}
+                        className="rounded-2xl border border-border bg-slate-50/50 dark:bg-slate-900/50 p-4 flex flex-col gap-2 shadow-2xs hover:border-amber-400/60 transition-colors"
+                      >
+                        <div className="flex justify-between items-center font-black text-base">
+                          <span className="flex items-center gap-2">
+                            <span className="text-amber-600 font-bold">x{item.quantity || 1}</span>
+                            <span>{item.name || item.productName || item.product_name}</span>
+                          </span>
+                          {item.size && (
+                            <Badge variant="outline" className="font-bold uppercase text-xs">
+                              Size {item.size}
+                            </Badge>
+                          )}
                         </div>
+
                         {Array.isArray(item.toppings) && item.toppings.length > 0 && (
-                          <div className="flex flex-col text-slate-700 text-base leading-relaxed">
+                          <div className="flex flex-col text-muted-foreground text-xs leading-relaxed pl-6 space-y-0.5">
                             {item.toppings.map((top, tIdx) => (
-                              <span key={tIdx}>{top.name} {top.quantity > 1 ? `x${top.quantity}` : ''}</span>
+                              <span key={tIdx} className="flex items-center gap-1.5 font-medium">
+                                <span className="text-amber-500">•</span>
+                                {top.name} {Number(top.quantity) > 1 ? `x${top.quantity}` : ""}
+                              </span>
                             ))}
                           </div>
                         )}
-                        <div className="flex justify-end mt-2">
-                          <button
-                            className="border-2 border-slate-700 px-5 py-2 rounded-xl font-bold text-sm hover:bg-slate-100 transition-colors bg-white shadow-sm"
+
+                        {item.note && (
+                          <p className="text-xs font-semibold text-amber-700 dark:text-amber-400 pl-6 italic">
+                            Ghi chú: {item.note}
+                          </p>
+                        )}
+
+                        <div className="flex justify-end pt-1">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="rounded-xl text-xs font-bold gap-1.5 h-8 border-slate-300 dark:border-slate-700 hover:bg-amber-50 dark:hover:bg-amber-950/40 text-slate-700 dark:text-slate-300"
                             onClick={() =>
                               setViewRecipeItem({
-                                product: { id: item.productId || item.product_id, name: item.name || item.productName || item.product_name },
-                                size: { id: item.productSizeId || item.size_id || item.product_size_id, size: item.size }
+                                product: {
+                                  id: item.productId || item.product_id,
+                                  name: item.name || item.productName || item.product_name,
+                                },
+                                size: {
+                                  id: item.productSizeId || item.size_id || item.product_size_id,
+                                  size: item.size,
+                                },
                               })
                             }
                           >
-                            Xem công thức
-                          </button>
+                            <BookOpen className="w-3.5 h-3.5" />
+                            <span>Xem công thức</span>
+                          </Button>
                         </div>
                       </div>
                     ))
                   ) : (
-                    <p className="italic text-slate-500">Đơn chưa có thực đơn.</p>
+                    <p className="italic text-muted-foreground text-center py-6">Đơn chưa có danh sách món.</p>
                   )}
                 </div>
 
-                <div className="border-2 border-slate-700 p-4 min-h-[80px] bg-white shadow-sm mt-2">
-                  <span className="font-bold">Ghi chú: </span>
-                  {selectedOrder.note || "(Không có ghi chú)"}
-                </div>
+                {selectedOrder.note && (
+                  <div className="rounded-2xl border border-amber-300/80 bg-amber-50/80 dark:bg-amber-950/40 dark:border-amber-700/60 p-3.5 text-xs text-amber-900 dark:text-amber-200">
+                    <span className="font-black uppercase tracking-wider block text-[10px] text-amber-700 dark:text-amber-400 mb-0.5">
+                      Ghi chú đơn hàng:
+                    </span>
+                    <p className="leading-relaxed font-semibold">{selectedOrder.note}</p>
+                  </div>
+                )}
 
-                <div className="flex justify-center gap-6 mt-6">
-                  <button
-                    className="border-2 border-slate-700 px-8 py-2.5 rounded-2xl font-bold hover:bg-slate-100 transition-colors bg-white shadow-sm"
+                <div className="flex justify-end gap-3 pt-2">
+                  <Button
+                    variant="outline"
+                    className="rounded-xl font-bold px-6 h-11"
                     onClick={() => setIsDetailOpen(false)}
                   >
                     Đóng
-                  </button>
-                  {String(selectedOrder?.status || "").toLowerCase() !== 'completed' && (
-                    <button
-                      className="border-2 border-emerald-600 text-emerald-700 px-8 py-2.5 rounded-2xl font-bold hover:bg-emerald-50 transition-colors bg-white shadow-sm"
+                  </Button>
+                  {String(selectedOrder?.status || "").toLowerCase() !== "completed" && (
+                    <Button
+                      className="rounded-xl font-black uppercase tracking-wider px-6 h-11 bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-600/20 gap-2"
                       onClick={() => {
-                        handleStatusChange(selectedOrder.id, 'completed');
+                        handleStatusChange(selectedOrder.id, "completed");
                         setIsDetailOpen(false);
                       }}
                     >
-                      Xác nhận xong
-                    </button>
+                      <CheckCircle2 className="w-4 h-4" />
+                      <span>Xác nhận xong</span>
+                    </Button>
                   )}
                 </div>
               </div>

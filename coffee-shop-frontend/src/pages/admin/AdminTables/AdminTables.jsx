@@ -16,6 +16,7 @@ import {
   MapPin,
   Edit,
   QrCode,
+  Coffee,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -521,153 +522,217 @@ export default function AdminTables() {
               </div>
 
               {/* Desktop Grid (hidden md:grid) */}
-              <div className="hidden md:grid md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 col-span-full">
-                {paginatedTables.map((table) => (
-                  <Card
-                    key={table.id}
-                    className="relative group p-6 flex flex-col items-center justify-center gap-4 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl bg-card border-border/50 hover:border-primary/50 cursor-default overflow-hidden"
-                  >
-                    {/* Status Indicator Bar */}
-                    <div
-                      className={`absolute top-0 left-0 w-full h-1 ${
-                        table.status === "available"
-                          ? "bg-green-500"
-                          : table.status === "occupied"
-                            ? "bg-blue-500"
-                            : "bg-amber-500"
-                      }`}
-                    />
+              <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-5 gap-y-7 col-span-full">
+                {paginatedTables.map((table) => {
+                  const isOccupied = table.status === "occupied";
+                  const isAvailable = table.status === "available";
 
-                    {/* Actions Overlay */}
-                    <div className="absolute top-2 right-2 flex gap-1 translate-y-[-10px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                      <Button
-                        size="icon"
-                        variant="secondary"
-                        className="h-8 w-8 shadow-sm"
-                        onClick={() => handleViewQR(table)}
-                        title="Xem mã QR"
-                      >
-                        <QrCode className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        size="icon"
-                        variant="secondary"
-                        className="h-8 w-8 shadow-sm"
-                        onClick={() => handleEditTable(table)}
-                        title="Sửa bàn"
-                      >
-                        <TableIcon className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        size="icon"
-                        variant="secondary"
-                        className="h-8 w-8 text-destructive shadow-sm"
-                        onClick={() => handleDeleteTableClick(table)}
-                        title="Xóa bàn"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
+                  const chairBackrestClass = isOccupied
+                    ? "bg-blue-300/90 dark:bg-blue-800 border-blue-400 dark:border-blue-600 shadow-2xs"
+                    : isAvailable
+                      ? "bg-amber-100/95 dark:bg-stone-800 border-amber-300/80 dark:border-stone-600 shadow-2xs"
+                      : "bg-amber-200/90 dark:bg-amber-800 border-amber-400 dark:border-amber-600 shadow-2xs";
 
-                    {/* Table Identity */}
+                  const chairCushionClass = isOccupied
+                    ? "bg-blue-100 dark:bg-blue-900/90 border-blue-300 dark:border-blue-700"
+                    : isAvailable
+                      ? "bg-amber-50 dark:bg-stone-700 border-amber-200 dark:border-stone-600"
+                      : "bg-amber-100 dark:bg-amber-900/80 border-amber-300 dark:border-amber-700";
+
+                  const tableSurfaceClass = isOccupied
+                    ? "bg-gradient-to-br from-blue-50/95 via-sky-50/40 to-indigo-50/80 dark:from-blue-950/60 dark:via-gray-900 dark:to-indigo-950/50 border-blue-500 dark:border-blue-400 shadow-md shadow-blue-500/10 hover:border-blue-600"
+                    : isAvailable
+                      ? "bg-gradient-to-br from-emerald-50/90 via-teal-50/30 to-green-50/70 dark:from-emerald-950/50 dark:via-gray-900 dark:to-teal-950/40 border-emerald-400/90 dark:border-emerald-500/80 shadow-sm hover:border-emerald-500"
+                      : "bg-gradient-to-br from-amber-50/90 via-orange-50/30 to-amber-100/60 dark:from-amber-950/50 dark:via-gray-900 dark:to-orange-950/40 border-amber-400/90 dark:border-amber-500/80 shadow-sm hover:border-amber-500";
+
+                  return (
                     <div
-                      className={`min-w-[4rem] h-16 px-4 rounded-2xl flex flex-col items-center justify-center transition-colors duration-300 ${
-                        table.status === "available"
-                          ? "bg-green-50"
-                          : table.status === "occupied"
-                            ? "bg-blue-50"
-                            : "bg-amber-50"
-                      }`}
+                      key={table.id}
+                      className="relative group p-3.5 flex flex-col items-center justify-center transition-all duration-300 hover:scale-[1.03] select-none"
                     >
-                      <span
-                        className={`text-xl font-black tracking-tighter whitespace-nowrap ${
-                          table.status === "available"
-                            ? "text-green-700"
-                            : table.status === "occupied"
-                              ? "text-blue-700"
-                              : "text-amber-700"
-                        }`}
-                      >
-                        {table.code?.replace("TB-", "")}
-                      </span>
-                    </div>
-
-                    <div className="text-center space-y-1">
-                      <h3 className="text-sm font-bold text-foreground flex items-center justify-center gap-1">
-                        Bàn {table.code}
-                      </h3>
-                      <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest text-center">
-                        {table.area_name}
-                      </p>
-                    </div>
-
-                    {/* Status Badge */}
-                    <div
-                      className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-[10px] font-bold uppercase tracking-wider ${
-                        table.status === "available"
-                          ? "bg-green-50 text-green-700 border-green-200"
-                          : table.status === "occupied"
-                            ? "bg-blue-50 text-blue-700 border-blue-200"
-                            : "bg-amber-50 text-amber-700 border-amber-200"
-                      }`}
-                    >
-                      <span
-                        className={`w-1.5 h-1.5 rounded-full animate-pulse ${
-                          table.status === "available"
-                            ? "bg-green-500"
-                            : table.status === "occupied"
-                              ? "bg-blue-500"
-                              : "bg-amber-500"
-                        }`}
-                      />
-                      {table.status === "available"
-                        ? "Trống"
-                        : table.status === "occupied"
-                          ? "Có khách"
-                          : "Đã đặt"}
-                    </div>
-
-                    {/* Staff Status Actions */}
-                    {isStaff && (
-                      <div className="flex gap-2 w-full justify-center mt-2 z-10 transition-all duration-300">
-                        {table.status === "available" && (
-                          <Button
-                            size="sm"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleStatusChange(table, "occupied");
-                            }}
-                          >
-                            Có khách
-                          </Button>
-                        )}
-                        {table.status === "reserved" && (
-                          <Button
-                            size="sm"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleStatusChange(table, "occupied");
-                            }}
-                          >
-                            Có khách
-                          </Button>
-                        )}
-                        {table.status === "occupied" && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleStatusChange(table, "available");
-                            }}
-                          >
-                            Trống
-                          </Button>
-                        )}
+                      {/* 4 CHIẾC GHẾ NGỒI QUANH BÀN */}
+                      {/* Ghế TRÊN */}
+                      <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none transition-transform duration-300 group-hover:-translate-y-1.5 z-0">
+                        <div className={`w-12 sm:w-14 h-2 rounded-t-full border ${chairBackrestClass}`} />
+                        <div className={`w-9 sm:w-10 h-2 -mt-[1px] rounded-b-md border-x border-b ${chairCushionClass}`} />
                       </div>
-                    )}
-                  </Card>
-                ))}
+
+                      {/* Ghế DƯỚI */}
+                      <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none transition-transform duration-300 group-hover:translate-y-1.5 z-0">
+                        <div className={`w-9 sm:w-10 h-2 -mb-[1px] rounded-t-md border-x border-t ${chairCushionClass}`} />
+                        <div className={`w-12 sm:w-14 h-2 rounded-b-full border ${chairBackrestClass}`} />
+                      </div>
+
+                      {/* Ghế TRÁI */}
+                      <div className="absolute -left-0.5 top-1/2 -translate-y-1/2 flex flex-row items-center pointer-events-none transition-transform duration-300 group-hover:-translate-x-1.5 z-0">
+                        <div className={`h-12 sm:h-14 w-2 rounded-l-full border ${chairBackrestClass}`} />
+                        <div className={`h-9 sm:h-10 w-2 -ml-[1px] rounded-r-md border-y border-r ${chairCushionClass}`} />
+                      </div>
+
+                      {/* Ghế PHẢI */}
+                      <div className="absolute -right-0.5 top-1/2 -translate-y-1/2 flex flex-row items-center pointer-events-none transition-transform duration-300 group-hover:translate-x-1.5 z-0">
+                        <div className={`h-9 sm:h-10 w-2 -mr-[1px] rounded-l-md border-y border-l ${chairCushionClass}`} />
+                        <div className={`h-12 sm:h-14 w-2 rounded-r-full border ${chairBackrestClass}`} />
+                      </div>
+
+                      {/* MẶT BÀN UỐNG NƯỚC Ở GIỮA */}
+                      <div
+                        className={`w-full min-h-[210px] rounded-3xl border-2 p-3.5 flex flex-col items-center justify-between gap-2 relative z-10 transition-all duration-300 ${tableSurfaceClass}`}
+                      >
+                        {/* Dải phân cách viền mặt bàn */}
+                        <div className="absolute inset-1 rounded-[1.35rem] border border-black/5 dark:border-white/5 pointer-events-none" />
+
+                        {/* Top Bar: Icon ly cafe & Tool buttons */}
+                        <div className="w-full flex items-center justify-between z-20">
+                          <div
+                            className={`w-6 h-6 rounded-full flex items-center justify-center border shadow-2xs ${
+                              isOccupied
+                                ? "bg-blue-100/80 dark:bg-blue-900/60 border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300"
+                                : isAvailable
+                                  ? "bg-emerald-100/80 dark:bg-emerald-900/60 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300"
+                                  : "bg-amber-100/80 dark:bg-amber-900/60 border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300"
+                            }`}
+                            title="Bàn cafe 4 chỗ"
+                          >
+                            <Coffee className="w-3.5 h-3.5" />
+                          </div>
+
+                          <div className="flex items-center gap-1">
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              className="h-7 w-7 rounded-full hover:bg-black/5 dark:hover:bg-white/10"
+                              onClick={() => handleViewQR(table)}
+                              title="Xem mã QR"
+                            >
+                              <QrCode className="w-3.5 h-3.5" />
+                            </Button>
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              className="h-7 w-7 rounded-full hover:bg-black/5 dark:hover:bg-white/10"
+                              onClick={() => handleEditTable(table)}
+                              title="Sửa bàn"
+                            >
+                              <Edit className="w-3.5 h-3.5" />
+                            </Button>
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              className="h-7 w-7 rounded-full text-destructive hover:bg-destructive/10 hover:text-destructive"
+                              onClick={() => handleDeleteTableClick(table)}
+                              title="Xóa bàn"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* TÂM MẶT BÀN: Biển số bàn */}
+                        <div className="flex flex-col items-center justify-center my-1 z-20">
+                          <div
+                            className={`min-w-[4.25rem] h-12 px-3 rounded-2xl flex flex-col items-center justify-center border shadow-xs transition-colors duration-300 ${
+                              isAvailable
+                                ? "bg-white/90 dark:bg-gray-800/90 border-emerald-200 dark:border-emerald-800/60"
+                                : isOccupied
+                                  ? "bg-white/95 dark:bg-gray-800/90 border-blue-200 dark:border-blue-800/60"
+                                  : "bg-white/90 dark:bg-gray-800/90 border-amber-200 dark:border-amber-800/60"
+                            }`}
+                          >
+                            <span
+                              className={`text-xl font-black tracking-tight whitespace-nowrap leading-none ${
+                                isAvailable
+                                  ? "text-emerald-700 dark:text-emerald-400"
+                                  : isOccupied
+                                    ? "text-blue-700 dark:text-blue-400"
+                                    : "text-amber-700 dark:text-amber-400"
+                              }`}
+                            >
+                              {table.code?.replace("TB-", "")}
+                            </span>
+                            <span className="text-[9px] font-semibold text-slate-500 dark:text-slate-400 tracking-wider">
+                              {table.code?.startsWith("TB-") ? "TB" : "BÀN"}
+                            </span>
+                          </div>
+
+                          <div className="text-center mt-1.5 space-y-0.5">
+                            <h3 className="text-xs font-bold text-foreground">Bàn {table.code}</h3>
+                            <p className="text-[9px] font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
+                              {table.area_name}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* PHẦN DƯỚI MẶT BÀN: Trạng thái & Hành động */}
+                        <div className="w-full flex flex-col items-center gap-1.5 z-20">
+                          <div
+                            className={`flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border text-[10px] font-bold uppercase tracking-wider ${
+                              isAvailable
+                                ? "bg-emerald-100/90 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700/60"
+                                : isOccupied
+                                  ? "bg-blue-100/90 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700/60"
+                                  : "bg-amber-100/90 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700/60"
+                            }`}
+                          >
+                            <span
+                              className={`w-1.5 h-1.5 rounded-full animate-pulse ${
+                                isAvailable
+                                  ? "bg-emerald-500"
+                                  : isOccupied
+                                    ? "bg-blue-500"
+                                    : "bg-amber-500"
+                              }`}
+                            />
+                            {isAvailable ? "Trống (4 chỗ)" : isOccupied ? "Có khách" : "Đã đặt"}
+                          </div>
+
+                          {/* Staff Status Actions */}
+                          {isStaff && (
+                            <div className="flex gap-1.5 w-full justify-center mt-1">
+                              {table.status === "available" && (
+                                <Button
+                                  size="sm"
+                                  className="h-7 text-[11px] px-2.5 w-full bg-blue-600 hover:bg-blue-700 text-white"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleStatusChange(table, "occupied");
+                                  }}
+                                >
+                                  Có khách
+                                </Button>
+                              )}
+                              {table.status === "reserved" && (
+                                <Button
+                                  size="sm"
+                                  className="h-7 text-[11px] px-2.5 w-full bg-blue-600 hover:bg-blue-700 text-white"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleStatusChange(table, "occupied");
+                                  }}
+                                >
+                                  Có khách
+                                </Button>
+                              )}
+                              {table.status === "occupied" && (
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-7 text-[11px] px-2.5 w-full border-emerald-400 text-emerald-700 hover:bg-emerald-50"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleStatusChange(table, "available");
+                                  }}
+                                >
+                                  Bàn trống
+                                </Button>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </>
           ) : (

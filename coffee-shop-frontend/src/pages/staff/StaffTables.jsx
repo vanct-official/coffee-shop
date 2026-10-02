@@ -12,6 +12,7 @@ import {
   Wallet,
   Users,
   Unlink,
+  Coffee,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -81,218 +82,283 @@ function TableCard({
   hasSubTables,
 }) {
   const debtAmount = Number(activeOrderMeta?.debt_amount || 0);
-  const canEditOrder =
-    Boolean(activeOrderMeta) &&
-    !activeOrderMeta?.is_paid &&
-    String(activeOrderMeta?.payment_status || "").toLowerCase() !== "paid";
-
   const isSubTable = Boolean(table.main_table_id);
+  const isOccupied = table.status === "occupied";
+  const isAvailable = table.status === "available";
+
+  // Màu sắc 4 chiếc ghế theo trạng thái bàn
+  const chairBackrestClass = isOccupied
+    ? "bg-blue-300/90 dark:bg-blue-800 border-blue-400 dark:border-blue-600 shadow-2xs"
+    : isAvailable
+      ? "bg-amber-100/95 dark:bg-stone-800 border-amber-300/80 dark:border-stone-600 shadow-2xs"
+      : "bg-amber-200/90 dark:bg-amber-800 border-amber-400 dark:border-amber-600 shadow-2xs";
+
+  const chairCushionClass = isOccupied
+    ? "bg-blue-100 dark:bg-blue-900/90 border-blue-300 dark:border-blue-700"
+    : isAvailable
+      ? "bg-amber-50 dark:bg-stone-700 border-amber-200 dark:border-stone-600"
+      : "bg-amber-100 dark:bg-amber-900/80 border-amber-300 dark:border-amber-700";
+
+  // Phong cách mặt bàn cafe
+  const tableSurfaceClass = isOccupied
+    ? "bg-gradient-to-br from-blue-50/95 via-sky-50/40 to-indigo-50/80 dark:from-blue-950/60 dark:via-gray-900 dark:to-indigo-950/50 border-blue-500 dark:border-blue-400 shadow-md shadow-blue-500/10 hover:border-blue-600"
+    : isAvailable
+      ? "bg-gradient-to-br from-emerald-50/90 via-teal-50/30 to-green-50/70 dark:from-emerald-950/50 dark:via-gray-900 dark:to-teal-950/40 border-emerald-400/90 dark:border-emerald-500/80 shadow-sm hover:border-emerald-500"
+      : "bg-gradient-to-br from-amber-50/90 via-orange-50/30 to-amber-100/60 dark:from-amber-950/50 dark:via-gray-900 dark:to-orange-950/40 border-amber-400/90 dark:border-amber-500/80 shadow-sm hover:border-amber-500";
 
   return (
-    <Card
+    <div
       onClick={() => onOpenPOS(table)}
-      className={`relative group p-5 flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl dark:shadow-none bg-card border-border/50 hover:border-primary/50 cursor-pointer overflow-hidden ${isSubTable ? 'ring-2 ring-indigo-400/60 dark:ring-indigo-500/50' : ''}`}
+      className="relative group p-3.5 flex flex-col items-center justify-center transition-all duration-300 hover:scale-[1.03] cursor-pointer select-none"
     >
-      {/* Sub-table grouping badge */}
-      {isSubTable && (
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-center gap-1 bg-indigo-500/90 text-white text-[9px] font-bold py-0.5 px-2 z-10">
-          <Users className="w-2.5 h-2.5" />
-          <span>Bàn phụ – {mainTableCode}</span>
-          <button
-            onClick={(e) => { e.stopPropagation(); onUnmergeTable && onUnmergeTable(table); }}
-            className="ml-1 hover:text-red-200 transition-colors"
-            title="Bỏ gộp bàn này"
-          >
-            <Unlink className="w-2.5 h-2.5" />
-          </button>
-        </div>
-      )}
+      {/* 4 CHIẾC GHẾ NGỒI QUANH BÀN */}
+      {/* Ghế TRÊN (Top Chair) */}
+      <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none transition-transform duration-300 group-hover:-translate-y-1.5 z-0">
+        <div className={`w-12 sm:w-14 h-2 rounded-t-full border ${chairBackrestClass}`} />
+        <div className={`w-9 sm:w-10 h-2 -mt-[1px] rounded-b-md border-x border-b ${chairCushionClass}`} />
+      </div>
 
-      {["occupied", "available", "reserved"].includes(table.status) && (
-        <div className="absolute top-2 right-2 flex items-center gap-1 z-20">
-          {table.status === "occupied" && !isSubTable && (
+      {/* Ghế DƯỚI (Bottom Chair) */}
+      <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none transition-transform duration-300 group-hover:translate-y-1.5 z-0">
+        <div className={`w-9 sm:w-10 h-2 -mb-[1px] rounded-t-md border-x border-t ${chairCushionClass}`} />
+        <div className={`w-12 sm:w-14 h-2 rounded-b-full border ${chairBackrestClass}`} />
+      </div>
+
+      {/* Ghế TRÁI (Left Chair) */}
+      <div className="absolute -left-0.5 top-1/2 -translate-y-1/2 flex flex-row items-center pointer-events-none transition-transform duration-300 group-hover:-translate-x-1.5 z-0">
+        <div className={`h-12 sm:h-14 w-2 rounded-l-full border ${chairBackrestClass}`} />
+        <div className={`h-9 sm:h-10 w-2 -ml-[1px] rounded-r-md border-y border-r ${chairCushionClass}`} />
+      </div>
+
+      {/* Ghế PHẢI (Right Chair) */}
+      <div className="absolute -right-0.5 top-1/2 -translate-y-1/2 flex flex-row items-center pointer-events-none transition-transform duration-300 group-hover:translate-x-1.5 z-0">
+        <div className={`h-9 sm:h-10 w-2 -mr-[1px] rounded-l-md border-y border-l ${chairCushionClass}`} />
+        <div className={`h-12 sm:h-14 w-2 rounded-r-full border ${chairBackrestClass}`} />
+      </div>
+
+      {/* MẶT BÀN UỐNG NƯỚC Ở GIỮA */}
+      <div
+        className={`w-full min-h-[195px] rounded-3xl border-2 p-3.5 flex flex-col items-center justify-between gap-2 relative z-10 transition-all duration-300 ${tableSurfaceClass} ${
+          isSubTable ? "ring-2 ring-indigo-400/80 dark:ring-indigo-500/80" : ""
+        }`}
+      >
+        {/* Dải phân cách viền mặt bàn gỗ/đá tạo cảm giác mặt bàn thật */}
+        <div className="absolute inset-1 rounded-[1.35rem] border border-black/5 dark:border-white/5 pointer-events-none" />
+
+        {/* Sub-table grouping badge */}
+        {isSubTable && (
+          <div className="absolute top-0 left-0 right-0 flex items-center justify-center gap-1 bg-indigo-500/90 text-white text-[9px] font-bold py-0.5 px-2 rounded-t-[1.35rem] z-20">
+            <Users className="w-2.5 h-2.5" />
+            <span>Bàn phụ – {mainTableCode}</span>
             <button
-              onClick={(e) => onViewOrder(e, table)}
-              className="p-1.5 rounded-full hover:bg-black/5 text-muted-foreground transition-colors"
-              title="Xem đơn hàng"
+              onClick={(e) => {
+                e.stopPropagation();
+                onUnmergeTable && onUnmergeTable(table);
+              }}
+              className="ml-1 hover:text-red-200 transition-colors"
+              title="Bỏ gộp bàn này"
             >
-              <ReceiptText className="w-4 h-4 text-blue-600" />
+              <Unlink className="w-2.5 h-2.5" />
             </button>
-          )}
-          {table.status !== "available" && !isSubTable && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  onClick={(e) => e.stopPropagation()}
-                  className="p-1.5 rounded-full hover:bg-black/5 text-slate-600 dark:text-slate-300 transition-colors"
-                  title="Tùy chọn"
-                >
-                  <MoreVertical className="w-4 h-4" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {table.status === "occupied" ? (
-                  <>
-                    <DropdownMenuItem
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onMergeGroup && onMergeGroup(table);
-                      }}
-                    >
-                      <Users className="w-4 h-4" />
-                      Gộp bàn
-                    </DropdownMenuItem>
-                    {hasSubTables && (
+          </div>
+        )}
+
+        {/* Góc trên mặt bàn: Ly Cafe trang trí bên trái + Nút hành động bên phải */}
+        <div className="w-full flex items-center justify-between z-20">
+          <div
+            className={`w-6 h-6 rounded-full flex items-center justify-center border shadow-2xs ${
+              isOccupied
+                ? "bg-blue-100/80 dark:bg-blue-900/60 border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300"
+                : isAvailable
+                  ? "bg-emerald-100/80 dark:bg-emerald-900/60 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300"
+                  : "bg-amber-100/80 dark:bg-amber-900/60 border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300"
+            }`}
+            title="Bàn cafe 4 chỗ"
+          >
+            <Coffee className="w-3.5 h-3.5" />
+          </div>
+
+          <div className="flex items-center gap-1">
+            {table.status === "occupied" && !isSubTable && (
+              <button
+                onClick={(e) => onViewOrder(e, table)}
+                className="p-1 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-blue-600 dark:text-blue-400 transition-colors"
+                title="Xem đơn hàng"
+              >
+                <ReceiptText className="w-4 h-4" />
+              </button>
+            )}
+
+            {table.status !== "available" && !isSubTable && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    onClick={(e) => e.stopPropagation()}
+                    className="p-1 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300 transition-colors"
+                    title="Tùy chọn"
+                  >
+                    <MoreVertical className="w-4 h-4" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  {table.status === "occupied" ? (
+                    <>
                       <DropdownMenuItem
                         onClick={(e) => {
                           e.stopPropagation();
-                          onUnmergeAll && onUnmergeAll(table);
+                          onMergeGroup && onMergeGroup(table);
                         }}
-                        className="text-amber-600 dark:text-amber-500 focus:text-amber-700 dark:focus:text-amber-400"
                       >
-                        <Unlink className="w-4 h-4" />
-                        Bỏ gộp tất cả
+                        <Users className="w-4 h-4" />
+                        Gộp bàn
                       </DropdownMenuItem>
-                    )}
-                    <DropdownMenuItem
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onMergeOrder(table);
-                      }}
-                    >
-                      <GitMerge className="w-4 h-4" />
-                      Ghép đơn
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      disabled={hasSubTables}
-                      className={hasSubTables ? "!pointer-events-auto cursor-not-allowed" : ""}
-                      onSelect={() => onTransfer(table)}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <ArrowLeftRight className="w-4 h-4" />
-                      Chuyển bàn
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onSeparateBill(table);
-                      }}
-                    >
-                      <ReceiptText className="w-4 h-4" />
-                      Tách đơn
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onRequestPayment(table);
-                      }}
-                    >
-                      <HandCoins className="w-4 h-4" />
-                      Yêu cầu thanh toán
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onStatusChange(table, "available");
-                      }}
-                    >
-                      <TableIcon className="w-4 h-4" />
-                      Trống
-                    </DropdownMenuItem>
-                  </>
-                ) : null}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
+                      {hasSubTables && (
+                        <DropdownMenuItem
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onUnmergeAll && onUnmergeAll(table);
+                          }}
+                          className="text-amber-600 dark:text-amber-500 focus:text-amber-700 dark:focus:text-amber-400"
+                        >
+                          <Unlink className="w-4 h-4" />
+                          Bỏ gộp tất cả
+                        </DropdownMenuItem>
+                      )}
+                      <DropdownMenuItem
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onMergeOrder(table);
+                        }}
+                      >
+                        <GitMerge className="w-4 h-4" />
+                        Ghép đơn
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        disabled={hasSubTables}
+                        className={hasSubTables ? "!pointer-events-auto cursor-not-allowed" : ""}
+                        onSelect={() => onTransfer(table)}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <ArrowLeftRight className="w-4 h-4" />
+                        Chuyển bàn
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSeparateBill(table);
+                        }}
+                      >
+                        <ReceiptText className="w-4 h-4" />
+                        Tách đơn
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onRequestPayment(table);
+                        }}
+                      >
+                        <HandCoins className="w-4 h-4" />
+                        Yêu cầu thanh toán
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onStatusChange(table, "available");
+                        }}
+                      >
+                        <TableIcon className="w-4 h-4" />
+                        Trống
+                      </DropdownMenuItem>
+                    </>
+                  ) : null}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </div>
         </div>
-      )}
 
-      {/* Status Indicator Bar */}
-      <div
-        className={`absolute top-0 left-0 w-full h-1 ${table.status === "available"
-          ? "bg-green-500"
-          : table.status === "occupied"
-            ? "bg-blue-500"
-            : "bg-amber-500"
-          }`}
-      />
-
-      {/* Table Number Badge */}
-      <div
-        className={`min-w-[4rem] h-14 px-4 rounded-2xl flex flex-col items-center justify-center transition-colors duration-300 ${table.status === "available"
-          ? "bg-green-50 dark:bg-green-900/30"
-          : table.status === "occupied"
-            ? "bg-blue-50 dark:bg-blue-900/30"
-            : "bg-amber-50 dark:bg-amber-900/30"
-          }`}
-      >
-        <span
-          className={`text-xl font-black tracking-tighter whitespace-nowrap ${table.status === "available"
-            ? "text-green-700 dark:text-green-400"
-            : table.status === "occupied"
-              ? "text-blue-700 dark:text-blue-400"
-              : "text-amber-700 dark:text-amber-400"
+        {/* TÂM MẶT BÀN: Biển số bàn cafe (Table Number Plate) */}
+        <div className="flex flex-col items-center justify-center my-1 z-20">
+          <div
+            className={`min-w-[4.25rem] h-12 px-3 rounded-2xl flex flex-col items-center justify-center border shadow-xs transition-colors duration-300 ${
+              isAvailable
+                ? "bg-white/90 dark:bg-gray-800/90 border-emerald-200 dark:border-emerald-800/60"
+                : isOccupied
+                  ? "bg-white/95 dark:bg-gray-800/90 border-blue-200 dark:border-blue-800/60"
+                  : "bg-white/90 dark:bg-gray-800/90 border-amber-200 dark:border-amber-800/60"
             }`}
-        >
-          {table.code?.replace("TB-", "")}
-        </span>
-      </div>
+          >
+            <span
+              className={`text-xl font-black tracking-tight whitespace-nowrap leading-none ${
+                isAvailable
+                  ? "text-emerald-700 dark:text-emerald-400"
+                  : isOccupied
+                    ? "text-blue-700 dark:text-blue-400"
+                    : "text-amber-700 dark:text-amber-400"
+              }`}
+            >
+              {table.code?.replace("TB-", "")}
+            </span>
+            <span className="text-[9px] font-semibold text-slate-500 dark:text-slate-400 tracking-wider">
+              {table.code?.startsWith("TB-") ? "TB" : "BÀN"}
+            </span>
+          </div>
 
-      <div className="text-center space-y-0.5">
-        <h3 className="text-sm font-bold text-foreground">Bàn {table.code}</h3>
-        <p className="text-[10px] font-medium text-slate-600 dark:text-slate-300 uppercase tracking-widest">
-          {table.area_name}
-        </p>
-        {table.status === "occupied" && (
-          <p className="text-[10px] font-medium text-blue-700 dark:text-blue-400 flex items-center justify-center gap-1 pt-0.5">
-            <Clock3 className="w-3 h-3" />
-            Order: {formatOrderTime(activeOrderMeta?.created_at || table.updated_at)}
-          </p>
-        )}
-      </div>
+          <div className="text-center mt-1.5 space-y-0.5">
+            <h3 className="text-xs font-bold text-foreground">Bàn {table.code}</h3>
+            <p className="text-[9px] font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
+              {table.area_name}
+            </p>
+            {isOccupied && (
+              <p className="text-[10px] font-semibold text-blue-700 dark:text-blue-400 flex items-center justify-center gap-1 pt-0.5">
+                <Clock3 className="w-3 h-3" />
+                {formatOrderTime(activeOrderMeta?.created_at || table.updated_at)}
+              </p>
+            )}
+          </div>
+        </div>
 
-      {/* Status Badge */}
-      <div
-        className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-[10px] font-bold uppercase tracking-wider ${table.status === "available"
-          ? "bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-200"
-          : table.status === "occupied"
-            ? "bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-200"
-            : "bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/50"
-          }`}
-      >
-        <span
-          className={`w-1.5 h-1.5 rounded-full animate-pulse ${table.status === "available"
-            ? "bg-green-500"
-            : table.status === "occupied"
-              ? "bg-blue-500"
-              : "bg-amber-500"
+        {/* PHẦN DƯỚI MẶT BÀN: Badge trạng thái & Cảnh báo nợ */}
+        <div className="w-full flex flex-col items-center gap-1.5 z-20">
+          <div
+            className={`flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border text-[10px] font-bold uppercase tracking-wider ${
+              isAvailable
+                ? "bg-emerald-100/90 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700/60"
+                : isOccupied
+                  ? "bg-blue-100/90 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700/60"
+                  : "bg-amber-100/90 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700/60"
             }`}
-        />
-        {table.status === "available"
-          ? "Trống"
-          : table.status === "occupied"
-            ? "Có khách"
-            : "Đã đặt"}
-      </div>
+          >
+            <span
+              className={`w-1.5 h-1.5 rounded-full animate-pulse ${
+                isAvailable
+                  ? "bg-emerald-500"
+                  : isOccupied
+                    ? "bg-blue-500"
+                    : "bg-amber-500"
+              }`}
+            />
+            {isAvailable ? "Trống (4 chỗ)" : isOccupied ? "Có khách" : "Đã đặt"}
+          </div>
 
-      {(paymentRequested || debtAmount > 0) && (
-        <div className="w-full space-y-1.5">
-          {paymentRequested && (
-            <div className="text-[10px] font-semibold text-amber-700 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/40/80 px-2.5 py-1 rounded-full border border-amber-200 dark:border-amber-800/50 text-center">
-              Khách yêu cầu thanh toán
+          {(paymentRequested || debtAmount > 0) && (
+            <div className="w-full space-y-1">
+              {paymentRequested && (
+                <div className="text-[9px] font-bold text-amber-800 dark:text-amber-300 bg-amber-200/90 dark:bg-amber-900/60 px-2 py-0.5 rounded-md border border-amber-300 text-center animate-pulse">
+                  Gọi tính tiền
+                </div>
+              )}
+              {debtAmount > 0 && (
+                <div className="text-[9px] font-bold text-red-700 dark:text-red-300 bg-red-100/90 dark:bg-red-900/40 px-2 py-0.5 rounded-md border border-red-300 text-center">
+                  Cần thu: {formatVND(debtAmount)}
+                </div>
+              )}
             </div>
           )}
-          {debtAmount > 0 && (
-            <div className="text-[10px] font-semibold text-red-700 bg-red-50 dark:bg-red-900/30 px-2.5 py-1 rounded-full border border-red-200 dark:border-red-800/50 text-center">
-              Khách phải trả: {formatVND(debtAmount)}
-            </div>
-          )}
         </div>
-      )}
-
-
-    </Card>
+      </div>
+    </div>
   );
 }
 
@@ -1210,7 +1276,7 @@ export function StaffTables() {
                       </div>
 
                       {/* Tables Grid for this area */}
-                      <div className="grid grid-cols-2 md:grid-cols-5 xl:grid-cols-10 gap-4">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-x-5 gap-y-7">
                         {areaTables.map((table) => (
                           <TableCard
                             key={table.id}
@@ -1276,7 +1342,7 @@ export function StaffTables() {
                 </div>
               )}
 
-              <div className="grid grid-cols-2 md:grid-cols-5 xl:grid-cols-10 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-x-5 gap-y-7">
                 {filteredTables.length > 0 ? (
                   filteredTables.map((table) => (
                     <TableCard
